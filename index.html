@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Faz a página se adaptar corretamente a celulares e tablets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pokédex</title>
+
+    <!-- Conecta o arquivo CSS ao HTML -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho principal da Pokédex -->
+    <header class="cabecalho">
+        <h1>Pokédex</h1>
+        <p>Descubra e explore o mundo dos Pokémon</p>
+    </header>
+
+    <!-- Conteúdo principal da página -->
+    <main>
+
+        <!-- Área de pesquisa e filtros -->
+        <section class="controles">
+
+            <!-- Campo para pesquisar Pokémon pelo nome -->
+            <input
+                type="text"
+                id="busca-pokemon"
+                placeholder="Pesquisar Pokémon..."
+            >
+
+            <!-- Filtro por tipo -->
+            <select id="filtro-tipo">
+                <option value="todos">Todos os tipos</option>
+            </select>
+
+            <!-- Ordenação dos Pokémon -->
+            <select id="ordenacao">
+                <option value="numero">Número</option>
+                <option value="nome">Nome</option>
+            </select>
+
+        </section>
+
+        <!-- Cards dos Pokémon serão criados pelo JavaScript aqui -->
+        <section class="lista-pokemon" id="lista-pokemon">
+
+        </section>
+
+    </main>
+
+    <!--
+        Arquivo JavaScript principal.
+        "type=module" permite usar import e export entre nossos arquivos JS.
+    -->
+    <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
