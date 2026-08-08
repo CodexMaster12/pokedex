@@ -1,0 +1,164 @@
+/* =========================
+   LISTA DE POKÉMON
+========================= */
+
+.lista-pokemon {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================
+   CARD DO POKÉMON
+========================= */
+
+.card-pokemon {
+    background-color: white;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    cursor: pointer;
+}
+
+.card-pokemon img {
+    width: 150px;
+    height: 150px;
+
+    object-fit: contain;
+}
+
+.card-pokemon > span {
+    display: block;
+
+    margin-top: 10px;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+.card-pokemon h2 {
+    margin-top: 5px;
+
+    font-size: 20px;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================
+   TIPOS DOS POKÉMON
+========================= */
+
+.tipos-pokemon {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 10px;
+}
+
+.card-pokemon .tipo,
+#detalhes-pokemon .tipo {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    margin-top: 0;
+
+    border-radius: 15px;
+
+    color: white;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================
+   CORES DOS TIPOS
+========================= */
+
+.tipo.grass {
+    background-color: #78c850;
+}
+
+.tipo.poison {
+    background-color: #a040a0;
+}
+
+.tipo.fire {
+    background-color: #f08030;
+}
+
+.tipo.water {
+    background-color: #6890f0;
+}
+
+.tipo.bug {
+    background-color: #a8b820;
+}
+
+.tipo.normal {
+    background-color: #a8a878;
+}
+
+.tipo.electric {
+    background-color: #f8d030;
+    color: #222;
+}
+
+.tipo.ground {
+    background-color: #e0c068;
+}
+
+.tipo.fairy {
+    background-color: #ee99ac;
+}
+
+.tipo.fighting {
+    background-color: #c03028;
+}
+
+.tipo.psychic {
+    background-color: #f85888;
+}
+
+.tipo.rock {
+    background-color: #b8a038;
+}
+
+.tipo.ghost {
+    background-color: #705898;
+}
+
+.tipo.ice {
+    background-color: #98d8d8;
+    color: #222;
+}
+
+.tipo.dragon {
+    background-color: #7038f8;
+}
+
+.tipo.flying {
+    background-color: #a890f0;
+}
+
+.tipo.steel {
+    background-color: #b8b8d0;
+    color: #222;
+}

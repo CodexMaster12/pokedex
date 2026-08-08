@@ -1,0 +1,407 @@
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1000;
+
+    background-color: rgba(0, 0, 0, 0.6);
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+}
+
+.modal.ativo {
+    display: flex;
+}
+
+.modal-conteudo {
+    position: relative;
+
+    width: 100%;
+    max-width: 700px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background-color: #f8f8f8;
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+#fechar-modal {
+    position: absolute;
+
+    top: 10px;
+    right: 15px;
+
+    border: none;
+
+    background: none;
+
+    font-size: 30px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   CONTEÚDO DO MODAL
+========================= */
+
+#detalhes-pokemon {
+    text-align: center;
+}
+
+.imagem-modal {
+    width: 220px;
+    height: 220px;
+
+    object-fit: contain;
+
+    margin-bottom: 10px;
+}
+
+#detalhes-pokemon > span {
+    display: block;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+#detalhes-pokemon h2 {
+    margin-top: 5px;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================
+   INFORMAÇÕES BÁSICAS
+========================= */
+
+.informacoes-pokemon {
+    display: flex;
+
+    justify-content: space-around;
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+    padding: 18px;
+
+    background-color: white;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.informacoes-pokemon p {
+    flex: 1;
+
+    text-align: center;
+}
+
+
+/* =========================
+   HABILIDADES
+========================= */
+
+.habilidades-pokemon {
+    margin-top: 15px;
+
+    padding: 18px;
+
+    background-color: white;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.habilidades-pokemon strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 16px;
+}
+
+.habilidades-pokemon p {
+    text-transform: capitalize;
+
+    color: #555;
+}
+
+
+/* =========================
+   ESTATÍSTICAS
+========================= */
+
+.stats-pokemon {
+    margin-top: 15px;
+
+    padding: 20px;
+
+    background-color: white;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.stats-pokemon h3 {
+    margin-bottom: 20px;
+
+    text-align: left;
+}
+
+.grafico-stats {
+    display: grid;
+
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 8px;
+
+    align-items: end;
+}
+
+.stat-coluna {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.segmentos-stat {
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 4px;
+}
+
+.segmento-stat {
+    width: 100%;
+    height: 9px;
+
+    background-color: #e5e5e5;
+
+    border-radius: 2px;
+}
+
+.segmento-stat.ativo {
+    background-color: #29a9df;
+}
+
+.valor-stat {
+    margin-top: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.nome-stat {
+    margin-top: 4px;
+
+    min-height: 36px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    line-height: 1.15;
+
+    text-align: center;
+}
+
+
+/* =========================
+   EVOLUÇÕES
+========================= */
+
+.evolucoes-pokemon {
+    margin-top: 15px;
+
+    padding: 20px;
+
+    background-color: white;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.evolucoes-pokemon h3 {
+    margin-bottom: 20px;
+}
+
+
+/* Área geral da cadeia */
+#lista-evolucoes {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+/* Etapa que possui uma próxima evolução */
+.evolucao-etapa {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+/* Grupo usado quando existem várias evoluções possíveis */
+.evolucao-filhos {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+/* Cada ramo da evolução */
+.evolucao-ramo {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Cada Pokémon */
+.evolucao-item {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px;
+
+    border-radius: 15px;
+
+    transition: 0.2s;
+}
+
+
+/* Área circular da imagem */
+.evolucao-imagem {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 120px;
+    height: 120px;
+
+    background-color: transparent;
+
+    border: 2px solid transparent;
+    border-radius: 50%;
+}
+
+
+/* Imagem */
+.evolucao-item img {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+}
+
+
+/* Número e nome */
+.evolucao-identificacao {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 7px;
+}
+
+.evolucao-numero {
+    color: #777;
+
+    font-size: 12px;
+}
+
+.evolucao-nome {
+    font-size: 14px;
+    font-weight: bold;
+
+    text-transform: capitalize;
+}
+
+
+/* Tipos */
+.evolucao-tipos {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 7px;
+}
+
+.evolucao-tipos .tipo {
+    padding: 4px 8px;
+
+    font-size: 10px;
+}
+
+
+/* Pokémon atualmente aberto */
+.evolucao-item.evolucao-atual .evolucao-imagem {
+    background-color: transparent;
+
+    border: 2px solid #d62828;
+}
+
+.evolucao-item.evolucao-atual .evolucao-nome {
+    color: #d62828;
+}
+
+
+/* Seta entre as etapas */
+.seta-evolucao {
+    flex-shrink: 0;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    color: #aaa;
+}

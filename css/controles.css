@@ -1,0 +1,60 @@
+/* =========================
+   PESQUISA E FILTROS
+========================= */
+
+.controles {
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 30px;
+
+    padding: 16px;
+
+    background-color: white;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.controles input,
+.controles select {
+    height: 45px;
+
+    padding: 0 14px;
+
+    background-color: #f7f7f7;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    color: #333;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.controles input:hover,
+.controles select:hover {
+    background-color: #f0f0f0;
+}
+
+.controles input:focus,
+.controles select:focus {
+    background-color: white;
+
+    border-color: #d62828;
+
+    box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.1);
+}
+
+#busca-pokemon {
+    flex: 1;
+
+    min-width: 200px;
+}

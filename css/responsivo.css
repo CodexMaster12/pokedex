@@ -1,0 +1,54 @@
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 600px) {
+
+    .controles {
+        flex-direction: column;
+    }
+
+    .lista-pokemon {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(150px, 1fr)
+        );
+    }
+
+    .informacoes-pokemon {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .imagem-modal {
+        width: 180px;
+        height: 180px;
+    }
+
+    .modal-conteudo {
+        padding: 25px 18px;
+    }
+
+    .grafico-stats {
+        gap: 4px;
+    }
+
+    .nome-stat {
+        font-size: 10px;
+    }
+
+    .valor-stat {
+        font-size: 12px;
+    }
+
+    .evolucao-imagem {
+        width: 100px;
+        height: 100px;
+    }
+
+    .evolucao-item img {
+        width: 85px;
+        height: 85px;
+    }
+}
