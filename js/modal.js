@@ -127,11 +127,16 @@ export async function abrirModal(pokemon) {
         <!-- Habilidades -->
         <div class="habilidades-pokemon">
 
-            <strong>Habilidades:</strong>
+            <h3>Habilidades</h3>
 
-            <p>
-                ${habilidades.join(", ")}
-            </p>
+            <div class="lista-habilidades">
+                ${habilidades.map((habilidade) => `
+                    <span class="habilidade">
+                        <span class="icone-habilidade">✦</span>
+                        ${habilidade}
+                    </span>
+                `).join("")}
+            </div>
 
         </div>
 
@@ -194,27 +199,36 @@ function extrairEvolucoes(cadeia) {
 }
 
 
-// Busca os dados completos de cada Pokémon da árvore
+// Busca os dados completos da árvore e mantém somente Pokémon de Kanto
 async function carregarDadosArvore(no) {
     const pokemon = await buscarPokemonPorNome(no.nome);
 
-    // Nesta versão mostramos somente Pokémon de Kanto
-    if (pokemon.id > LIMITE_KANTO) {
-        return null;
-    }
-
+    // Continua percorrendo os descendentes mesmo que o Pokémon atual
+    // não faça parte da primeira geração
     const evolucoes = await Promise.all(
         no.evolucoes.map((evolucao) => {
             return carregarDadosArvore(evolucao);
         })
     );
 
-    return {
-        pokemon,
-        evolucoes: evolucoes.filter((evolucao) => {
-            return evolucao !== null;
-        })
-    };
+    // Junta todos os possíveis ramos retornados
+    const evolucoesValidas = evolucoes.flat();
+
+
+    // Se o Pokémon atual não pertence a Kanto,
+    // ignora apenas ele e promove suas evoluções válidas
+    if (pokemon.id > LIMITE_KANTO) {
+        return evolucoesValidas;
+    }
+
+
+    // Pokémon de Kanto permanece normalmente na árvore
+    return [
+        {
+            pokemon,
+            evolucoes: evolucoesValidas
+        }
+    ];
 }
 
 
@@ -315,14 +329,21 @@ async function carregarEvolucoes(pokemon) {
     const arvore =
         extrairEvolucoes(cadeia);
 
-    const arvoreComDados =
+    // Pode existir mais de uma raiz depois de remover
+    // Pokémon de gerações posteriores
+    const arvoresComDados =
         await carregarDadosArvore(arvore);
 
-    listaEvolucoes.innerHTML =
-        renderizarArvoreEvolucao(
-            arvoreComDados,
-            pokemon
-        );
+
+    // Renderiza todas as raízes válidas
+    listaEvolucoes.innerHTML = arvoresComDados
+        .map((arvoreComDados) => {
+            return renderizarArvoreEvolucao(
+                arvoreComDados,
+                pokemon
+            );
+        })
+        .join("");
 }
 
 
