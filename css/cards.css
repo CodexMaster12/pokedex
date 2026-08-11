@@ -5,7 +5,10 @@
 .lista-pokemon {
     display: grid;
 
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(200px, 1fr)
+    );
 
     gap: 20px;
 }
@@ -27,8 +30,22 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
+
+/* Pequeno destaque ao passar o mouse */
+.card-pokemon:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Imagem do Pokémon */
 .card-pokemon img {
     width: 150px;
     height: 150px;
@@ -36,6 +53,8 @@
     object-fit: contain;
 }
 
+
+/* Número da Pokédex */
 .card-pokemon > span {
     display: block;
 
@@ -46,6 +65,8 @@
     font-size: 14px;
 }
 
+
+/* Nome do Pokémon */
 .card-pokemon h2 {
     margin-top: 5px;
 
@@ -67,8 +88,12 @@
     gap: 6px;
 
     margin-top: 10px;
+
+    flex-wrap: wrap;
 }
 
+
+/* Etiqueta de tipo */
 .card-pokemon .tipo,
 #detalhes-pokemon .tipo {
     display: inline-block;
@@ -92,12 +117,8 @@
    CORES DOS TIPOS
 ========================= */
 
-.tipo.grass {
-    background-color: #78c850;
-}
-
-.tipo.poison {
-    background-color: #a040a0;
+.tipo.normal {
+    background-color: #a8a878;
 }
 
 .tipo.fire {
@@ -108,33 +129,44 @@
     background-color: #6890f0;
 }
 
-.tipo.bug {
-    background-color: #a8b820;
-}
-
-.tipo.normal {
-    background-color: #a8a878;
-}
-
 .tipo.electric {
     background-color: #f8d030;
+
     color: #222;
 }
 
-.tipo.ground {
-    background-color: #e0c068;
+.tipo.grass {
+    background-color: #78c850;
 }
 
-.tipo.fairy {
-    background-color: #ee99ac;
+.tipo.ice {
+    background-color: #98d8d8;
+
+    color: #222;
 }
 
 .tipo.fighting {
     background-color: #c03028;
 }
 
+.tipo.poison {
+    background-color: #a040a0;
+}
+
+.tipo.ground {
+    background-color: #e0c068;
+}
+
+.tipo.flying {
+    background-color: #a890f0;
+}
+
 .tipo.psychic {
     background-color: #f85888;
+}
+
+.tipo.bug {
+    background-color: #a8b820;
 }
 
 .tipo.rock {
@@ -145,20 +177,20 @@
     background-color: #705898;
 }
 
-.tipo.ice {
-    background-color: #98d8d8;
-    color: #222;
-}
-
 .tipo.dragon {
     background-color: #7038f8;
 }
 
-.tipo.flying {
-    background-color: #a890f0;
+.tipo.dark {
+    background-color: #705848;
 }
 
 .tipo.steel {
     background-color: #b8b8d0;
+
     color: #222;
+}
+
+.tipo.fairy {
+    background-color: #ee99ac;
 }

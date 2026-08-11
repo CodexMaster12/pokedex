@@ -9,14 +9,41 @@
     box-sizing: border-box;
 }
 
+
+/* Configurações gerais da página */
+html {
+    scroll-behavior: smooth;
+}
+
+
 body {
+    min-height: 100vh;
+
     font-family: Arial, sans-serif;
+
     background-color: #f2f2f2;
     color: #222;
 }
 
+
+/* Imagens não ultrapassam seus containers */
+img {
+    max-width: 100%;
+}
+
+
+/* Conteúdo principal */
 main {
     width: 90%;
     max-width: 1200px;
+
     margin: 30px auto;
+}
+
+
+/* Botões, inputs e selects usam a mesma fonte da página */
+button,
+input,
+select {
+    font: inherit;
 }

@@ -1,69 +1,112 @@
+import {
+    traduzirTipo
+} from "./tipos.js";
+
+
+// =========================
+// TIPOS
+// =========================
+
 // Preenche o filtro com os tipos disponíveis
 function carregarTipos(pokemons, filtroTipo) {
     const tipos = pokemons.flatMap((pokemon) => {
-        return pokemon.types.map((tipo) => tipo.type.name);
+        return pokemon.types.map((tipo) => {
+            return tipo.type.name;
+        });
     });
 
-    // Remove tipos repetidos e ordena alfabeticamente
-    const tiposUnicos = [...new Set(tipos)].sort();
+    const tiposUnicos =
+        [...new Set(tipos)];
+
+    tiposUnicos.sort((a, b) => {
+        return traduzirTipo(a).localeCompare(
+            traduzirTipo(b),
+            "pt-BR"
+        );
+    });
 
     tiposUnicos.forEach((tipo) => {
-        const option = document.createElement("option");
+        const option =
+            document.createElement("option");
 
         option.value = tipo;
-        option.textContent = tipo;
+        option.textContent =
+            traduzirTipo(tipo);
 
         filtroTipo.appendChild(option);
     });
 }
 
 
-// Ordena a lista de Pokémon
+// =========================
+// ORDENAÇÃO
+// =========================
+
 function ordenarPokemons(pokemons, ordem) {
     const resultado = [...pokemons];
 
-    if (ordem === "numero") {
-        resultado.sort((a, b) => a.id - b.id);
-    }
+    switch (ordem) {
+        case "nome-az":
+            resultado.sort((a, b) => {
+                return a.name.localeCompare(b.name);
+            });
 
-    if (ordem === "nome-az") {
-        resultado.sort((a, b) => {
-            return a.name.localeCompare(b.name);
-        });
-    }
+            break;
 
-    if (ordem === "nome-za") {
-        resultado.sort((a, b) => {
-            return b.name.localeCompare(a.name);
-        });
+        case "nome-za":
+            resultado.sort((a, b) => {
+                return b.name.localeCompare(a.name);
+            });
+
+            break;
+
+        case "numero":
+        default:
+            resultado.sort((a, b) => {
+                return a.id - b.id;
+            });
     }
 
     return resultado;
 }
 
 
-// Configura pesquisa, filtro por tipo e ordenação
-export function configurarFiltros(pokemons, exibirPokemons) {
-    const campoBusca = document.getElementById("busca-pokemon");
-    const filtroTipo = document.getElementById("filtro-tipo");
-    const campoOrdenacao = document.getElementById("ordenacao");
+// =========================
+// FILTROS
+// =========================
 
-    carregarTipos(pokemons, filtroTipo);
+export function configurarFiltros(
+    pokemons,
+    exibirPokemons
+) {
+    const campoBusca =
+        document.getElementById("busca-pokemon");
 
+    const filtroTipo =
+        document.getElementById("filtro-tipo");
 
-    // Aplica todos os filtros ao mesmo tempo
+    const campoOrdenacao =
+        document.getElementById("ordenacao");
+
+    carregarTipos(
+        pokemons,
+        filtroTipo
+    );
+
     function aplicarFiltros() {
-        const textoBusca = campoBusca.value
-            .toLowerCase()
-            .trim();
+        const textoBusca =
+            campoBusca.value
+                .toLowerCase()
+                .trim();
 
-        const tipoSelecionado = filtroTipo.value;
-        const ordemSelecionada = campoOrdenacao.value;
+        const tipoSelecionado =
+            filtroTipo.value;
+
+        const ordemSelecionada =
+            campoOrdenacao.value;
 
         let resultado = [...pokemons];
 
-
-        // Pesquisa por nome
         if (textoBusca) {
             resultado = resultado.filter((pokemon) => {
                 return pokemon.name
@@ -72,29 +115,25 @@ export function configurarFiltros(pokemons, exibirPokemons) {
             });
         }
 
-
-        // Filtra por tipo
         if (tipoSelecionado !== "todos") {
             resultado = resultado.filter((pokemon) => {
                 return pokemon.types.some((tipo) => {
-                    return tipo.type.name === tipoSelecionado;
+                    return (
+                        tipo.type.name ===
+                        tipoSelecionado
+                    );
                 });
             });
         }
 
-
-        // Ordena o resultado final
         resultado = ordenarPokemons(
             resultado,
             ordemSelecionada
         );
 
-
         exibirPokemons(resultado);
     }
 
-
-    // Executa novamente quando algum controle mudar
     campoBusca.addEventListener(
         "input",
         aplicarFiltros

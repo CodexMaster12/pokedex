@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
 
     <!-- Faz a página se adaptar corretamente a celulares e tablets -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Pokédex</title>
 
@@ -32,7 +35,10 @@
             <!-- Título com ícone de Pokébola -->
             <div class="titulo-pokedex">
 
-                <div class="icone-pokebola" aria-hidden="true">
+                <div
+                    class="icone-pokebola"
+                    aria-hidden="true"
+                >
                     <div class="centro-pokebola"></div>
                 </div>
 
@@ -54,21 +60,23 @@
     </header>
 
 
-    <!-- Conteúdo principal da página -->
+    <!-- Conteúdo principal -->
     <main>
 
-        <!-- Área de pesquisa e filtros -->
-        <section class="controles">
+        <!-- Pesquisa, filtro e ordenação -->
+        <section
+            class="controles"
+            aria-label="Controles da Pokédex"
+        >
 
-            <!-- Pesquisa -->
             <input
-                type="text"
+                type="search"
                 id="busca-pokemon"
                 placeholder="Pesquisar Pokémon..."
                 aria-label="Pesquisar Pokémon"
+                autocomplete="off"
             >
 
-            <!-- Filtro por tipo -->
             <select
                 id="filtro-tipo"
                 aria-label="Filtrar Pokémon por tipo"
@@ -78,7 +86,6 @@
                 </option>
             </select>
 
-            <!-- Ordenação -->
             <select
                 id="ordenacao"
                 aria-label="Ordenar Pokémon"
@@ -103,6 +110,7 @@
         <section
             class="lista-pokemon"
             id="lista-pokemon"
+            aria-label="Lista de Pokémon"
         >
         </section>
 
@@ -116,11 +124,12 @@
         role="dialog"
         aria-modal="true"
         aria-label="Detalhes do Pokémon"
+        aria-hidden="true"
+        tabindex="-1"
     >
 
         <div class="modal-conteudo">
 
-            <!-- Fecha o modal -->
             <button
                 id="fechar-modal"
                 type="button"
@@ -129,7 +138,7 @@
                 ×
             </button>
 
-            <!-- Preenchido dinamicamente pelo JavaScript -->
+            <!-- Conteúdo preenchido dinamicamente -->
             <div id="detalhes-pokemon">
             </div>
 

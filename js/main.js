@@ -7,6 +7,9 @@ import { configurarModal } from "./modal.js";
 // Inicializa a Pokédex
 async function iniciarPokedex() {
     try {
+        // Ativa abertura e fechamento do modal
+        configurarModal();
+
         // Busca os Pokémon na API
         const pokemons = await buscarPokemons();
 
@@ -14,13 +17,16 @@ async function iniciarPokedex() {
         exibirPokemons(pokemons);
 
         // Ativa pesquisa, filtro e ordenação
-        configurarFiltros(pokemons, exibirPokemons);
-
-        // Ativa abertura e fechamento do modal
-        configurarModal();
+        configurarFiltros(
+            pokemons,
+            exibirPokemons
+        );
 
     } catch (erro) {
-        console.error("Erro ao iniciar a Pokédex:", erro);
+        console.error(
+            "Erro ao iniciar a Pokédex:",
+            erro
+        );
     }
 }
 

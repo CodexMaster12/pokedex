@@ -4,34 +4,121 @@
 
 @media (max-width: 600px) {
 
+    /* =========================
+       PESQUISA E FILTROS
+    ========================= */
+
     .controles {
         flex-direction: column;
     }
+
+    .controles input,
+    .controles select {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    /* =========================
+       LISTA DE POKÉMON
+    ========================= */
 
     .lista-pokemon {
         grid-template-columns: repeat(
             auto-fill,
             minmax(150px, 1fr)
         );
+
+        gap: 12px;
     }
 
-    .informacoes-pokemon {
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-conteudo {
+        max-height: 95vh;
+
+        padding: 25px 18px;
+
+        border-radius: 16px;
+    }
+
+    #fechar-modal {
+        top: 8px;
+        right: 12px;
+    }
+
+
+    /* =========================
+       IDENTIDADE
+    ========================= */
+
+    .imagem-modal {
+        width: 210px;
+        height: 210px;
+    }
+
+    .secao-identidade h2 {
+        font-size: 24px;
+    }
+
+
+    /* =========================
+       FORMAS
+    ========================= */
+
+    .controles-forma {
         flex-direction: column;
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+    .controle-forma,
+    .controle-aparencia {
+        width: 100%;
+    }
+
+    #seletor-forma {
+        width: 100%;
+    }
+
+    .botoes-aparencia {
+        width: 100%;
+    }
+
+    .botao-aparencia {
+        flex: 1;
+    }
+
+
+    /* =========================
+       INFORMAÇÕES PRINCIPAIS
+    ========================= */
+
+    .informacoes-pokemon {
+        grid-template-columns: 1fr;
 
         gap: 8px;
     }
 
-    .imagem-modal {
-        width: 180px;
-        height: 180px;
-    }
 
-    .modal-conteudo {
-        padding: 25px 18px;
-    }
+    /* =========================
+       ESTATÍSTICAS
+    ========================= */
 
     .grafico-stats {
         gap: 4px;
+    }
+
+    .segmento-stat {
+        height: 8px;
     }
 
     .nome-stat {
@@ -42,6 +129,39 @@
         font-size: 12px;
     }
 
+
+    /* =========================
+       FRAQUEZAS E RESISTÊNCIAS
+    ========================= */
+
+    .relacoes-tipo {
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+
+    /* =========================
+       GOLPES
+    ========================= */
+
+    .lista-golpes {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* =========================
+       EVOLUÇÕES
+    ========================= */
+
+    #lista-evolucoes {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        padding-bottom: 8px;
+    }
+
     .evolucao-imagem {
         width: 100px;
         height: 100px;
@@ -50,5 +170,32 @@
     .evolucao-item img {
         width: 85px;
         height: 85px;
+    }
+
+    .evolucao-etapa {
+        gap: 10px;
+    }
+
+    .evolucao-filhos {
+        gap: 10px;
+
+        flex-wrap: nowrap;
+    }
+
+    .seta-evolucao {
+        font-size: 20px;
+    }
+
+
+    /* =========================
+       SEÇÕES DO MODAL
+    ========================= */
+
+    .secao-modal {
+        padding: 16px;
+    }
+
+    .secao-modal h3 {
+        font-size: 17px;
     }
 }

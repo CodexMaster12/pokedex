@@ -2,34 +2,30 @@
 const API_URL = "https://pokeapi.co/api/v2";
 
 
-// Valida se a resposta da API foi bem-sucedida
-function validarResposta(resposta) {
+// Faz uma requisição e retorna os dados em JSON
+async function buscarDados(url) {
+    const resposta = await fetch(url);
+
     if (!resposta.ok) {
         throw new Error(
             `Erro na PokéAPI: ${resposta.status} ${resposta.statusText}`
         );
     }
+
+    return await resposta.json();
 }
 
 
 // Busca os 151 Pokémon da primeira geração
 export async function buscarPokemons() {
-    const resposta = await fetch(
+    const dados = await buscarDados(
         `${API_URL}/pokemon?limit=151&offset=0`
     );
 
-    validarResposta(resposta);
-
-    const dados = await resposta.json();
-
-    // Busca os detalhes de cada Pokémon
+    // Busca os detalhes de todos os Pokémon
     const pokemonsDetalhados = await Promise.all(
-        dados.results.map(async (pokemon) => {
-            const respostaDetalhes = await fetch(pokemon.url);
-
-            validarResposta(respostaDetalhes);
-
-            return await respostaDetalhes.json();
+        dados.results.map((pokemon) => {
+            return buscarDados(pokemon.url);
         })
     );
 
@@ -37,25 +33,21 @@ export async function buscarPokemons() {
 }
 
 
-// Busca a cadeia de evolução de um Pokémon
-export async function buscarEvolucoes(pokemon) {
-    // Busca os dados da espécie
-    const respostaEspecie = await fetch(
+// Busca os dados da espécie do Pokémon
+export async function buscarEspecie(pokemon) {
+    return await buscarDados(
         pokemon.species.url
     );
+}
 
-    validarResposta(respostaEspecie);
 
-    const especie = await respostaEspecie.json();
+// Busca a cadeia de evolução de um Pokémon
+export async function buscarEvolucoes(pokemon) {
+    const especie = await buscarEspecie(pokemon);
 
-    // Busca a cadeia de evolução
-    const respostaEvolucao = await fetch(
+    const evolucao = await buscarDados(
         especie.evolution_chain.url
     );
-
-    validarResposta(respostaEvolucao);
-
-    const evolucao = await respostaEvolucao.json();
 
     return evolucao.chain;
 }
@@ -63,11 +55,7 @@ export async function buscarEvolucoes(pokemon) {
 
 // Busca os dados de um Pokémon pelo nome
 export async function buscarPokemonPorNome(nome) {
-    const resposta = await fetch(
+    return await buscarDados(
         `${API_URL}/pokemon/${nome}`
     );
-
-    validarResposta(resposta);
-
-    return await resposta.json();
 }

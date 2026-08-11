@@ -1,52 +1,82 @@
 import { abrirModal } from "./modal.js";
+import { traduzirTipo } from "./tipos.js";
 
 
-// Cria o HTML das etiquetas de tipo
-function criarTipos(tipos) {
-    return tipos.map((tipo) => {
-        const nomeTipo = tipo.type.name;
-
-        return `
-            <span class="tipo ${nomeTipo}">
-                ${nomeTipo}
-            </span>
-        `;
-    }).join("");
-}
-
+// =========================
+// CARDS DOS POKÉMON
+// =========================
 
 // Cria e exibe os cards dos Pokémon
 export function exibirPokemons(pokemons) {
-    const lista = document.getElementById("lista-pokemon");
+    const lista =
+        document.getElementById("lista-pokemon");
 
-    // Limpa a lista antes de renderizar novamente
     lista.innerHTML = "";
 
     pokemons.forEach((pokemon) => {
-        const numeroFormatado = String(pokemon.id).padStart(3, "0");
+        const numeroFormatado =
+            String(pokemon.id).padStart(3, "0");
 
-        const card = document.createElement("article");
+        const tipos = pokemon.types.map((tipo) => {
+            return tipo.type.name;
+        });
+
+        const card =
+            document.createElement("article");
 
         card.classList.add("card-pokemon");
+
+        card.tabIndex = 0;
+
+        card.setAttribute(
+            "role",
+            "button"
+        );
+
+        card.setAttribute(
+            "aria-label",
+            `Abrir detalhes de ${pokemon.name}`
+        );
 
         card.innerHTML = `
             <img
                 src="assets/images/pokemon/${numeroFormatado}.png"
                 alt="${pokemon.name}"
+                loading="lazy"
             >
 
-            <span>#${numeroFormatado}</span>
+            <span>
+                #${numeroFormatado}
+            </span>
 
-            <h2>${pokemon.name}</h2>
+            <h2>
+                ${pokemon.name}
+            </h2>
 
             <div class="tipos-pokemon">
-                ${criarTipos(pokemon.types)}
+
+                ${tipos.map((tipo) => `
+                    <span class="tipo ${tipo}">
+                        ${traduzirTipo(tipo)}
+                    </span>
+                `).join("")}
+
             </div>
         `;
 
-        // Abre os detalhes do Pokémon ao clicar no card
         card.addEventListener("click", () => {
             abrirModal(pokemon);
+        });
+
+        card.addEventListener("keydown", (evento) => {
+            if (
+                evento.key === "Enter" ||
+                evento.key === " "
+            ) {
+                evento.preventDefault();
+
+                abrirModal(pokemon);
+            }
         });
 
         lista.appendChild(card);

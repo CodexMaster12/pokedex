@@ -19,6 +19,8 @@
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
 }
 
+
+/* Campo de pesquisa e seletores */
 .controles input,
 .controles select {
     height: 45px;
@@ -39,11 +41,15 @@
     transition: 0.2s;
 }
 
+
+/* Efeito ao passar o mouse */
 .controles input:hover,
 .controles select:hover {
     background-color: #f0f0f0;
 }
 
+
+/* Destaque quando o controle está selecionado */
 .controles input:focus,
 .controles select:focus {
     background-color: white;
@@ -53,6 +59,8 @@
     box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.1);
 }
 
+
+/* Campo de pesquisa ocupa o espaço restante */
 #busca-pokemon {
     flex: 1;
 
