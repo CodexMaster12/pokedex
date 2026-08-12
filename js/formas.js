@@ -4,10 +4,11 @@
 
 
 // Cria uma forma no padrão usado pelo sistema
-function criarForma(id, nome) {
+function criarForma(id, nome, api = null) {
     return Object.freeze({
         id,
-        nome
+        nome,
+        api
     });
 }
 
@@ -21,8 +22,6 @@ const FORMA_NORMAL =
 // FORMAS ESPECIAIS
 // =========================
 
-// Formas especiais disponíveis para Pokémon da Pokédex de Kanto.
-// O número da propriedade corresponde ao ID nacional do Pokémon.
 const FORMAS_POKEMON = {
 
     // =========================
@@ -37,9 +36,24 @@ const FORMAS_POKEMON = {
 
     6: [
         FORMA_NORMAL,
-        criarForma("mega-x", "Mega X"),
-        criarForma("mega-y", "Mega Y"),
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "mega-x",
+            "Mega X",
+            "charizard-mega-x"
+        ),
+
+        criarForma(
+            "mega-y",
+            "Mega Y",
+            "charizard-mega-y"
+        ),
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "charizard-gmax"
+        )
     ],
 
     9: [
@@ -70,9 +84,7 @@ const FORMAS_POKEMON = {
 
     26: [
         FORMA_NORMAL,
-        criarForma("alola", "Alola"),
-        criarForma("mega-x", "Mega X"),
-        criarForma("mega-y", "Mega Y")
+        criarForma("alola", "Alola")
     ],
 
     36: [
@@ -164,96 +176,179 @@ const FORMAS_POKEMON = {
     ],
 
 
-    // =========================
-    // FORMAS DE ALOLA
-    // =========================
+// =========================
+// FORMAS DE ALOLA
+// =========================
 
-    19: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+19: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "rattata-alola"
+    )
+],
 
-    20: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+20: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "raticate-alola"
+    )
+],
 
-    27: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+26: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "raichu-alola"
+    )
+],
 
-    28: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+27: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "sandshrew-alola"
+    )
+],
 
-    37: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+28: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "sandslash-alola"
+    )
+],
 
-    38: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+37: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "vulpix-alola"
+    )
+],
 
-    50: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+38: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "ninetales-alola"
+    )
+],
 
-    51: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+50: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "diglett-alola"
+    )
+],
 
-    52: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola"),
-        criarForma("galar", "Galar"),
-        criarForma("gigantamax", "Gigantamax")
-    ],
+51: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "dugtrio-alola"
+    )
+],
 
-    53: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+52: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "meowth-alola"
+    ),
+    criarForma(
+        "galar",
+        "Galar"
+    ),
+    criarForma(
+        "gigantamax",
+        "Gigantamax"
+    )
+],
 
-    74: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+53: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "persian-alola"
+    )
+],
 
-    75: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+74: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "geodude-alola"
+    )
+],
 
-    76: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+75: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "graveler-alola"
+    )
+],
 
-    88: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+76: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "golem-alola"
+    )
+],
 
-    89: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+88: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "grimer-alola"
+    )
+],
 
-    103: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+89: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "muk-alola"
+    )
+],
 
-    105: [
-        FORMA_NORMAL,
-        criarForma("alola", "Alola")
-    ],
+103: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "exeggutor-alola"
+    )
+],
+
+105: [
+    FORMA_NORMAL,
+    criarForma(
+        "alola",
+        "Alola",
+        "marowak-alola"
+    )
+],
 
 
     // =========================
@@ -340,19 +435,23 @@ const FORMAS_POKEMON = {
 
         criarForma(
             "paldea-combat",
-            "Paldea - Combat"
+            "Paldea - Combat",
+            "tauros-paldea-combat-breed"
         ),
 
         criarForma(
             "paldea-blaze",
-            "Paldea - Blaze"
+            "Paldea - Blaze",
+            "tauros-paldea-blaze-breed"
         ),
 
         criarForma(
             "paldea-aqua",
-            "Paldea - Aqua"
+            "Paldea - Aqua",
+            "tauros-paldea-aqua-breed"
         )
     ]
+
 };
 
 
@@ -360,7 +459,8 @@ const FORMAS_POKEMON = {
 // CONSULTA DE FORMAS
 // =========================
 
-// Retorna as formas disponíveis para um Pokémon
+
+// Retorna as formas disponíveis para o Pokémon
 export function obterFormasPokemon(pokemon) {
     return (
         FORMAS_POKEMON[pokemon.id] ||
@@ -369,11 +469,26 @@ export function obterFormasPokemon(pokemon) {
 }
 
 
+// Retorna a forma atualmente selecionada
+export function obterFormaSelecionada(
+    pokemon,
+    formaSelecionada
+) {
+    const formas =
+        obterFormasPokemon(pokemon);
+
+    return formas.find((forma) => {
+        return forma.id === formaSelecionada;
+    }) || FORMA_NORMAL;
+}
+
+
 // =========================
 // IMAGENS
 // =========================
 
-// Monta o caminho da imagem correspondente à forma selecionada
+
+// Monta o caminho da imagem correspondente
 export function obterImagemForma(
     pokemon,
     formaSelecionada = "normal",
@@ -391,7 +506,7 @@ export function obterImagemForma(
     }
 
 
-    // Formas especiais
+    // Forma especial
     const sufixoShiny =
         shiny
             ? "-shiny"

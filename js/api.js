@@ -59,3 +59,10 @@ export async function buscarPokemonPorNome(nome) {
         `${API_URL}/pokemon/${nome}`
     );
 }
+
+// Busca dados de uma forma específica pelo identificador da PokéAPI
+export async function buscarPokemonPorIdentificador(identificador) {
+    return await buscarDados(
+        `${API_URL}/pokemon/${identificador}`
+    );
+}
