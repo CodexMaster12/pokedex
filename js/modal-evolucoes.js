@@ -102,7 +102,7 @@ function criarItemEvolucao(
             <div class="evolucao-imagem">
 
                 <img
-                    src="assets/images/pokemon/${numero}.png"
+                    src="assets/images/pokemon/gen-1/normal/${numero}.png"
                     alt="${pokemon.name}"
                     loading="lazy"
                 >
@@ -157,6 +157,14 @@ function renderizarArvoreEvolucao(
     }
 
 
+    // Eevee possui múltiplas evoluções.
+    // Organizamos seus ramos verticalmente.
+    const classeFilhos =
+        no.pokemon.id === 133
+            ? "evolucao-filhos evolucao-filhos-eevee"
+            : "evolucao-filhos";
+
+
     const filhos =
         no.evolucoes
             .map((evolucao) => {
@@ -187,7 +195,7 @@ function renderizarArvoreEvolucao(
                 →
             </span>
 
-            <div class="evolucao-filhos">
+            <div class="${classeFilhos}">
                 ${filhos}
             </div>
 

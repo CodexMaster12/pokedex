@@ -524,6 +524,17 @@
     flex-wrap: wrap;
 }
 
+/* Evoluções ramificadas do Eevee */
+.evolucao-filhos-eevee {
+    flex-direction: column;
+
+    align-items: center;
+
+    flex-wrap: nowrap;
+
+    gap: 12px;
+}
+
 .evolucao-ramo {
     display: flex;
 

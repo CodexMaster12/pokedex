@@ -84,7 +84,22 @@ const FORMAS_POKEMON = {
 
     26: [
         FORMA_NORMAL,
-        criarForma("alola", "Alola")
+
+        criarForma(
+            "alola",
+            "Alola",
+            "raichu-alola"
+        ),
+
+        criarForma(
+            "mega-x",
+            "Mega X"
+        ),
+
+        criarForma(
+            "mega-y",
+            "Mega Y"
+        )
     ],
 
     36: [
@@ -195,15 +210,6 @@ const FORMAS_POKEMON = {
         "alola",
         "Alola",
         "raticate-alola"
-    )
-],
-
-26: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "raichu-alola"
     )
 ],
 
@@ -501,8 +507,8 @@ export function obterImagemForma(
     // Forma normal
     if (formaSelecionada === "normal") {
         return shiny
-            ? `assets/images/pokemon/shiny/${numero}.png`
-            : `assets/images/pokemon/${numero}.png`;
+            ? `assets/images/pokemon/gen-1/shiny/${numero}.png`
+            : `assets/images/pokemon/gen-1/normal/${numero}.png`;
     }
 
 
@@ -514,7 +520,7 @@ export function obterImagemForma(
 
 
     return (
-        `assets/images/pokemon/forms/` +
+        `assets/images/pokemon/gen-1/forms/` +
         `${numero}/` +
         `${formaSelecionada}${sufixoShiny}.png`
     );

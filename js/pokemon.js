@@ -40,7 +40,7 @@ export function exibirPokemons(pokemons) {
 
         card.innerHTML = `
             <img
-                src="assets/images/pokemon/${numeroFormatado}.png"
+                src="assets/images/pokemon/gen-1/normal/${numeroFormatado}.png"
                 alt="${pokemon.name}"
                 loading="lazy"
             >
