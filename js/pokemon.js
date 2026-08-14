@@ -10,6 +10,10 @@ import {
     formatarNomePokemon
 } from "./nomes-pokemon.js";
 
+import {
+    obterPastaGeracao
+} from "./geracoes.js";
+
 
 // =========================
 // CARDS DOS POKÉMON
@@ -38,6 +42,12 @@ export function exibirPokemons(pokemons) {
         const nomeFormatado =
             formatarNomePokemon(
                 pokemon.name
+            );
+
+
+        const pastaGeracao =
+            obterPastaGeracao(
+                pokemon.id
             );
 
 
@@ -75,7 +85,7 @@ export function exibirPokemons(pokemons) {
 
         card.innerHTML = `
             <img
-                src="assets/images/pokemon/gen-1/normal/${numeroFormatado}.png"
+                src="assets/images/pokemon/${pastaGeracao}/normal/${numeroFormatado}.png"
                 alt="${nomeFormatado}"
                 loading="lazy"
             >
