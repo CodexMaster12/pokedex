@@ -6,6 +6,12 @@
 const API_URL = "https://pokeapi.co/api/v2";
 
 
+// Quantidade atual de Pokémon disponíveis no projeto
+// Gen 1: #001 - #151
+// Gen 2: #152 - #251
+const LIMITE_POKEDEX = 251;
+
+
 // =========================
 // FUNÇÃO AUXILIAR
 // =========================
@@ -28,18 +34,22 @@ async function buscarDados(url) {
 // LISTA DE POKÉMON
 // =========================
 
-// Busca os 151 Pokémon da primeira geração
+// Busca todos os Pokémon disponíveis atualmente no projeto
 export async function buscarPokemons() {
     const dados = await buscarDados(
-        `${API_URL}/pokemon?limit=151&offset=0`
+        `${API_URL}/pokemon?limit=${LIMITE_POKEDEX}&offset=0`
     );
+
 
     // Busca os detalhes de todos os Pokémon
     const pokemonsDetalhados = await Promise.all(
         dados.results.map((pokemon) => {
-            return buscarDados(pokemon.url);
+            return buscarDados(
+                pokemon.url
+            );
         })
     );
+
 
     return pokemonsDetalhados;
 }
@@ -64,12 +74,16 @@ export async function buscarEspecie(pokemon) {
 // Busca a cadeia de evolução de um Pokémon
 export async function buscarEvolucoes(pokemon) {
     const especie =
-        await buscarEspecie(pokemon);
+        await buscarEspecie(
+            pokemon
+        );
+
 
     const evolucao =
         await buscarDados(
             especie.evolution_chain.url
         );
+
 
     return evolucao.chain;
 }

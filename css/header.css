@@ -154,3 +154,52 @@
     font-size: 13px;
     font-weight: 700;
 }
+
+/* =========================
+   BADGE - NOVA GERAÇÃO
+========================= */
+
+.badge-nova-geracao {
+    position: absolute;
+
+    top: 20px;
+    right: 25px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 12px;
+
+    background-color: rgba(0, 0, 0, 0.18);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 20px;
+
+    z-index: 2;
+}
+
+.badge-update {
+    padding: 3px 7px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    color: #d62828;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+}
+
+.badge-geracao {
+    color: white;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: 0.2px;
+}
