@@ -28,7 +28,10 @@
 }
 
 
-/* Círculos decorativos do fundo */
+/* =========================
+   ELEMENTOS DECORATIVOS
+========================= */
+
 .cabecalho::before,
 .cabecalho::after {
     content: "";
@@ -55,7 +58,10 @@
 }
 
 
-/* Conteúdo central do cabeçalho */
+/* =========================
+   CONTEÚDO
+========================= */
+
 .cabecalho-conteudo {
     position: relative;
 
@@ -74,26 +80,52 @@
 }
 
 
-/* Título principal */
+/* =========================
+   TÍTULO
+========================= */
+
 .titulo-pokedex {
     display: flex;
 
     justify-content: center;
     align-items: center;
 
-    gap: 14px;
+    gap: 13px;
 }
 
 .titulo-pokedex h1 {
     margin: 0;
 
     font-size: 42px;
+    font-weight: 700;
 
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 
-/* Subtítulo */
+/* =========================
+   ÍCONE DA POKÉBOLA
+========================= */
+
+.icone-pokebola {
+    display: block;
+
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    object-fit: contain;
+
+    /* Evita comportamento visual de imagem inline */
+    vertical-align: middle;
+}
+
+
+/* =========================
+   SUBTÍTULO
+========================= */
+
 .subtitulo-pokedex {
     margin-top: 8px;
 
@@ -103,7 +135,10 @@
 }
 
 
-/* Indicador da geração atual */
+/* =========================
+   GERAÇÃO ATUAL
+========================= */
+
 .geracao-atual {
     display: inline-block;
 
@@ -117,51 +152,5 @@
     border-radius: 20px;
 
     font-size: 13px;
-    font-weight: bold;
-}
-
-
-/* =========================
-   ÍCONE DE POKÉBOLA
-========================= */
-
-.icone-pokebola {
-    position: relative;
-
-    flex-shrink: 0;
-
-    width: 42px;
-    height: 42px;
-
-    background: linear-gradient(
-        to bottom,
-        white 0%,
-        white 44%,
-        #222 44%,
-        #222 56%,
-        white 56%,
-        white 100%
-    );
-
-    border: 4px solid #222;
-    border-radius: 50%;
-}
-
-
-/* Centro da Pokébola */
-.centro-pokebola {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: 13px;
-    height: 13px;
-
-    background-color: white;
-
-    border: 3px solid #222;
-    border-radius: 50%;
-
-    transform: translate(-50%, -50%);
+    font-weight: 700;
 }

@@ -12,6 +12,22 @@
 
     <title>Pokédex</title>
 
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/images/interface/pokeball.png"
+    >
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
     <!-- Estilos gerais -->
     <link rel="stylesheet" href="css/style.css">
 
@@ -35,12 +51,12 @@
             <!-- Título com ícone de Pokébola -->
             <div class="titulo-pokedex">
 
-                <div
+                <img
                     class="icone-pokebola"
+                    src="assets/images/interface/pokeball.png"
+                    alt=""
                     aria-hidden="true"
                 >
-                    <div class="centro-pokebola"></div>
-                </div>
 
                 <h1>Pokédex</h1>
 
@@ -90,8 +106,12 @@
                 id="ordenacao"
                 aria-label="Ordenar Pokémon"
             >
-                <option value="numero">
-                    Número
+                <option value="numero-asc">
+                    Número crescente
+                </option>
+
+                <option value="numero-desc">
+                    Número decrescente
                 </option>
 
                 <option value="nome-az">

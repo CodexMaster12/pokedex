@@ -181,7 +181,8 @@ const FORMAS_POKEMON = {
             "Alola",
             "raichu-alola"
         ),
-
+        // Mega recente: imagem disponível,
+        // dados da API ainda não integrados
         criarForma(
             "mega-x",
             "Mega X"
@@ -221,7 +222,8 @@ const FORMAS_POKEMON = {
     // Clefable
     36: [
         FORMA_NORMAL,
-
+        // Mega recente: imagem disponível,
+        // dados da API ainda não integrados
         criarForma(
             "mega",
             "Mega"
@@ -371,7 +373,8 @@ const FORMAS_POKEMON = {
     // Victreebel
     71: [
         FORMA_NORMAL,
-
+        // Mega recente: imagem disponível,
+        // dados da API ainda não integrados
         criarForma(
             "mega",
             "Mega"
@@ -620,7 +623,8 @@ const FORMAS_POKEMON = {
     // Starmie
     121: [
         FORMA_NORMAL,
-
+        // Mega recente: imagem disponível,
+        // dados da API ainda não integrados
         criarForma(
             "mega",
             "Mega"
@@ -779,7 +783,8 @@ const FORMAS_POKEMON = {
     // Dragonite
     149: [
         FORMA_NORMAL,
-
+        // Mega recente: imagem disponível,
+        // dados da API ainda não integrados
         criarForma(
             "mega",
             "Mega"

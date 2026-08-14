@@ -6,11 +6,15 @@
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
 }
 
 
-/* Configurações gerais da página */
+/* =========================
+   PÁGINA
+========================= */
+
 html {
     scroll-behavior: smooth;
 }
@@ -19,12 +23,63 @@ html {
 body {
     min-height: 100vh;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        "Inter",
+        Arial,
+        sans-serif;
+
+    font-weight: 400;
+
+    letter-spacing: 0.2px;
 
     background-color: #f2f2f2;
+
     color: #222;
 }
 
+
+/* =========================
+   TIPOGRAFIA
+========================= */
+
+/*
+    Mantém títulos com aparência mais forte,
+    mas sem exagerar no peso da fonte.
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family:
+        "Inter",
+        Arial,
+        sans-serif;
+
+    font-weight: 700;
+
+    letter-spacing: 0.2px;
+}
+
+
+/*
+    Textos comuns mantêm o peso padrão
+    da fonte Inter.
+*/
+p,
+span,
+label {
+    font-family:
+        "Inter",
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================
+   IMAGENS
+========================= */
 
 /* Imagens não ultrapassam seus containers */
 img {
@@ -32,7 +87,10 @@ img {
 }
 
 
-/* Conteúdo principal */
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+
 main {
     width: 90%;
     max-width: 1200px;
@@ -41,9 +99,19 @@ main {
 }
 
 
-/* Botões, inputs e selects usam a mesma fonte da página */
+/* =========================
+   ELEMENTOS DE FORMULÁRIO
+========================= */
+
+/*
+    Botões, inputs e selects usam
+    a mesma fonte do restante da página.
+*/
 button,
 input,
-select {
+select,
+textarea {
     font: inherit;
+
+    letter-spacing: inherit;
 }

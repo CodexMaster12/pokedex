@@ -22,6 +22,10 @@ import {
     criarListaGolpes
 } from "./golpes.js";
 
+import {
+    atualizarDestaqueEvolucao
+} from "./modal-evolucoes.js";
+
 
 // =========================
 // HABILIDADES
@@ -144,6 +148,18 @@ export function configurarFormasModal(
 
 
     // =========================
+    // DESTAQUE DA EVOLUÇÃO
+    // =========================
+
+    function atualizarDestaque() {
+        atualizarDestaqueEvolucao(
+            pokemon.id,
+            formaSelecionada
+        );
+    }
+
+
+    // =========================
     // FRAQUEZAS / RESISTÊNCIAS
     // =========================
 
@@ -184,13 +200,6 @@ export function configurarFormasModal(
             );
 
 
-        /*
-            Algumas formas, como Mega ou Gigantamax,
-            podem não possuir uma lista própria de
-            golpes por nível na PokéAPI.
-
-            Nesse caso usamos os golpes do Pokémon base.
-        */
         if (
             golpes.length === 0 &&
             dadosPokemon !== pokemon
@@ -216,44 +225,37 @@ export function configurarFormasModal(
 
     async function restaurarDadosNormais() {
 
-        // Tipos
         tiposModal.innerHTML =
             criarTipos(
                 pokemon.types
             );
 
 
-        // Altura
         alturaModal.textContent =
             `${pokemon.height / 10} m`;
 
 
-        // Peso
         pesoModal.textContent =
             `${pokemon.weight / 10} kg`;
 
 
-        // Habilidades
         habilidadesModal.innerHTML =
             criarHabilidades(
                 pokemon.abilities
             );
 
 
-        // Estatísticas
         statsModal.innerHTML =
             criarStats(
                 pokemon.stats
             );
 
 
-        // Fraquezas / Resistências
         await atualizarRelacoesTipo(
             pokemon
         );
 
 
-        // Golpes
         await atualizarGolpes(
             pokemon,
             true
@@ -283,14 +285,7 @@ export function configurarFormasModal(
         }
 
 
-        /*
-            Algumas formas mais novas ainda
-            não possuem correspondência na API.
-
-            Nesses casos:
-            - imagem muda;
-            - dados continuam os da forma normal.
-        */
+        // Forma ainda sem dados da PokéAPI
         if (!forma.api) {
             await restaurarDadosNormais();
 
@@ -305,65 +300,44 @@ export function configurarFormasModal(
                 );
 
 
-            // =========================
-            // TIPOS
-            // =========================
-
+            // Tipos
             tiposModal.innerHTML =
                 criarTipos(
                     dadosForma.types
                 );
 
 
-            // =========================
-            // ALTURA
-            // =========================
-
+            // Altura
             alturaModal.textContent =
                 `${dadosForma.height / 10} m`;
 
 
-            // =========================
-            // PESO
-            // =========================
-
+            // Peso
             pesoModal.textContent =
                 `${dadosForma.weight / 10} kg`;
 
 
-            // =========================
-            // HABILIDADES
-            // =========================
-
+            // Habilidades
             habilidadesModal.innerHTML =
                 criarHabilidades(
                     dadosForma.abilities
                 );
 
 
-            // =========================
-            // ESTATÍSTICAS
-            // =========================
-
+            // Estatísticas
             statsModal.innerHTML =
                 criarStats(
                     dadosForma.stats
                 );
 
 
-            // =========================
-            // FRAQUEZAS / RESISTÊNCIAS
-            // =========================
-
+            // Fraquezas / Resistências
             await atualizarRelacoesTipo(
                 dadosForma
             );
 
 
-            // =========================
-            // GOLPES
-            // =========================
-
+            // Golpes
             await atualizarGolpes(
                 dadosForma,
                 false
@@ -393,8 +367,12 @@ export function configurarFormasModal(
                     seletorForma.value;
 
 
-                // Imagem troca imediatamente
+                // Troca a imagem
                 atualizarImagem();
+
+
+                // Troca imediatamente o destaque da evolução
+                atualizarDestaque();
 
 
                 // Atualiza os demais dados
@@ -434,15 +412,8 @@ export function configurarFormasModal(
 
 
                 /*
-                    Shiny é apenas aparência.
-
-                    Não altera:
-                    - tipos
-                    - stats
-                    - golpes
-                    - habilidades
-                    - fraquezas
-                    etc.
+                    Shiny altera apenas a imagem.
+                    O destaque da evolução não muda.
                 */
                 atualizarImagem();
             }

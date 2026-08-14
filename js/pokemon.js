@@ -1,5 +1,14 @@
-import { abrirModal } from "./modal.js";
-import { traduzirTipo } from "./tipos.js";
+import {
+    abrirModal
+} from "./modal.js";
+
+import {
+    traduzirTipo
+} from "./tipos.js";
+
+import {
+    formatarNomePokemon
+} from "./nomes-pokemon.js";
 
 
 // =========================
@@ -9,39 +18,65 @@ import { traduzirTipo } from "./tipos.js";
 // Cria e exibe os cards dos Pokémon
 export function exibirPokemons(pokemons) {
     const lista =
-        document.getElementById("lista-pokemon");
+        document.getElementById(
+            "lista-pokemon"
+        );
+
 
     lista.innerHTML = "";
 
-    pokemons.forEach((pokemon) => {
-        const numeroFormatado =
-            String(pokemon.id).padStart(3, "0");
 
-        const tipos = pokemon.types.map((tipo) => {
-            return tipo.type.name;
-        });
+    pokemons.forEach((pokemon) => {
+
+        const numeroFormatado =
+            String(pokemon.id).padStart(
+                3,
+                "0"
+            );
+
+
+        const nomeFormatado =
+            formatarNomePokemon(
+                pokemon.name
+            );
+
+
+        const tipos =
+            pokemon.types.map((tipo) => {
+                return tipo.type.name;
+            });
+
 
         const card =
-            document.createElement("article");
+            document.createElement(
+                "article"
+            );
 
-        card.classList.add("card-pokemon");
+
+        card.classList.add(
+            "card-pokemon"
+        );
+
 
         card.tabIndex = 0;
+
 
         card.setAttribute(
             "role",
             "button"
         );
 
+
         card.setAttribute(
             "aria-label",
-            `Abrir detalhes de ${pokemon.name}`
+            `Abrir detalhes de ${nomeFormatado}`
         );
+
 
         card.innerHTML = `
             <img
                 src="assets/images/pokemon/gen-1/normal/${numeroFormatado}.png"
-                alt="${pokemon.name}"
+                alt="${nomeFormatado}"
                 loading="lazy"
             >
 
@@ -50,7 +85,7 @@ export function exibirPokemons(pokemons) {
             </span>
 
             <h2>
-                ${pokemon.name}
+                ${nomeFormatado}
             </h2>
 
             <div class="tipos-pokemon">
@@ -64,21 +99,39 @@ export function exibirPokemons(pokemons) {
             </div>
         `;
 
-        card.addEventListener("click", () => {
-            abrirModal(pokemon);
-        });
 
-        card.addEventListener("keydown", (evento) => {
-            if (
-                evento.key === "Enter" ||
-                evento.key === " "
-            ) {
-                evento.preventDefault();
-
-                abrirModal(pokemon);
+        // Clique
+        card.addEventListener(
+            "click",
+            () => {
+                abrirModal(
+                    pokemon
+                );
             }
-        });
+        );
 
-        lista.appendChild(card);
+
+        // Teclado
+        card.addEventListener(
+            "keydown",
+            (evento) => {
+
+                if (
+                    evento.key === "Enter" ||
+                    evento.key === " "
+                ) {
+                    evento.preventDefault();
+
+                    abrirModal(
+                        pokemon
+                    );
+                }
+            }
+        );
+
+
+        lista.appendChild(
+            card
+        );
     });
 }

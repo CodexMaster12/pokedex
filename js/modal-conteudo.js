@@ -11,6 +11,10 @@ import {
     criarStats
 } from "./modal-stats.js";
 
+import {
+    formatarNomePokemon
+} from "./nomes-pokemon.js";
+
 
 // =========================
 // TIPOS
@@ -173,6 +177,11 @@ export function criarConteudoModal(
         resistencias
     } = relacoesTipo;
 
+    const nomeFormatado =
+    formatarNomePokemon(
+        pokemon.name
+    );
+
 
     return `
         <!-- =========================
@@ -246,7 +255,7 @@ export function criarConteudoModal(
                 class="imagem-modal"
                 id="imagem-pokemon-modal"
                 src="${obterImagemForma(pokemon)}"
-                alt="${pokemon.name}"
+                alt="${nomeFormatado}"
             >
 
 
@@ -256,7 +265,7 @@ export function criarConteudoModal(
 
 
             <h2>
-                ${pokemon.name}
+                ${nomeFormatado}
             </h2>
 
 
