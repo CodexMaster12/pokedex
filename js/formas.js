@@ -25,14 +25,29 @@ const FORMA_NORMAL =
 const FORMAS_POKEMON = {
 
     // =========================
-    // MEGAS / GIGANTAMAX
+    // VENUSAUR
     // =========================
 
     3: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega"),
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "venusaur-mega"
+        ),
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "venusaur-gmax"
+        )
     ],
+
+
+    // =========================
+    // CHARIZARD
+    // =========================
 
     6: [
         FORMA_NORMAL,
@@ -56,31 +71,107 @@ const FORMAS_POKEMON = {
         )
     ],
 
+
+    // =========================
+    // BLASTOISE
+    // =========================
+
     9: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega"),
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "blastoise-mega"
+        ),
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "blastoise-gmax"
+        )
     ],
 
+
+    // Butterfree
     12: [
         FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "butterfree-gmax"
+        )
     ],
 
+
+    // Beedrill
     15: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "beedrill-mega"
+        )
     ],
 
+
+    // Pidgeot
     18: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "pidgeot-mega"
+        )
     ],
 
+
+    // =========================
+    // ALOLA
+    // =========================
+
+    // Rattata
+    19: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "rattata-alola"
+        )
+    ],
+
+
+    // Raticate
+    20: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "raticate-alola"
+        )
+    ],
+
+
+    // Pikachu
     25: [
         FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "pikachu-gmax"
+        )
     ],
+
+
+    // =========================
+    // RAICHU
+    // =========================
 
     26: [
         FORMA_NORMAL,
@@ -102,338 +193,467 @@ const FORMAS_POKEMON = {
         )
     ],
 
+
+    // Sandshrew
+    27: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "sandshrew-alola"
+        )
+    ],
+
+
+    // Sandslash
+    28: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "sandslash-alola"
+        )
+    ],
+
+
+    // Clefable
     36: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega")
+
+        criarForma(
+            "mega",
+            "Mega"
+        )
     ],
 
+
+    // Vulpix
+    37: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "vulpix-alola"
+        )
+    ],
+
+
+    // Ninetales
+    38: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "ninetales-alola"
+        )
+    ],
+
+
+    // Diglett
+    50: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "diglett-alola"
+        )
+    ],
+
+
+    // Dugtrio
+    51: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "dugtrio-alola"
+        )
+    ],
+
+
+    // =========================
+    // MEOWTH
+    // =========================
+
+    52: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "meowth-alola"
+        ),
+
+        criarForma(
+            "galar",
+            "Galar",
+            "meowth-galar"
+        ),
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "meowth-gmax"
+        )
+    ],
+
+
+    // Persian
+    53: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "persian-alola"
+        )
+    ],
+
+
+    // =========================
+    // HISUI
+    // =========================
+
+    // Growlithe
+    58: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "hisui",
+            "Hisui",
+            "growlithe-hisui"
+        )
+    ],
+
+
+    // Arcanine
+    59: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "hisui",
+            "Hisui",
+            "arcanine-hisui"
+        )
+    ],
+
+
+    // Alakazam
     65: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "alakazam-mega"
+        )
     ],
 
+
+    // Machamp
     68: [
         FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "machamp-gmax"
+        )
     ],
 
+
+    // Victreebel
     71: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega")
+
+        criarForma(
+            "mega",
+            "Mega"
+        )
     ],
+
+
+    // Geodude
+    74: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "geodude-alola"
+        )
+    ],
+
+
+    // Graveler
+    75: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "graveler-alola"
+        )
+    ],
+
+
+    // Golem
+    76: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "golem-alola"
+        )
+    ],
+
+
+    // =========================
+    // GALAR
+    // =========================
+
+    // Ponyta
+    77: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "ponyta-galar"
+        )
+    ],
+
+
+    // Rapidash
+    78: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "rapidash-galar"
+        )
+    ],
+
+
+    // Slowpoke
+    79: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "slowpoke-galar"
+        )
+    ],
+
+
+    // =========================
+    // SLOWBRO
+    // =========================
 
     80: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega"),
-        criarForma("galar", "Galar")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "slowbro-mega"
+        ),
+
+        criarForma(
+            "galar",
+            "Galar",
+            "slowbro-galar"
+        )
     ],
+
+
+    // Farfetch'd
+    83: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "farfetchd-galar"
+        )
+    ],
+
+
+    // Grimer
+    88: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "grimer-alola"
+        )
+    ],
+
+
+    // Muk
+    89: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "muk-alola"
+        )
+    ],
+
+
+    // =========================
+    // GENGAR
+    // =========================
 
     94: [
         FORMA_NORMAL,
-        criarForma("mega", "Mega"),
-        criarForma("gigantamax", "Gigantamax")
+
+        criarForma(
+            "mega",
+            "Mega",
+            "gengar-mega"
+        ),
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "gengar-gmax"
+        )
     ],
 
+
+    // Kingler
     99: [
         FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
-    ],
 
-    115: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    121: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    127: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    130: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    131: [
-        FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
-    ],
-
-    133: [
-        FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
-    ],
-
-    142: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    143: [
-        FORMA_NORMAL,
-        criarForma("gigantamax", "Gigantamax")
-    ],
-
-    149: [
-        FORMA_NORMAL,
-        criarForma("mega", "Mega")
-    ],
-
-    150: [
-        FORMA_NORMAL,
-        criarForma("mega-x", "Mega X"),
-        criarForma("mega-y", "Mega Y")
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "kingler-gmax"
+        )
     ],
 
 
-// =========================
-// FORMAS DE ALOLA
-// =========================
-
-19: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "rattata-alola"
-    )
-],
-
-20: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "raticate-alola"
-    )
-],
-
-27: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "sandshrew-alola"
-    )
-],
-
-28: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "sandslash-alola"
-    )
-],
-
-37: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "vulpix-alola"
-    )
-],
-
-38: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "ninetales-alola"
-    )
-],
-
-50: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "diglett-alola"
-    )
-],
-
-51: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "dugtrio-alola"
-    )
-],
-
-52: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "meowth-alola"
-    ),
-    criarForma(
-        "galar",
-        "Galar"
-    ),
-    criarForma(
-        "gigantamax",
-        "Gigantamax"
-    )
-],
-
-53: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "persian-alola"
-    )
-],
-
-74: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "geodude-alola"
-    )
-],
-
-75: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "graveler-alola"
-    )
-],
-
-76: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "golem-alola"
-    )
-],
-
-88: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "grimer-alola"
-    )
-],
-
-89: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "muk-alola"
-    )
-],
-
-103: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "exeggutor-alola"
-    )
-],
-
-105: [
-    FORMA_NORMAL,
-    criarForma(
-        "alola",
-        "Alola",
-        "marowak-alola"
-    )
-],
-
-
-    // =========================
-    // FORMAS DE GALAR
-    // =========================
-
-    77: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    78: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    79: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    83: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    110: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    122: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    144: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    145: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-    146: [
-        FORMA_NORMAL,
-        criarForma("galar", "Galar")
-    ],
-
-
-    // =========================
-    // FORMAS DE HISUI
-    // =========================
-
-    58: [
-        FORMA_NORMAL,
-        criarForma("hisui", "Hisui")
-    ],
-
-    59: [
-        FORMA_NORMAL,
-        criarForma("hisui", "Hisui")
-    ],
-
+    // Voltorb
     100: [
         FORMA_NORMAL,
-        criarForma("hisui", "Hisui")
+
+        criarForma(
+            "hisui",
+            "Hisui",
+            "voltorb-hisui"
+        )
     ],
 
+
+    // Electrode
     101: [
         FORMA_NORMAL,
-        criarForma("hisui", "Hisui")
+
+        criarForma(
+            "hisui",
+            "Hisui",
+            "electrode-hisui"
+        )
+    ],
+
+
+    // Exeggutor
+    103: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "exeggutor-alola"
+        )
+    ],
+
+
+    // Marowak
+    105: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "alola",
+            "Alola",
+            "marowak-alola"
+        )
+    ],
+
+
+    // Weezing
+    110: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "weezing-galar"
+        )
+    ],
+
+
+    // Kangaskhan
+    115: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega",
+            "kangaskhan-mega"
+        )
+    ],
+
+
+    // Starmie
+    121: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega"
+        )
+    ],
+
+
+    // Mr. Mime
+    122: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "mr-mime-galar"
+        )
+    ],
+
+
+    // Pinsir
+    127: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega",
+            "pinsir-mega"
+        )
     ],
 
 
     // =========================
-    // FORMAS DE PALDEA
+    // TAUROS - PALDEA
     // =========================
 
     128: [
@@ -456,8 +676,136 @@ const FORMAS_POKEMON = {
             "Paldea - Aqua",
             "tauros-paldea-aqua-breed"
         )
-    ]
+    ],
 
+
+    // Gyarados
+    130: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega",
+            "gyarados-mega"
+        )
+    ],
+
+
+    // Lapras
+    131: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "lapras-gmax"
+        )
+    ],
+
+
+    // Eevee
+    133: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "eevee-gmax"
+        )
+    ],
+
+
+    // Aerodactyl
+    142: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega",
+            "aerodactyl-mega"
+        )
+    ],
+
+
+    // Snorlax
+    143: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "gigantamax",
+            "Gigantamax",
+            "snorlax-gmax"
+        )
+    ],
+
+
+    // =========================
+    // AVES DE GALAR
+    // =========================
+
+    144: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "articuno-galar"
+        )
+    ],
+
+
+    145: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "zapdos-galar"
+        )
+    ],
+
+
+    146: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "galar",
+            "Galar",
+            "moltres-galar"
+        )
+    ],
+
+
+    // Dragonite
+    149: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega",
+            "Mega"
+        )
+    ],
+
+
+    // =========================
+    // MEWTWO
+    // =========================
+
+    150: [
+        FORMA_NORMAL,
+
+        criarForma(
+            "mega-x",
+            "Mega X",
+            "mewtwo-mega-x"
+        ),
+
+        criarForma(
+            "mega-y",
+            "Mega Y",
+            "mewtwo-mega-y"
+        )
+    ]
 };
 
 
@@ -483,6 +831,7 @@ export function obterFormaSelecionada(
     const formas =
         obterFormasPokemon(pokemon);
 
+
     return formas.find((forma) => {
         return forma.id === formaSelecionada;
     }) || FORMA_NORMAL;
@@ -501,7 +850,10 @@ export function obterImagemForma(
     shiny = false
 ) {
     const numero =
-        String(pokemon.id).padStart(3, "0");
+        String(pokemon.id).padStart(
+            3,
+            "0"
+        );
 
 
     // Forma normal

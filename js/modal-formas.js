@@ -8,12 +8,19 @@ import {
 } from "./formas.js";
 
 import {
-    criarTipos
+    criarTipos,
+    calcularRelacoesDeTipo,
+    criarListaRelacoes
 } from "./modal-conteudo.js";
 
 import {
     criarStats
 } from "./modal-stats.js";
+
+import {
+    buscarGolpesPrincipais,
+    criarListaGolpes
+} from "./golpes.js";
 
 
 // =========================
@@ -44,7 +51,6 @@ function criarHabilidades(abilities) {
 // FORMAS E SHINY
 // =========================
 
-// Configura a troca de forma e aparência
 export function configurarFormasModal(
     pokemon
 ) {
@@ -96,6 +102,24 @@ export function configurarFormasModal(
         );
 
 
+    const fraquezasModal =
+        document.getElementById(
+            "fraquezas-pokemon-modal"
+        );
+
+
+    const resistenciasModal =
+        document.getElementById(
+            "resistencias-pokemon-modal"
+        );
+
+
+    const golpesModal =
+        document.querySelector(
+            ".lista-golpes"
+        );
+
+
     let formaSelecionada =
         seletorForma
             ? seletorForma.value
@@ -120,6 +144,124 @@ export function configurarFormasModal(
 
 
     // =========================
+    // FRAQUEZAS / RESISTÊNCIAS
+    // =========================
+
+    async function atualizarRelacoesTipo(
+        dadosPokemon
+    ) {
+        const relacoes =
+            await calcularRelacoesDeTipo(
+                dadosPokemon
+            );
+
+
+        fraquezasModal.innerHTML =
+            criarListaRelacoes(
+                relacoes.fraquezas
+            );
+
+
+        resistenciasModal.innerHTML =
+            criarListaRelacoes(
+                relacoes.resistencias
+            );
+    }
+
+
+    // =========================
+    // GOLPES
+    // =========================
+
+    async function atualizarGolpes(
+        dadosPokemon,
+        usarVersaoKanto
+    ) {
+        let golpes =
+            await buscarGolpesPrincipais(
+                dadosPokemon,
+                usarVersaoKanto
+            );
+
+
+        /*
+            Algumas formas, como Mega ou Gigantamax,
+            podem não possuir uma lista própria de
+            golpes por nível na PokéAPI.
+
+            Nesse caso usamos os golpes do Pokémon base.
+        */
+        if (
+            golpes.length === 0 &&
+            dadosPokemon !== pokemon
+        ) {
+            golpes =
+                await buscarGolpesPrincipais(
+                    pokemon,
+                    true
+                );
+        }
+
+
+        golpesModal.innerHTML =
+            criarListaGolpes(
+                golpes
+            );
+    }
+
+
+    // =========================
+    // FORMA NORMAL
+    // =========================
+
+    async function restaurarDadosNormais() {
+
+        // Tipos
+        tiposModal.innerHTML =
+            criarTipos(
+                pokemon.types
+            );
+
+
+        // Altura
+        alturaModal.textContent =
+            `${pokemon.height / 10} m`;
+
+
+        // Peso
+        pesoModal.textContent =
+            `${pokemon.weight / 10} kg`;
+
+
+        // Habilidades
+        habilidadesModal.innerHTML =
+            criarHabilidades(
+                pokemon.abilities
+            );
+
+
+        // Estatísticas
+        statsModal.innerHTML =
+            criarStats(
+                pokemon.stats
+            );
+
+
+        // Fraquezas / Resistências
+        await atualizarRelacoesTipo(
+            pokemon
+        );
+
+
+        // Golpes
+        await atualizarGolpes(
+            pokemon,
+            true
+        );
+    }
+
+
+    // =========================
     // DADOS DA FORMA
     // =========================
 
@@ -131,36 +273,26 @@ export function configurarFormasModal(
             );
 
 
-        // Forma normal ou forma ainda sem dados da API
+        // Forma normal
         if (
-            forma.id === "normal" ||
-            !forma.api
+            forma.id === "normal"
         ) {
-            tiposModal.innerHTML =
-                criarTipos(
-                    pokemon.types
-                );
+            await restaurarDadosNormais();
+
+            return;
+        }
 
 
-            alturaModal.textContent =
-                `${pokemon.height / 10} m`;
+        /*
+            Algumas formas mais novas ainda
+            não possuem correspondência na API.
 
-
-            pesoModal.textContent =
-                `${pokemon.weight / 10} kg`;
-
-
-            habilidadesModal.innerHTML =
-                criarHabilidades(
-                    pokemon.abilities
-                );
-
-
-            statsModal.innerHTML =
-                criarStats(
-                    pokemon.stats
-                );
-
+            Nesses casos:
+            - imagem muda;
+            - dados continuam os da forma normal.
+        */
+        if (!forma.api) {
+            await restaurarDadosNormais();
 
             return;
         }
@@ -173,35 +305,70 @@ export function configurarFormasModal(
                 );
 
 
-            // Tipos
+            // =========================
+            // TIPOS
+            // =========================
+
             tiposModal.innerHTML =
                 criarTipos(
                     dadosForma.types
                 );
 
 
-            // Altura
+            // =========================
+            // ALTURA
+            // =========================
+
             alturaModal.textContent =
                 `${dadosForma.height / 10} m`;
 
 
-            // Peso
+            // =========================
+            // PESO
+            // =========================
+
             pesoModal.textContent =
                 `${dadosForma.weight / 10} kg`;
 
 
-            // Habilidades
+            // =========================
+            // HABILIDADES
+            // =========================
+
             habilidadesModal.innerHTML =
                 criarHabilidades(
                     dadosForma.abilities
                 );
 
 
-            // Estatísticas
+            // =========================
+            // ESTATÍSTICAS
+            // =========================
+
             statsModal.innerHTML =
                 criarStats(
                     dadosForma.stats
                 );
+
+
+            // =========================
+            // FRAQUEZAS / RESISTÊNCIAS
+            // =========================
+
+            await atualizarRelacoesTipo(
+                dadosForma
+            );
+
+
+            // =========================
+            // GOLPES
+            // =========================
+
+            await atualizarGolpes(
+                dadosForma,
+                false
+            );
+
 
         } catch (erro) {
             console.error(
@@ -217,6 +384,7 @@ export function configurarFormasModal(
     // =========================
 
     if (seletorForma) {
+
         seletorForma.addEventListener(
             "change",
             async () => {
@@ -225,9 +393,11 @@ export function configurarFormasModal(
                     seletorForma.value;
 
 
+                // Imagem troca imediatamente
                 atualizarImagem();
 
 
+                // Atualiza os demais dados
                 await atualizarDadosForma();
             }
         );
@@ -263,7 +433,17 @@ export function configurarFormasModal(
                 );
 
 
-                // Shiny altera somente a imagem
+                /*
+                    Shiny é apenas aparência.
+
+                    Não altera:
+                    - tipos
+                    - stats
+                    - golpes
+                    - habilidades
+                    - fraquezas
+                    etc.
+                */
                 atualizarImagem();
             }
         );

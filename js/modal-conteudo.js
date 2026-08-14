@@ -31,7 +31,12 @@ export function criarTipos(tipos) {
 }
 
 
+// =========================
+// FRAQUEZAS E RESISTÊNCIAS
+// =========================
+
 // Calcula fraquezas e resistências
+// usando os tipos do Pokémon ou da forma selecionada
 export async function calcularRelacoesDeTipo(pokemon) {
     const relacoes = {};
 
@@ -108,6 +113,20 @@ export async function calcularRelacoesDeTipo(pokemon) {
 
 
 // =========================
+// RELAÇÕES DE TIPO
+// =========================
+
+// Cria as etiquetas de fraquezas ou resistências
+export function criarListaRelacoes(tipos) {
+    return tipos.map((tipo) => `
+        <span class="tipo ${tipo}">
+            ${traduzirTipo(tipo)}
+        </span>
+    `).join("");
+}
+
+
+// =========================
 // CATEGORIA
 // =========================
 
@@ -162,7 +181,6 @@ export function criarConteudoModal(
 
         <section class="secao-identidade">
 
-            <!-- Controles de forma -->
             <div class="controles-forma">
 
                 ${
@@ -224,7 +242,6 @@ export function criarConteudoModal(
             </div>
 
 
-            <!-- Imagem principal -->
             <img
                 class="imagem-modal"
                 id="imagem-pokemon-modal"
@@ -367,14 +384,11 @@ export function criarConteudoModal(
                     Fraquezas
                 </h3>
 
-                <div class="lista-relacoes">
-
-                    ${fraquezas.map((tipo) => `
-                        <span class="tipo ${tipo}">
-                            ${traduzirTipo(tipo)}
-                        </span>
-                    `).join("")}
-
+                <div
+                    class="lista-relacoes"
+                    id="fraquezas-pokemon-modal"
+                >
+                    ${criarListaRelacoes(fraquezas)}
                 </div>
 
             </div>
@@ -386,14 +400,11 @@ export function criarConteudoModal(
                     Resistências
                 </h3>
 
-                <div class="lista-relacoes">
-
-                    ${resistencias.map((tipo) => `
-                        <span class="tipo ${tipo}">
-                            ${traduzirTipo(tipo)}
-                        </span>
-                    `).join("")}
-
+                <div
+                    class="lista-relacoes"
+                    id="resistencias-pokemon-modal"
+                >
+                    ${criarListaRelacoes(resistencias)}
                 </div>
 
             </div>
