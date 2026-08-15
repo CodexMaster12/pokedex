@@ -13,15 +13,25 @@ const NOMES_ESPECIAIS = {
 };
 
 
-// Formata o nome para exibição
+// =========================
+// FORMATAÇÃO
+// =========================
+
+// Formata o nome do Pokémon para exibição.
 export function formatarNomePokemon(nome) {
-    if (NOMES_ESPECIAIS[nome]) {
-        return NOMES_ESPECIAIS[nome];
+    const nomeEspecial =
+        NOMES_ESPECIAIS[nome];
+
+
+    if (nomeEspecial) {
+        return nomeEspecial;
     }
+
 
     return nome
         .split("-")
         .map((parte) => {
+
             return (
                 parte.charAt(0).toUpperCase() +
                 parte.slice(1)

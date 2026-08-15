@@ -26,12 +26,79 @@ import {
 // =========================
 //
 // Mantemos esta exportação aqui para que
-// modal-formas.js NÃO precise ser alterado.
+// modal-formas.js não precise conhecer
+// diretamente a pasta evolucoes/.
 //
 
 export {
     atualizarDestaqueEvolucao
 };
+
+
+// =========================
+// EVOLUÇÕES NORMAIS
+// =========================
+
+async function carregarEvolucoesNormais(
+    pokemon
+) {
+    const cadeia =
+        await buscarEvolucoes(
+            pokemon
+        );
+
+
+    const arvore =
+        extrairEvolucoes(
+            cadeia
+        );
+
+
+    const arvoresComDados =
+        await carregarDadosArvore(
+            arvore
+        );
+
+
+    return arvoresComDados
+        .map(
+            (arvoreComDados) => {
+
+                return renderizarArvoreEvolucao(
+                    arvoreComDados,
+                    pokemon
+                );
+            }
+        )
+        .join("");
+}
+
+
+// =========================
+// EVOLUÇÕES REGIONAIS
+// =========================
+
+async function carregarEvolucoesRegionais(
+    pokemon
+) {
+    const cadeiasRegionais =
+        await carregarCadeiasRegionais(
+            pokemon.id
+        );
+
+
+    return cadeiasRegionais
+        .map(
+            (cadeiaRegional) => {
+
+                return renderizarCadeiaRegional(
+                    cadeiaRegional,
+                    pokemon
+                );
+            }
+        )
+        .join("");
+}
 
 
 // =========================
@@ -53,76 +120,26 @@ export async function carregarEvolucoesModal(
 
 
     try {
-        // =========================
-        // ÁRVORE NORMAL
-        // =========================
-
-        const cadeia =
-            await buscarEvolucoes(
+        const [
+            evolucoesNormais,
+            evolucoesRegionais
+        ] = await Promise.all([
+            carregarEvolucoesNormais(
                 pokemon
-            );
+            ),
 
+            carregarEvolucoesRegionais(
+                pokemon
+            )
+        ]);
 
-        const arvore =
-            extrairEvolucoes(
-                cadeia
-            );
-
-
-        const arvoresComDados =
-            await carregarDadosArvore(
-                arvore
-            );
-
-
-        const evolucoesNormais =
-            arvoresComDados
-                .map(
-                    (arvoreComDados) => {
-
-                        return renderizarArvoreEvolucao(
-                            arvoreComDados,
-                            pokemon
-                        );
-                    }
-                )
-                .join("");
-
-
-        // =========================
-        // CADEIAS REGIONAIS
-        // =========================
-
-        const cadeiasRegionais =
-            await carregarCadeiasRegionais(
-                pokemon.id
-            );
-
-
-        const htmlRegional =
-            cadeiasRegionais
-                .map(
-                    (cadeiaRegional) => {
-
-                        return renderizarCadeiaRegional(
-                            cadeiaRegional,
-                            pokemon
-                        );
-                    }
-                )
-                .join("");
-
-
-        // =========================
-        // RESULTADO
-        // =========================
 
         listaEvolucoes.innerHTML = `
             <div class="evolucoes-conteudo">
 
                 ${evolucoesNormais}
 
-                ${htmlRegional}
+                ${evolucoesRegionais}
 
             </div>
         `;
@@ -144,8 +161,8 @@ export async function carregarEvolucoesModal(
 
         /*
             Um erro exclusivamente na cadeia
-            de evolução não deve mais destruir
-            todo o modal do Pokémon.
+            evolutiva não deve destruir
+            o restante do modal.
         */
         listaEvolucoes.innerHTML = `
             <p class="sem-evolucoes">

@@ -1,0 +1,176 @@
+/* =========================
+   INFORMAÇÕES PRINCIPAIS
+========================= */
+
+.informacoes-pokemon {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+
+.informacoes-pokemon div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    padding: 17px 14px;
+
+    background: linear-gradient(
+        135deg,
+        #b71c1c,
+        #d62828,
+        #e53935
+    );
+
+    border: none;
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 10px
+        rgba(183, 28, 28, 0.18);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.informacoes-pokemon div:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 6px 14px
+        rgba(183, 28, 28, 0.25);
+}
+
+
+.informacoes-pokemon span {
+    color:
+        rgba(255, 255, 255, 0.75);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
+
+.informacoes-pokemon strong {
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   HABILIDADES
+========================= */
+
+.lista-habilidades {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+.habilidade {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 9px 15px;
+
+    background-color: #fff8f8;
+
+    border: 1px solid #eadede;
+    border-radius: 20px;
+
+    color: #444;
+
+    font-size: 14px;
+
+    text-transform: capitalize;
+
+    transition:
+        transform 0.2s,
+        border-color 0.2s,
+        background-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.icone-habilidade {
+    color: #d62828;
+
+    font-size: 13px;
+}
+
+
+.habilidade:hover {
+    background-color: white;
+
+    border-color: #d62828;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   FRAQUEZAS E RESISTÊNCIAS
+========================= */
+
+.relacoes-tipo {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
+}
+
+
+.relacao-grupo {
+    min-width: 0;
+}
+
+
+.relacao-grupo h3 {
+    text-align: center;
+}
+
+
+.lista-relacoes {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+.lista-relacoes .tipo {
+    padding: 6px 11px;
+
+    font-size: 12px;
+}

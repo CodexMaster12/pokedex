@@ -44,6 +44,10 @@ export const POKEMONS_FUTUROS = new Set([
     // RELACIONADOS À GEN 2
     // =========================
 
+    // =========================
+    // POKÉMON FUTUROS
+    // =========================
+
     // Pré-evoluções posteriores
     298, // Azurill
     360, // Wynaut
@@ -64,10 +68,14 @@ export const POKEMONS_FUTUROS = new Set([
 
     472, // Gliscor
     473, // Mamoswine
+    
+    865, // Sirfetch'd
 
     899, // Wyrdeer
+    900, // Kleavor
     901, // Ursaluna
 
+    979, // Annihilape
     981, // Farigiraf
     982  // Dudunsparce
 ]);

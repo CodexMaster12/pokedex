@@ -1,26 +1,82 @@
-import { buscarPokemons } from "./api.js";
-import { exibirPokemons } from "./pokemon.js";
-import { configurarFiltros } from "./filtros.js";
-import { configurarModal } from "./modal.js";
+import {
+    montarInterface
+} from "./interface/index.js";
+
+import {
+    configurarControlesUI
+} from "./controles-ui.js";
+
+import {
+    buscarPokemons
+} from "./api.js";
+
+import {
+    exibirPokemons
+} from "./pokemon.js";
+
+import {
+    configurarFiltros
+} from "./filtros.js";
+
+import {
+    configurarModal,
+    definirPokemonsNavegacao
+} from "./modal.js";
 
 
-// Inicializa a Pokédex
+// =========================
+// INICIALIZAÇÃO DA POKÉDEX
+// =========================
+
 async function iniciarPokedex() {
     try {
-        // Ativa abertura e fechamento do modal
+
+        // =========================
+        // INTERFACE
+        // =========================
+
+        montarInterface();
+
+        configurarControlesUI();
+
         configurarModal();
 
-        // Busca os Pokémon na API
-        const pokemons = await buscarPokemons();
 
-        // Exibe os cards
-        exibirPokemons(pokemons);
+        // =========================
+        // DADOS
+        // =========================
 
-        // Ativa pesquisa, filtro e ordenação
+        const pokemons =
+            await buscarPokemons();
+
+
+        // =========================
+        // NAVEGAÇÃO DO MODAL
+        // =========================
+
+        definirPokemonsNavegacao(
+            pokemons
+        );
+
+
+        // =========================
+        // CARDS
+        // =========================
+
+        exibirPokemons(
+            pokemons
+        );
+
+
+        // =========================
+        // FILTROS
+        // =========================
+
         configurarFiltros(
             pokemons,
             exibirPokemons
         );
+
 
     } catch (erro) {
         console.error(
@@ -30,5 +86,9 @@ async function iniciarPokedex() {
     }
 }
 
+
+// =========================
+// INICIAR
+// =========================
 
 iniciarPokedex();

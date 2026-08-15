@@ -50,6 +50,17 @@ const EVOLUCOES_ALTERNATIVAS = {
             api: "weezing-galar",
             forma: "Galar"
         }
+    ],
+
+
+    // Quilava → Typhlosion Hisui
+    156: [
+        {
+            numero: 157,
+            nome: "typhlosion",
+            api: "typhlosion-hisui",
+            forma: "Hisui"
+        }
     ]
 };
 

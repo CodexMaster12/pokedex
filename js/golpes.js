@@ -8,12 +8,13 @@ import {
 // =========================
 
 // Mantemos Red/Blue como referência
-// para os Pokémon normais de Kanto
-const VERSAO_KANTO = "red-blue";
+// para os Pokémon normais de Kanto.
+const VERSAO_KANTO =
+    "red-blue";
 
 
 // Ordem de preferência usada
-// quando uma forma não existe em Red/Blue
+// quando uma forma não existe em Red/Blue.
 const PRIORIDADE_VERSOES = [
     "scarlet-violet",
     "legends-arceus",
@@ -41,14 +42,19 @@ const PRIORIDADE_VERSOES = [
 // BUSCA DE GOLPES
 // =========================
 
-async function buscarDetalhesGolpe(url) {
-    const resposta = await fetch(url);
+async function buscarDetalhesGolpe(
+    url
+) {
+    const resposta =
+        await fetch(url);
+
 
     if (!resposta.ok) {
         throw new Error(
             `Erro ao buscar golpe: ${resposta.status} ${resposta.statusText}`
         );
     }
+
 
     return await resposta.json();
 }
@@ -58,14 +64,19 @@ async function buscarDetalhesGolpe(url) {
 // NOME DO GOLPE
 // =========================
 
-function obterNomeGolpe(golpe) {
+function obterNomeGolpe(
+    golpe
+) {
     const nomePortugues =
-        golpe.names.find((nome) => {
-            return (
-                nome.language.name === "pt-BR" ||
-                nome.language.name === "pt"
-            );
-        });
+        golpe.names.find(
+            (nome) => {
+
+                return (
+                    nome.language.name === "pt-BR" ||
+                    nome.language.name === "pt"
+                );
+            }
+        );
 
 
     if (nomePortugues) {
@@ -74,9 +85,14 @@ function obterNomeGolpe(golpe) {
 
 
     const nomeIngles =
-        golpe.names.find((nome) => {
-            return nome.language.name === "en";
-        });
+        golpe.names.find(
+            (nome) => {
+
+                return (
+                    nome.language.name === "en"
+                );
+            }
+        );
 
 
     return nomeIngles
@@ -86,34 +102,156 @@ function obterNomeGolpe(golpe) {
 
 
 // =========================
-// VERSÃO DOS GOLPES
+// VERSÕES DOS GOLPES
 // =========================
 
+function pokemonPossuiVersao(
+    pokemon,
+    versao
+) {
+    return pokemon.moves.some(
+        (item) => {
+
+            return item.version_group_details.some(
+                (detalhe) => {
+
+                    return (
+                        detalhe.version_group.name ===
+                            versao &&
+
+                        detalhe.move_learn_method.name ===
+                            "level-up"
+                    );
+                }
+            );
+        }
+    );
+}
+
+
 // Procura automaticamente uma versão
-// que possua golpes por nível
-function encontrarVersaoDisponivel(pokemon) {
-    const versoesDisponiveis = new Set();
+// que possua golpes aprendidos por nível.
+function encontrarVersaoDisponivel(
+    pokemon
+) {
+    const versoesDisponiveis =
+        new Set();
 
 
-    pokemon.moves.forEach((item) => {
+    pokemon.moves.forEach(
+        (item) => {
 
-        item.version_group_details.forEach((detalhe) => {
+            item.version_group_details.forEach(
+                (detalhe) => {
 
-            if (
-                detalhe.move_learn_method.name === "level-up"
-            ) {
-                versoesDisponiveis.add(
-                    detalhe.version_group.name
+                    if (
+                        detalhe.move_learn_method.name ===
+                        "level-up"
+                    ) {
+                        versoesDisponiveis.add(
+                            detalhe.version_group.name
+                        );
+                    }
+                }
+            );
+        }
+    );
+
+
+    return (
+        PRIORIDADE_VERSOES.find(
+            (versao) => {
+
+                return (
+                    versoesDisponiveis.has(
+                        versao
+                    )
                 );
             }
+        ) ||
+        null
+    );
+}
 
-        });
-    });
+
+// Escolhe a versão usada para consultar
+// os golpes do Pokémon.
+function obterVersaoGolpes(
+    pokemon,
+    usarVersaoKanto
+) {
+    if (
+        usarVersaoKanto &&
+        pokemonPossuiVersao(
+            pokemon,
+            VERSAO_KANTO
+        )
+    ) {
+        return VERSAO_KANTO;
+    }
 
 
-    return PRIORIDADE_VERSOES.find((versao) => {
-        return versoesDisponiveis.has(versao);
-    }) || null;
+    return encontrarVersaoDisponivel(
+        pokemon
+    );
+}
+
+
+// =========================
+// GOLPES POR NÍVEL
+// =========================
+
+function extrairGolpesPorNivel(
+    pokemon,
+    versaoSelecionada
+) {
+    return pokemon.moves
+        .map(
+            (item) => {
+
+                const detalheVersao =
+                    item.version_group_details.find(
+                        (detalhe) => {
+
+                            return (
+                                detalhe.version_group.name ===
+                                    versaoSelecionada &&
+
+                                detalhe.move_learn_method.name ===
+                                    "level-up"
+                            );
+                        }
+                    );
+
+
+                if (!detalheVersao) {
+                    return null;
+                }
+
+
+                return {
+                    url:
+                        item.move.url,
+
+                    nivel:
+                        detalheVersao.level_learned_at
+                };
+            }
+        )
+        .filter(
+            (golpe) => {
+                return golpe !== null;
+            }
+        )
+        .sort(
+            (a, b) => {
+                return a.nivel - b.nivel;
+            }
+        )
+        .slice(
+            0,
+            8
+        );
 }
 
 
@@ -123,123 +261,70 @@ function encontrarVersaoDisponivel(pokemon) {
 
 // usarVersaoKanto:
 // true  -> tenta Red/Blue primeiro
-// false -> escolhe versão compatível com a forma
+// false -> escolhe uma versão compatível
+//          com a forma do Pokémon.
 export async function buscarGolpesPrincipais(
     pokemon,
     usarVersaoKanto = true
 ) {
-    let versaoSelecionada = null;
+    const versaoSelecionada =
+        obterVersaoGolpes(
+            pokemon,
+            usarVersaoKanto
+        );
 
 
-    // Pokémon normal de Kanto
-    if (usarVersaoKanto) {
-        const possuiRedBlue =
-            pokemon.moves.some((item) => {
-                return item.version_group_details.some((detalhe) => {
-                    return (
-                        detalhe.version_group.name === VERSAO_KANTO &&
-                        detalhe.move_learn_method.name === "level-up"
-                    );
-                });
-            });
-
-
-        if (possuiRedBlue) {
-            versaoSelecionada =
-                VERSAO_KANTO;
-        }
-    }
-
-
-    // Caso Red/Blue não esteja disponível,
-    // procura automaticamente outra versão
-    if (!versaoSelecionada) {
-        versaoSelecionada =
-            encontrarVersaoDisponivel(
-                pokemon
-            );
-    }
-
-
-    // Nenhuma versão compatível
     if (!versaoSelecionada) {
         return [];
     }
 
 
-    // Seleciona golpes aprendidos por nível
     const golpesPorNivel =
-        pokemon.moves
-            .map((item) => {
-
-                const detalheVersao =
-                    item.version_group_details.find((detalhe) => {
-                        return (
-                            detalhe.version_group.name === versaoSelecionada &&
-                            detalhe.move_learn_method.name === "level-up"
-                        );
-                    });
+        extrairGolpesPorNivel(
+            pokemon,
+            versaoSelecionada
+        );
 
 
-                if (!detalheVersao) {
-                    return null;
-                }
-
-
-                return {
-                    url: item.move.url,
-
-                    nivel:
-                        detalheVersao.level_learned_at
-                };
-            })
-            .filter((golpe) => {
-                return golpe !== null;
-            })
-            .sort((a, b) => {
-                return a.nivel - b.nivel;
-            })
-            .slice(0, 8);
-
-
-    // Busca tipo, poder, precisão e nome
     const golpesDetalhados =
         await Promise.all(
-            golpesPorNivel.map(async (golpe) => {
+            golpesPorNivel.map(
+                async (golpe) => {
 
-                const detalhes =
-                    await buscarDetalhesGolpe(
-                        golpe.url
-                    );
-
-
-                const tipo =
-                    detalhes.type.name;
+                    const detalhes =
+                        await buscarDetalhesGolpe(
+                            golpe.url
+                        );
 
 
-                return {
-                    nome:
-                        obterNomeGolpe(
-                            detalhes
-                        ),
+                    const tipo =
+                        detalhes.type.name;
 
-                    tipo,
 
-                    tipoTraduzido:
-                        traduzirTipo(
-                            tipo
-                        ),
+                    return {
+                        nome:
+                            obterNomeGolpe(
+                                detalhes
+                            ),
 
-                    nivel:
-                        golpe.nivel,
+                        tipo,
 
-                    poder:
-                        detalhes.power,
+                        tipoTraduzido:
+                            traduzirTipo(
+                                tipo
+                            ),
 
-                    precisao:
-                        detalhes.accuracy
-                };
-            })
+                        nivel:
+                            golpe.nivel,
+
+                        poder:
+                            detalhes.power,
+
+                        precisao:
+                            detalhes.accuracy
+                    };
+                }
+            )
         );
 
 
@@ -251,10 +336,14 @@ export async function buscarGolpesPrincipais(
 // HTML DOS GOLPES
 // =========================
 
-// Cria o conteúdo visual da lista de golpes
-export function criarListaGolpes(golpes) {
-
-    if (golpes.length === 0) {
+// Cria o conteúdo visual
+// da lista de golpes.
+export function criarListaGolpes(
+    golpes
+) {
+    if (
+        golpes.length === 0
+    ) {
         return `
             <p class="sem-golpes">
                 Nenhum golpe por nível encontrado.
@@ -263,52 +352,56 @@ export function criarListaGolpes(golpes) {
     }
 
 
-    return golpes.map((golpe) => `
-        <div class="golpe-item">
+    return golpes
+        .map(
+            (golpe) => `
+                <div class="golpe-item">
 
-            <div class="golpe-cabecalho">
+                    <div class="golpe-cabecalho">
 
-                <span class="tipo ${golpe.tipo}">
-                    ${golpe.tipoTraduzido}
-                </span>
+                        <span class="tipo ${golpe.tipo}">
+                            ${golpe.tipoTraduzido}
+                        </span>
 
-                <span class="nome-golpe">
-                    ${golpe.nome}
-                </span>
+                        <span class="nome-golpe">
+                            ${golpe.nome}
+                        </span>
 
-            </div>
-
-
-            <div class="golpe-detalhes">
-
-                <span>
-                    ${
-                        golpe.nivel === 0
-                            ? "Inicial"
-                            : `Nv. ${golpe.nivel}`
-                    }
-                </span>
+                    </div>
 
 
-                <span>
-                    Poder:
+                    <div class="golpe-detalhes">
 
-                    <strong>
-                        ${golpe.poder ?? "—"}
-                    </strong>
-                </span>
+                        <span>
+                            ${
+                                golpe.nivel === 0
+                                    ? "Inicial"
+                                    : `Nv. ${golpe.nivel}`
+                            }
+                        </span>
 
 
-                <span>
-                    Precisão:
+                        <span>
+                            Poder:
 
-                    <strong>
-                        ${golpe.precisao ?? "—"}
-                    </strong>
-                </span>
+                            <strong>
+                                ${golpe.poder ?? "—"}
+                            </strong>
+                        </span>
 
-            </div>
 
-        </div>
-    `).join("");
+                        <span>
+                            Precisão:
+
+                            <strong>
+                                ${golpe.precisao ?? "—"}
+                            </strong>
+                        </span>
+
+                    </div>
+
+                </div>
+            `
+        )
+        .join("");
 }

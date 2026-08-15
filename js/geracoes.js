@@ -1,58 +1,142 @@
 // =========================
-// GERAÇÕES
+// CONFIGURAÇÃO DAS GERAÇÕES
 // =========================
 
+const GERACOES = [
+    {
+        geracao: 1,
+        inicio: 1,
+        fim: 151,
+        regiao: "Kanto"
+    },
 
-// Retorna a geração com base no número da Pokédex Nacional
-export function obterGeracaoPorId(id) {
-    if (id >= 1 && id <= 151) {
-        return 1;
+    {
+        geracao: 2,
+        inicio: 152,
+        fim: 251,
+        regiao: "Johto"
+    },
+
+    {
+        geracao: 3,
+        inicio: 252,
+        fim: 386,
+        regiao: "Hoenn"
+    },
+
+    {
+        geracao: 4,
+        inicio: 387,
+        fim: 493,
+        regiao: "Sinnoh"
+    },
+
+    {
+        geracao: 5,
+        inicio: 494,
+        fim: 649,
+        regiao: "Unova"
+    },
+
+    {
+        geracao: 6,
+        inicio: 650,
+        fim: 721,
+        regiao: "Kalos"
+    },
+
+    {
+        geracao: 7,
+        inicio: 722,
+        fim: 809,
+        regiao: "Alola"
+    },
+
+    {
+        geracao: 8,
+        inicio: 810,
+        fim: 905,
+        regiao: "Galar"
+    },
+
+    {
+        geracao: 9,
+        inicio: 906,
+        fim: 1025,
+        regiao: "Paldea"
     }
+];
 
-    if (id >= 152 && id <= 251) {
-        return 2;
-    }
 
-    if (id >= 252 && id <= 386) {
-        return 3;
-    }
+// =========================
+// GERAÇÃO
+// =========================
 
-    if (id >= 387 && id <= 493) {
-        return 4;
-    }
+// Retorna os dados da geração
+// correspondente ao número da Pokédex Nacional.
+function obterDadosGeracao(id) {
+    return GERACOES.find(
+        (geracao) => {
 
-    if (id >= 494 && id <= 649) {
-        return 5;
-    }
-
-    if (id >= 650 && id <= 721) {
-        return 6;
-    }
-
-    if (id >= 722 && id <= 809) {
-        return 7;
-    }
-
-    if (id >= 810 && id <= 905) {
-        return 8;
-    }
-
-    if (id >= 906) {
-        return 9;
-    }
-
-    return null;
+            return (
+                id >= geracao.inicio &&
+                id <= geracao.fim
+            );
+        }
+    ) || null;
 }
 
 
-// Retorna o nome da pasta da geração
+// Retorna o número da geração.
+export function obterGeracaoPorId(id) {
+    const dadosGeracao =
+        obterDadosGeracao(
+            id
+        );
+
+
+    return dadosGeracao
+        ? dadosGeracao.geracao
+        : null;
+}
+
+
+// =========================
+// PASTA DA GERAÇÃO
+// =========================
+
+// Retorna o nome da pasta correspondente
+// à geração do Pokémon.
 export function obterPastaGeracao(id) {
     const geracao =
-        obterGeracaoPorId(id);
+        obterGeracaoPorId(
+            id
+        );
+
 
     if (!geracao) {
         return null;
     }
 
+
     return `gen-${geracao}`;
+}
+
+
+// =========================
+// REGIÃO
+// =========================
+
+// Retorna o nome da região correspondente
+// ao Pokémon pela sua geração.
+export function obterRegiaoPorId(id) {
+    const dadosGeracao =
+        obterDadosGeracao(
+            id
+        );
+
+
+    return dadosGeracao
+        ? dadosGeracao.regiao
+        : "";
 }

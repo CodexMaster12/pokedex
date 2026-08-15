@@ -9,6 +9,11 @@ import {
 
 const CADEIAS_REGIONAIS = [
 
+    // =========================
+    // GERAÇÃO 1
+    // =========================
+
+
     // Rattata → Raticate Alola
     {
         familia: [19, 20],
@@ -233,6 +238,121 @@ const CADEIAS_REGIONAIS = [
                 forma: "Hisui"
             }
         ]
+    },
+
+
+    // =========================
+    // GERAÇÃO 2
+    // =========================
+
+
+    // Wooper Paldea → Clodsire
+    {
+        familia: [194],
+
+        cadeia: [
+            {
+                numero: 194,
+                nome: "wooper",
+                api: "wooper-paldea",
+                forma: "Paldea"
+            },
+
+            {
+                numero: 980,
+                nome: "clodsire",
+                api: "clodsire",
+                forma: null
+            }
+        ]
+    },
+
+
+    // Slowpoke Galar → Slowking Galar
+    {
+        familia: [79, 199],
+
+        cadeia: [
+            {
+                numero: 79,
+                nome: "slowpoke",
+                api: "slowpoke-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 199,
+                nome: "slowking",
+                api: "slowking-galar",
+                forma: "Galar"
+            }
+        ]
+    },
+
+
+    // Qwilfish Hisui → Overqwil
+    {
+        familia: [211],
+
+        cadeia: [
+            {
+                numero: 211,
+                nome: "qwilfish",
+                api: "qwilfish-hisui",
+                forma: "Hisui"
+            },
+
+            {
+                numero: 904,
+                nome: "overqwil",
+                api: "overqwil",
+                forma: null
+            }
+        ]
+    },
+
+
+    // Sneasel Hisui → Sneasler
+    {
+        familia: [215],
+
+        cadeia: [
+            {
+                numero: 215,
+                nome: "sneasel",
+                api: "sneasel-hisui",
+                forma: "Hisui"
+            },
+
+            {
+                numero: 903,
+                nome: "sneasler",
+                api: "sneasler",
+                forma: null
+            }
+        ]
+    },
+
+
+    // Corsola Galar → Cursola
+    {
+        familia: [222],
+
+        cadeia: [
+            {
+                numero: 222,
+                nome: "corsola",
+                api: "corsola-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 864,
+                nome: "cursola",
+                api: "cursola",
+                forma: null
+            }
+        ]
     }
 ];
 
@@ -273,10 +393,39 @@ async function carregarCadeia(
             });
 
         } catch (erro) {
+
+            /*
+                Caso uma evolução futura ainda
+                não esteja disponível na API,
+                ela não deve quebrar o restante
+                da árvore.
+            */
+
             console.warn(
                 `Não foi possível carregar ${etapa.api}.`,
                 erro
             );
+
+
+            etapas.push({
+                pokemon: {
+                    id: etapa.numero,
+                    name: etapa.nome,
+                    types: [],
+                    placeholder: true
+                },
+
+                numeroExibido:
+                    etapa.numero,
+
+                nomeBase:
+                    etapa.nome,
+
+                forma:
+                    etapa.forma,
+
+                evolucoes: []
+            });
         }
     }
 
@@ -284,6 +433,10 @@ async function carregarCadeia(
     return etapas;
 }
 
+
+// =========================
+// CONSULTA
+// =========================
 
 // Retorna as cadeias regionais relacionadas
 // ao Pokémon aberto.

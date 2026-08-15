@@ -11,16 +11,153 @@ import {
 } from "./nomes-pokemon.js";
 
 import {
-    obterPastaGeracao
+    obterPastaGeracao,
+    obterRegiaoPorId
 } from "./geracoes.js";
 
 
 // =========================
-// CARDS DOS POKÉMON
+// CARD DO POKÉMON
 // =========================
 
-// Cria e exibe os cards dos Pokémon
-export function exibirPokemons(pokemons) {
+function criarCardPokemon(pokemon) {
+    const numeroFormatado =
+        String(pokemon.id).padStart(
+            3,
+            "0"
+        );
+
+
+    const nomeFormatado =
+        formatarNomePokemon(
+            pokemon.name
+        );
+
+
+    const pastaGeracao =
+        obterPastaGeracao(
+            pokemon.id
+        );
+
+
+    const regiao =
+        obterRegiaoPorId(
+            pokemon.id
+        );
+
+
+    const tipos =
+        pokemon.types.map(
+            (tipo) => {
+                return tipo.type.name;
+            }
+        );
+
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.classList.add(
+        "card-pokemon"
+    );
+
+
+    card.tabIndex = 0;
+
+
+    card.setAttribute(
+        "role",
+        "button"
+    );
+
+
+    card.setAttribute(
+        "aria-label",
+        `Abrir detalhes de ${nomeFormatado}`
+    );
+
+
+    card.innerHTML = `
+        <img
+            src="assets/images/pokemon/${pastaGeracao}/normal/${numeroFormatado}.png"
+            alt="${nomeFormatado}"
+            loading="lazy"
+        >
+
+        <span class="numero-pokemon">
+            #${numeroFormatado}
+        </span>
+
+        <span class="regiao-pokemon">
+            ${regiao}
+        </span>
+
+        <h2>
+            ${nomeFormatado}
+        </h2>
+
+        <div class="tipos-pokemon">
+
+            ${tipos
+                .map(
+                    (tipo) => `
+                        <span class="tipo ${tipo}">
+                            ${traduzirTipo(tipo)}
+                        </span>
+                    `
+                )
+                .join("")
+            }
+
+        </div>
+    `;
+
+
+    // Clique
+    card.addEventListener(
+        "click",
+        () => {
+            abrirModal(
+                pokemon
+            );
+        }
+    );
+
+
+    // Teclado
+    card.addEventListener(
+        "keydown",
+        (evento) => {
+
+            if (
+                evento.key === "Enter" ||
+                evento.key === " "
+            ) {
+                evento.preventDefault();
+
+                abrirModal(
+                    pokemon
+                );
+            }
+        }
+    );
+
+
+    return card;
+}
+
+
+// =========================
+// LISTA DE POKÉMON
+// =========================
+
+// Cria e exibe os cards dos Pokémon.
+export function exibirPokemons(
+    pokemons
+) {
     const lista =
         document.getElementById(
             "lista-pokemon"
@@ -30,118 +167,18 @@ export function exibirPokemons(pokemons) {
     lista.innerHTML = "";
 
 
-    pokemons.forEach((pokemon) => {
+    pokemons.forEach(
+        (pokemon) => {
 
-        const numeroFormatado =
-            String(pokemon.id).padStart(
-                3,
-                "0"
-            );
-
-
-        const nomeFormatado =
-            formatarNomePokemon(
-                pokemon.name
-            );
-
-
-        const pastaGeracao =
-            obterPastaGeracao(
-                pokemon.id
-            );
-
-
-        const tipos =
-            pokemon.types.map((tipo) => {
-                return tipo.type.name;
-            });
-
-
-        const card =
-            document.createElement(
-                "article"
-            );
-
-
-        card.classList.add(
-            "card-pokemon"
-        );
-
-
-        card.tabIndex = 0;
-
-
-        card.setAttribute(
-            "role",
-            "button"
-        );
-
-
-        card.setAttribute(
-            "aria-label",
-            `Abrir detalhes de ${nomeFormatado}`
-        );
-
-
-        card.innerHTML = `
-            <img
-                src="assets/images/pokemon/${pastaGeracao}/normal/${numeroFormatado}.png"
-                alt="${nomeFormatado}"
-                loading="lazy"
-            >
-
-            <span>
-                #${numeroFormatado}
-            </span>
-
-            <h2>
-                ${nomeFormatado}
-            </h2>
-
-            <div class="tipos-pokemon">
-
-                ${tipos.map((tipo) => `
-                    <span class="tipo ${tipo}">
-                        ${traduzirTipo(tipo)}
-                    </span>
-                `).join("")}
-
-            </div>
-        `;
-
-
-        // Clique
-        card.addEventListener(
-            "click",
-            () => {
-                abrirModal(
+            const card =
+                criarCardPokemon(
                     pokemon
                 );
-            }
-        );
 
 
-        // Teclado
-        card.addEventListener(
-            "keydown",
-            (evento) => {
-
-                if (
-                    evento.key === "Enter" ||
-                    evento.key === " "
-                ) {
-                    evento.preventDefault();
-
-                    abrirModal(
-                        pokemon
-                    );
-                }
-            }
-        );
-
-
-        lista.appendChild(
-            card
-        );
-    });
+            lista.appendChild(
+                card
+            );
+        }
+    );
 }

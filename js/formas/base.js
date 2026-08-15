@@ -3,7 +3,8 @@
 // =========================
 
 
-// Cria uma forma no padrão usado pelo sistema
+// Cria uma forma no padrão
+// utilizado pelo sistema.
 export function criarForma(
     id,
     nome,
@@ -17,7 +18,11 @@ export function criarForma(
 }
 
 
-// Forma normal padrão
+// =========================
+// FORMA NORMAL
+// =========================
+
+// Forma normal padrão de todos os Pokémon.
 export const FORMA_NORMAL =
     criarForma(
         "normal",

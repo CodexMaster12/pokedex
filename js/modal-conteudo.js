@@ -15,6 +15,10 @@ import {
     formatarNomePokemon
 } from "./nomes-pokemon.js";
 
+import {
+    obterRegiaoPorId
+} from "./geracoes.js";
+
 
 // =========================
 // TIPOS
@@ -159,11 +163,28 @@ export function criarConteudoModal(
     golpesPrincipais
 ) {
     const numeroFormatado =
-        String(pokemon.id).padStart(3, "0");
+        String(pokemon.id).padStart(
+            3,
+            "0"
+        );
+
+
+    const nomeFormatado =
+        formatarNomePokemon(
+            pokemon.name
+        );
+
+
+    const regiao =
+        obterRegiaoPorId(
+            pokemon.id
+        );
 
 
     const formasDisponiveis =
-        obterFormasPokemon(pokemon);
+        obterFormasPokemon(
+            pokemon
+        );
 
 
     const habilidades =
@@ -176,11 +197,6 @@ export function criarConteudoModal(
         fraquezas,
         resistencias
     } = relacoesTipo;
-
-    const nomeFormatado =
-    formatarNomePokemon(
-        pokemon.name
-    );
 
 
     return `
@@ -261,6 +277,11 @@ export function criarConteudoModal(
 
             <span class="numero-modal">
                 #${numeroFormatado}
+            </span>
+
+
+            <span class="regiao-modal">
+                ${regiao}
             </span>
 
 

@@ -7,15 +7,17 @@ import {
 // IMAGENS DAS FORMAS
 // =========================
 
-
-// Monta o caminho da imagem correspondente
+// Monta o caminho da imagem
+// correspondente à forma selecionada.
 export function obterImagemForma(
     pokemon,
     formaSelecionada = "normal",
     shiny = false
 ) {
     const numero =
-        String(pokemon.id).padStart(
+        String(
+            pokemon.id
+        ).padStart(
             3,
             "0"
         );
@@ -43,17 +45,18 @@ export function obterImagemForma(
     if (
         formaSelecionada === "normal"
     ) {
-        return shiny
-            ? (
-                `assets/images/pokemon/` +
-                `${pastaGeracao}/shiny/` +
-                `${numero}.png`
-            )
-            : (
-                `assets/images/pokemon/` +
-                `${pastaGeracao}/normal/` +
-                `${numero}.png`
-            );
+        const aparencia =
+            shiny
+                ? "shiny"
+                : "normal";
+
+
+        return (
+            `assets/images/pokemon/` +
+            `${pastaGeracao}/` +
+            `${aparencia}/` +
+            `${numero}.png`
+        );
     }
 
 

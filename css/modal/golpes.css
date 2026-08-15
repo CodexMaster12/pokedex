@@ -1,0 +1,118 @@
+/* =========================
+   GOLPES
+========================= */
+
+.golpes-pokemon {
+    text-align: left;
+}
+
+
+.lista-golpes {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+.golpe-item {
+    padding: 12px;
+
+    background-color: #f8f8f8;
+
+    border: 1px solid #e8e8e8;
+    border-radius: 11px;
+
+    transition:
+        transform 0.2s,
+        background-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.golpe-item:hover {
+    background-color: white;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.06);
+}
+
+
+.golpe-cabecalho {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 10px;
+}
+
+
+.golpe-cabecalho .tipo {
+    flex-shrink: 0;
+
+    padding: 4px 8px;
+
+    font-size: 10px;
+}
+
+
+.nome-golpe {
+    color: #222;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.golpe-detalhes {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+.golpe-detalhes span {
+    padding-right: 10px;
+
+    border-right:
+        1px solid #dddddd;
+}
+
+
+.golpe-detalhes span:last-child {
+    padding-right: 0;
+
+    border-right: none;
+}
+
+
+.golpe-detalhes strong {
+    color: #333;
+
+    font-weight: 700;
+}
+
+
+.sem-golpes {
+    grid-column: 1 / -1;
+
+    padding: 15px;
+
+    color: #777;
+
+    text-align: center;
+}

@@ -31,28 +31,32 @@ import {
 // HABILIDADES
 // =========================
 
-function criarHabilidades(abilities) {
-    return abilities
-        .map((habilidade) => `
-            <span class="habilidade">
+function criarHabilidades(
+    habilidades
+) {
+    return habilidades
+        .map(
+            (habilidade) => `
+                <span class="habilidade">
 
-                <span
-                    class="icone-habilidade"
-                    aria-hidden="true"
-                >
-                    ✦
+                    <span
+                        class="icone-habilidade"
+                        aria-hidden="true"
+                    >
+                        ✦
+                    </span>
+
+                    ${habilidade.ability.name}
+
                 </span>
-
-                ${habilidade.ability.name}
-
-            </span>
-        `)
+            `
+        )
         .join("");
 }
 
 
 // =========================
-// FORMAS E SHINY
+// CONFIGURAÇÃO DAS FORMAS
 // =========================
 
 export function configurarFormasModal(
@@ -200,6 +204,13 @@ export function configurarFormasModal(
             );
 
 
+        /*
+            Algumas formas podem não possuir
+            golpes próprios disponíveis.
+
+            Nesse caso usamos os golpes
+            do Pokémon base como fallback.
+        */
         if (
             golpes.length === 0 &&
             dadosPokemon !== pokemon
@@ -220,43 +231,58 @@ export function configurarFormasModal(
 
 
     // =========================
-    // FORMA NORMAL
+    // APLICA DADOS DO POKÉMON
     // =========================
 
-    async function restaurarDadosNormais() {
-
+    async function aplicarDadosPokemon(
+        dadosPokemon,
+        usarVersaoKanto
+    ) {
         tiposModal.innerHTML =
             criarTipos(
-                pokemon.types
+                dadosPokemon.types
             );
 
 
         alturaModal.textContent =
-            `${pokemon.height / 10} m`;
+            `${dadosPokemon.height / 10} m`;
 
 
         pesoModal.textContent =
-            `${pokemon.weight / 10} kg`;
+            `${dadosPokemon.weight / 10} kg`;
 
 
         habilidadesModal.innerHTML =
             criarHabilidades(
-                pokemon.abilities
+                dadosPokemon.abilities
             );
 
 
         statsModal.innerHTML =
             criarStats(
-                pokemon.stats
+                dadosPokemon.stats
             );
 
 
-        await atualizarRelacoesTipo(
-            pokemon
-        );
+        await Promise.all([
+            atualizarRelacoesTipo(
+                dadosPokemon
+            ),
+
+            atualizarGolpes(
+                dadosPokemon,
+                usarVersaoKanto
+            )
+        ]);
+    }
 
 
-        await atualizarGolpes(
+    // =========================
+    // FORMA NORMAL
+    // =========================
+
+    async function restaurarDadosNormais() {
+        await aplicarDadosPokemon(
             pokemon,
             true
         );
@@ -285,7 +311,7 @@ export function configurarFormasModal(
         }
 
 
-        // Forma ainda sem dados da PokéAPI
+        // Forma sem dados próprios na PokéAPI
         if (!forma.api) {
             await restaurarDadosNormais();
 
@@ -300,45 +326,7 @@ export function configurarFormasModal(
                 );
 
 
-            // Tipos
-            tiposModal.innerHTML =
-                criarTipos(
-                    dadosForma.types
-                );
-
-
-            // Altura
-            alturaModal.textContent =
-                `${dadosForma.height / 10} m`;
-
-
-            // Peso
-            pesoModal.textContent =
-                `${dadosForma.weight / 10} kg`;
-
-
-            // Habilidades
-            habilidadesModal.innerHTML =
-                criarHabilidades(
-                    dadosForma.abilities
-                );
-
-
-            // Estatísticas
-            statsModal.innerHTML =
-                criarStats(
-                    dadosForma.stats
-                );
-
-
-            // Fraquezas / Resistências
-            await atualizarRelacoesTipo(
-                dadosForma
-            );
-
-
-            // Golpes
-            await atualizarGolpes(
+            await aplicarDadosPokemon(
                 dadosForma,
                 false
             );
@@ -358,7 +346,6 @@ export function configurarFormasModal(
     // =========================
 
     if (seletorForma) {
-
         seletorForma.addEventListener(
             "change",
             async () => {
@@ -367,15 +354,10 @@ export function configurarFormasModal(
                     seletorForma.value;
 
 
-                // Troca a imagem
                 atualizarImagem();
 
-
-                // Troca imediatamente o destaque da evolução
                 atualizarDestaque();
 
-
-                // Atualiza os demais dados
                 await atualizarDadosForma();
             }
         );
@@ -386,37 +368,40 @@ export function configurarFormasModal(
     // NORMAL / SHINY
     // =========================
 
-    botoesAparencia.forEach((botao) => {
+    botoesAparencia.forEach(
+        (botao) => {
 
-        botao.addEventListener(
-            "click",
-            () => {
+            botao.addEventListener(
+                "click",
+                () => {
 
-                shiny =
-                    botao.dataset.shiny === "true";
-
-
-                botoesAparencia.forEach(
-                    (item) => {
-
-                        item.classList.remove(
-                            "ativo"
-                        );
-                    }
-                );
+                    shiny =
+                        botao.dataset.shiny ===
+                        "true";
 
 
-                botao.classList.add(
-                    "ativo"
-                );
+                    botoesAparencia.forEach(
+                        (item) => {
+
+                            item.classList.remove(
+                                "ativo"
+                            );
+                        }
+                    );
 
 
-                /*
-                    Shiny altera apenas a imagem.
-                    O destaque da evolução não muda.
-                */
-                atualizarImagem();
-            }
-        );
-    });
+                    botao.classList.add(
+                        "ativo"
+                    );
+
+
+                    /*
+                        Shiny altera apenas
+                        a aparência da imagem.
+                    */
+                    atualizarImagem();
+                }
+            );
+        }
+    );
 }

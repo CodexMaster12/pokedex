@@ -1,0 +1,93 @@
+/* =========================
+   IDENTIDADE
+========================= */
+
+.secao-identidade {
+    text-align: center;
+}
+
+
+.imagem-modal {
+    display: block;
+
+    width: 320px;
+    height: 320px;
+
+    margin: 0 auto 10px;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* Número nacional */
+.numero-modal {
+    display: block;
+
+    color: #777;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    letter-spacing: 0.4px;
+}
+
+
+/* Região de origem */
+.regiao-modal {
+    display: block;
+
+    margin-top: 2px;
+
+    color: rgba(34, 34, 34, 0.42);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+/* Nome */
+.secao-identidade h2 {
+    margin-top: 6px;
+
+    font-size: 28px;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================
+   TIPOS
+========================= */
+
+.tipos-pokemon {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+#detalhes-pokemon .tipo {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    border-radius: 15px;
+
+    color: white;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-transform: capitalize;
+}

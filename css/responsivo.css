@@ -5,16 +5,68 @@
 @media (max-width: 600px) {
 
     /* =========================
-       PESQUISA E FILTROS
+       CONTROLES
     ========================= */
 
     .controles {
-        flex-direction: column;
+        gap: 10px;
+
+        margin-bottom: 24px;
+
+        padding: 0;
     }
 
-    .controles input,
-    .controles select {
+
+    .controles-principais {
         width: 100%;
+
+        align-items: center;
+    }
+
+
+    /* Pesquisa expansível */
+    .pesquisa-container {
+        flex-shrink: 0;
+    }
+
+
+    .pesquisa-container.ativo {
+        flex: 1;
+
+        width: auto;
+    }
+
+
+    .pesquisa-container.ativo
+    #busca-pokemon {
+        width: 100%;
+    }
+
+
+    /* Botão de configurações */
+    .botao-configuracoes {
+        min-width: 46px;
+
+        padding: 0 13px;
+    }
+
+
+    .botao-configuracoes > span {
+        display: none;
+    }
+
+
+    /* Painel avançado */
+    .configuracoes-grid {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    .grupo-configuracao select {
+        width: 100%;
+
         min-width: 0;
     }
 
@@ -41,6 +93,7 @@
         padding: 10px;
     }
 
+
     .modal-conteudo {
         max-height: 95vh;
 
@@ -49,9 +102,32 @@
         border-radius: 16px;
     }
 
+
     #fechar-modal {
         top: 8px;
         right: 12px;
+    }
+
+
+    /* =========================
+       NAVEGAÇÃO DO MODAL
+    ========================= */
+
+    .navegacao-modal {
+        width: 34px;
+        height: 34px;
+
+        font-size: 26px;
+    }
+
+
+    .navegacao-anterior {
+        left: 6px;
+    }
+
+
+    .navegacao-proximo {
+        right: 6px;
     }
 
 
@@ -65,29 +141,39 @@
     }
 
 
+    .secao-identidade h2 {
+        font-size: 24px;
+    }
+
+
     /* =========================
        FORMAS
     ========================= */
 
     .controles-forma {
         flex-direction: column;
+
         align-items: stretch;
 
         gap: 10px;
     }
+
 
     .controle-forma,
     .controle-aparencia {
         width: 100%;
     }
 
+
     #seletor-forma {
         width: 100%;
     }
 
+
     .botoes-aparencia {
         width: 100%;
     }
+
 
     .botao-aparencia {
         flex: 1;
@@ -113,13 +199,16 @@
         gap: 4px;
     }
 
+
     .segmento-stat {
         height: 8px;
     }
 
+
     .nome-stat {
         font-size: 10px;
     }
+
 
     .valor-stat {
         font-size: 12px;
@@ -158,25 +247,39 @@
         padding-bottom: 8px;
     }
 
+
     .evolucao-imagem {
         width: 100px;
         height: 100px;
     }
+
 
     .evolucao-item img {
         width: 85px;
         height: 85px;
     }
 
+
     .evolucao-etapa {
         gap: 10px;
     }
+
 
     .evolucao-filhos {
         gap: 10px;
 
         flex-wrap: nowrap;
     }
+
+
+    .evolucao-filhos-eevee {
+        grid-template-columns:
+            repeat(2, minmax(110px, 1fr));
+
+        column-gap: 12px;
+        row-gap: 10px;
+    }
+
 
     .seta-evolucao {
         font-size: 20px;
@@ -190,6 +293,7 @@
     .secao-modal {
         padding: 16px;
     }
+
 
     .secao-modal h3 {
         font-size: 17px;

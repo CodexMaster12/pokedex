@@ -1,0 +1,139 @@
+/* =========================
+   CONTROLES DE FORMA
+========================= */
+
+.controles-forma {
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-end;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================
+   SELETOR DE FORMA
+========================= */
+
+.controle-forma {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    text-align: center;
+}
+
+
+/* Forma / Aparência */
+.controle-forma label,
+.controle-aparencia > span {
+    color: #777;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+#seletor-forma {
+    height: 38px;
+
+    padding:
+        0 35px
+        0 12px;
+
+    background-color: white;
+
+    border: 1px solid #dddddd;
+    border-radius: 9px;
+
+    color: #333;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    outline: none;
+}
+
+
+#seletor-forma:focus {
+    border-color: #e52d2d;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(229, 45, 45, 0.08);
+}
+
+
+/* =========================
+   NORMAL / SHINY
+========================= */
+
+.controle-aparencia {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 6px;
+
+    text-align: center;
+}
+
+
+.botoes-aparencia {
+    display: flex;
+
+    justify-content: center;
+
+    padding: 3px;
+
+    background-color: #eeeeee;
+
+    border-radius: 9px;
+}
+
+
+.botao-aparencia {
+    padding: 8px 14px;
+
+    background-color: transparent;
+
+    border: none;
+    border-radius: 7px;
+
+    color: #666;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.botao-aparencia.ativo {
+    background-color: #e52d2d;
+
+    color: white;
+
+    box-shadow:
+        0 2px 6px
+        rgba(229, 45, 45, 0.2);
+}

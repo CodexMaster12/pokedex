@@ -1,0 +1,74 @@
+/* =========================
+   ESTATÍSTICAS
+========================= */
+
+.grafico-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 8px;
+
+    align-items: end;
+}
+
+
+.stat-coluna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    min-width: 0;
+}
+
+
+.segmentos-stat {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 4px;
+}
+
+
+.segmento-stat {
+    width: 100%;
+    height: 9px;
+
+    background-color: #e5e5e5;
+
+    border-radius: 2px;
+}
+
+
+.segmento-stat.ativo {
+    background-color: #e52d2d;
+
+    box-shadow:
+        0 1px 2px
+        rgba(229, 45, 45, 0.18);
+}
+
+
+.valor-stat {
+    margin-top: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.nome-stat {
+    min-height: 36px;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    line-height: 1.15;
+
+    text-align: center;
+}

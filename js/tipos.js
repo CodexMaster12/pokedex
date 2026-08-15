@@ -2,7 +2,6 @@
 // TIPOS DOS POKÉMON
 // =========================
 
-
 // Tradução dos tipos
 export const NOMES_TIPOS = {
     normal: "Normal",
@@ -26,7 +25,16 @@ export const NOMES_TIPOS = {
 };
 
 
-// Retorna o nome traduzido de um tipo
-export function traduzirTipo(tipo) {
-    return NOMES_TIPOS[tipo] || tipo;
+// =========================
+// TRADUÇÃO
+// =========================
+
+// Retorna o nome traduzido de um tipo.
+export function traduzirTipo(
+    tipo
+) {
+    return (
+        NOMES_TIPOS[tipo] ||
+        tipo
+    );
 }

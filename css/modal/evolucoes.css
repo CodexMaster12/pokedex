@@ -1,0 +1,261 @@
+/* =========================
+   EVOLUÇÕES
+========================= */
+
+#lista-evolucoes {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+.evolucao-etapa {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.evolucao-filhos {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+
+.evolucao-ramo {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================
+   RAMIFICAÇÕES
+========================= */
+
+.evolucao-filhos-vertical {
+    flex-direction: column;
+
+    align-items: center;
+
+    flex-wrap: nowrap;
+
+    gap: 12px;
+}
+
+
+/* Eevee:
+   4 evoluções na esquerda
+   4 evoluções na direita
+*/
+.evolucao-filhos-eevee {
+    display: grid;
+
+    grid-template-rows:
+        repeat(4, auto);
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(130px, 1fr)
+        );
+
+    grid-auto-flow: column;
+
+    align-items: center;
+    justify-items: center;
+
+    column-gap: 30px;
+    row-gap: 12px;
+}
+
+
+/* =========================
+   ITEM DE EVOLUÇÃO
+========================= */
+
+.evolucao-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px;
+
+    border-radius: 15px;
+
+    transition: 0.2s;
+}
+
+
+.evolucao-imagem {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 120px;
+    height: 120px;
+
+    background-color: transparent;
+
+    border: 2px solid transparent;
+    border-radius: 50%;
+}
+
+
+.evolucao-item img {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+}
+
+
+.evolucao-identificacao {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+.evolucao-numero {
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+.evolucao-nome {
+    font-size: 14px;
+    font-weight: bold;
+
+    text-transform: capitalize;
+}
+
+
+.evolucao-forma {
+    color: #777;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.evolucao-tipos {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+.evolucao-tipos .tipo {
+    padding: 4px 8px;
+
+    font-size: 10px;
+}
+
+
+/* Pokémon atualmente aberto */
+.evolucao-item.evolucao-atual
+.evolucao-nome {
+    color: #d62828;
+}
+
+
+/* =========================
+   SETA
+========================= */
+
+.seta-evolucao {
+    flex-shrink: 0;
+
+    color: #aaa;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   CONTEÚDO EXPANDIDO
+========================= */
+
+.evolucoes-conteudo {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    width: 100%;
+
+    gap: 18px;
+}
+
+
+/* Pokémon de gerações
+   ainda não implementadas */
+.evolucao-em-breve {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100px;
+    height: 100px;
+
+    background-color: #eeeeee;
+
+    border:
+        2px dashed #cccccc;
+
+    border-radius: 50%;
+
+    color: #999;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+
+/* Cadeias regionais */
+.evolucao-regional {
+    justify-content: center;
+}
+
+
+/* Erro isolado de evolução */
+.sem-evolucoes {
+    padding: 15px;
+
+    color: #777;
+
+    text-align: center;
+}

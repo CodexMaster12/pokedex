@@ -21,6 +21,88 @@ import {
 
 
 // =========================
+// ESTADO DO MODAL
+// =========================
+
+// Lista usada pela navegação anterior / próximo
+let pokemonsNavegacao = [];
+
+
+// Pokémon atualmente aberto
+let indicePokemonAtual = -1;
+
+
+// =========================
+// LISTA DE NAVEGAÇÃO
+// =========================
+
+// Define quais Pokémon podem ser percorridos
+// dentro do modal.
+export function definirPokemonsNavegacao(
+    pokemons
+) {
+    pokemonsNavegacao =
+        [...pokemons];
+}
+
+
+// =========================
+// BOTÕES DE NAVEGAÇÃO
+// =========================
+
+function atualizarBotoesNavegacao() {
+    const botaoAnterior =
+        document.getElementById(
+            "pokemon-anterior"
+        );
+
+
+    const botaoProximo =
+        document.getElementById(
+            "pokemon-proximo"
+        );
+
+
+    if (
+        !botaoAnterior ||
+        !botaoProximo
+    ) {
+        return;
+    }
+
+
+    const possuiAnterior =
+        indicePokemonAtual > 0;
+
+
+    const possuiProximo =
+        indicePokemonAtual >= 0 &&
+        indicePokemonAtual <
+            pokemonsNavegacao.length - 1;
+
+
+    botaoAnterior.disabled =
+        !possuiAnterior;
+
+
+    botaoProximo.disabled =
+        !possuiProximo;
+
+
+    botaoAnterior.setAttribute(
+        "aria-disabled",
+        String(!possuiAnterior)
+    );
+
+
+    botaoProximo.setAttribute(
+        "aria-disabled",
+        String(!possuiProximo)
+    );
+}
+
+
+// =========================
 // ABERTURA DO MODAL
 // =========================
 
@@ -35,6 +117,15 @@ export async function abrirModal(pokemon) {
     const detalhes =
         document.getElementById(
             "detalhes-pokemon"
+        );
+
+
+    // Localiza o Pokémon na lista de navegação
+    indicePokemonAtual =
+        pokemonsNavegacao.findIndex(
+            (item) => {
+                return item.id === pokemon.id;
+            }
         );
 
 
@@ -56,6 +147,9 @@ export async function abrirModal(pokemon) {
 
 
     modal.focus();
+
+
+    atualizarBotoesNavegacao();
 
 
     detalhes.innerHTML = `
@@ -107,6 +201,9 @@ export async function abrirModal(pokemon) {
             pokemon
         );
 
+
+        atualizarBotoesNavegacao();
+
     } catch (erro) {
         console.error(
             "Erro ao carregar detalhes:",
@@ -121,6 +218,52 @@ export async function abrirModal(pokemon) {
             </p>
         `;
     }
+}
+
+
+// =========================
+// NAVEGAÇÃO
+// =========================
+
+async function abrirPokemonAnterior() {
+    if (
+        indicePokemonAtual <= 0
+    ) {
+        return;
+    }
+
+
+    const pokemonAnterior =
+        pokemonsNavegacao[
+            indicePokemonAtual - 1
+        ];
+
+
+    await abrirModal(
+        pokemonAnterior
+    );
+}
+
+
+async function abrirPokemonProximo() {
+    if (
+        indicePokemonAtual < 0 ||
+        indicePokemonAtual >=
+            pokemonsNavegacao.length - 1
+    ) {
+        return;
+    }
+
+
+    const pokemonProximo =
+        pokemonsNavegacao[
+            indicePokemonAtual + 1
+        ];
+
+
+    await abrirModal(
+        pokemonProximo
+    );
 }
 
 
@@ -156,7 +299,7 @@ function fecharModal() {
 // CONFIGURAÇÃO DO MODAL
 // =========================
 
-// Configura todas as maneiras de fechar
+// Configura todas as interações do modal
 export function configurarModal() {
     const modal =
         document.getElementById(
@@ -170,7 +313,22 @@ export function configurarModal() {
         );
 
 
-    // Botão X
+    const botaoAnterior =
+        document.getElementById(
+            "pokemon-anterior"
+        );
+
+
+    const botaoProximo =
+        document.getElementById(
+            "pokemon-proximo"
+        );
+
+
+    // =========================
+    // FECHAR
+    // =========================
+
     botaoFechar.addEventListener(
         "click",
         fecharModal
@@ -191,18 +349,65 @@ export function configurarModal() {
     );
 
 
-    // Tecla ESC
+    // =========================
+    // ANTERIOR / PRÓXIMO
+    // =========================
+
+    if (botaoAnterior) {
+        botaoAnterior.addEventListener(
+            "click",
+            abrirPokemonAnterior
+        );
+    }
+
+
+    if (botaoProximo) {
+        botaoProximo.addEventListener(
+            "click",
+            abrirPokemonProximo
+        );
+    }
+
+
+    // =========================
+    // TECLADO
+    // =========================
+
     document.addEventListener(
         "keydown",
-        (evento) => {
+        async (evento) => {
 
             if (
-                evento.key === "Escape" &&
-                modal.classList.contains(
+                !modal.classList.contains(
                     "ativo"
                 )
             ) {
+                return;
+            }
+
+
+            if (
+                evento.key === "Escape"
+            ) {
                 fecharModal();
+
+                return;
+            }
+
+
+            if (
+                evento.key ===
+                "ArrowLeft"
+            ) {
+                await abrirPokemonAnterior();
+            }
+
+
+            if (
+                evento.key ===
+                "ArrowRight"
+            ) {
+                await abrirPokemonProximo();
             }
         }
     );

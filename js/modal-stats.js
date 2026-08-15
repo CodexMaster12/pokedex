@@ -14,54 +14,98 @@ const NOMES_STATS = {
 };
 
 
-// Cria o gráfico de estatísticas
-export function criarStats(stats) {
-    return stats.map((stat) => {
-        const valor = stat.base_stat;
+// =========================
+// SEGMENTOS
+// =========================
 
-        // Converte o valor em até 10 segmentos
-        const segmentosAtivos = Math.min(
-            10,
-            Math.ceil(valor / 15)
+function criarSegmentosStat(
+    valor
+) {
+    const totalSegmentos = 10;
+
+
+    const segmentosAtivos =
+        Math.min(
+            totalSegmentos,
+            Math.ceil(
+                valor / 15
+            )
         );
 
 
-        const segmentos = Array.from({ length: 10 })
-            .map((_, indice) => {
+    return Array.from({
+        length: totalSegmentos
+    })
+        .map(
+            (_, indice) => {
 
                 const ativo =
-                    indice >= 10 - segmentosAtivos
+                    indice >=
+                    totalSegmentos -
+                    segmentosAtivos
                         ? "ativo"
                         : "";
 
+
                 return `
-                    <div class="segmento-stat ${ativo}"></div>
+                    <div
+                        class="segmento-stat ${ativo}"
+                    >
+                    </div>
                 `;
-            })
-            .join("");
+            }
+        )
+        .join("");
+}
 
 
-        const nomeStat =
-            NOMES_STATS[stat.stat.name] ||
-            stat.stat.name;
+// =========================
+// ESTATÍSTICAS
+// =========================
+
+// Cria o gráfico de estatísticas.
+export function criarStats(
+    stats
+) {
+    return stats
+        .map(
+            (stat) => {
+
+                const valor =
+                    stat.base_stat;
 
 
-        return `
-            <div class="stat-coluna">
+                const nomeStat =
+                    NOMES_STATS[
+                        stat.stat.name
+                    ] ||
+                    stat.stat.name;
 
-                <div class="segmentos-stat">
-                    ${segmentos}
-                </div>
 
-                <span class="valor-stat">
-                    ${valor}
-                </span>
+                const segmentos =
+                    criarSegmentosStat(
+                        valor
+                    );
 
-                <span class="nome-stat">
-                    ${nomeStat}
-                </span>
 
-            </div>
-        `;
-    }).join("");
+                return `
+                    <div class="stat-coluna">
+
+                        <div class="segmentos-stat">
+                            ${segmentos}
+                        </div>
+
+                        <span class="valor-stat">
+                            ${valor}
+                        </span>
+
+                        <span class="nome-stat">
+                            ${nomeStat}
+                        </span>
+
+                    </div>
+                `;
+            }
+        )
+        .join("");
 }

@@ -54,8 +54,12 @@
 }
 
 
+/* =========================
+   IDENTIFICAÇÃO
+========================= */
+
 /* Número da Pokédex */
-.card-pokemon > span {
+.numero-pokemon {
     display: block;
 
     margin-top: 10px;
@@ -63,12 +67,32 @@
     color: #777;
 
     font-size: 14px;
+    font-weight: 500;
+
+    letter-spacing: 0.4px;
+}
+
+
+/* Região de origem */
+.regiao-pokemon {
+    display: block;
+
+    margin-top: 2px;
+
+    color: rgba(34, 34, 34, 0.42);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
 }
 
 
 /* Nome do Pokémon */
 .card-pokemon h2 {
-    margin-top: 5px;
+    margin-top: 6px;
 
     font-size: 20px;
 

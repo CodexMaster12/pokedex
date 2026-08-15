@@ -6,37 +6,30 @@ import {
     FORMAS_GEN_1
 } from "./gen-1.js";
 
+import {
+    FORMAS_GEN_2
+} from "./gen-2.js";
+
 
 // =========================
 // REGISTRO GLOBAL
 // =========================
 
-/*
-    Cada geração terá seu próprio arquivo.
-
-    Futuramente:
-
-    import {
-        FORMAS_GEN_2
-    } from "./gen-2.js";
-*/
-
-const FORMAS_POKEMON = {
-    ...FORMAS_GEN_1
-
-    // Futuramente:
-    // ...FORMAS_GEN_2,
-    // ...FORMAS_GEN_3
-};
+// Reúne as formas cadastradas
+// de todas as gerações disponíveis.
+const FORMAS_POKEMON =
+    Object.freeze({
+        ...FORMAS_GEN_1,
+        ...FORMAS_GEN_2
+    });
 
 
 // =========================
 // CONSULTAS
 // =========================
 
-
 // Retorna todas as formas disponíveis
-// para determinado Pokémon
+// para determinado Pokémon.
 export function obterFormasPokemon(
     pokemon
 ) {
@@ -47,7 +40,7 @@ export function obterFormasPokemon(
 }
 
 
-// Retorna uma forma específica
+// Retorna uma forma específica.
 export function obterFormaSelecionada(
     pokemon,
     formaSelecionada
@@ -59,12 +52,14 @@ export function obterFormaSelecionada(
 
 
     return (
-        formas.find((forma) => {
-            return (
-                forma.id ===
-                formaSelecionada
-            );
-        }) ||
+        formas.find(
+            (forma) => {
+                return (
+                    forma.id ===
+                    formaSelecionada
+                );
+            }
+        ) ||
         FORMA_NORMAL
     );
 }
