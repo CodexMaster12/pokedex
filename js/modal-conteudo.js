@@ -19,23 +19,35 @@ import {
     obterRegiaoPorId
 } from "./geracoes.js";
 
+import {
+    possuiDiferencaSexo
+} from "./sexos.js";
+
 
 // =========================
 // TIPOS
 // =========================
 
 // Cria as etiquetas de tipos
-export function criarTipos(tipos) {
-    return tipos.map((tipo) => {
-        const nomeTipo =
-            tipo.type.name;
+export function criarTipos(
+    tipos
+) {
+    return tipos
+        .map(
+            (tipo) => {
 
-        return `
-            <span class="tipo ${nomeTipo}">
-                ${traduzirTipo(nomeTipo)}
-            </span>
-        `;
-    }).join("");
+                const nomeTipo =
+                    tipo.type.name;
+
+
+                return `
+                    <span class="tipo ${nomeTipo}">
+                        ${traduzirTipo(nomeTipo)}
+                    </span>
+                `;
+            }
+        )
+        .join("");
 }
 
 
@@ -44,14 +56,21 @@ export function criarTipos(tipos) {
 // =========================
 
 // Calcula fraquezas e resistências
-// usando os tipos do Pokémon ou da forma selecionada
-export async function calcularRelacoesDeTipo(pokemon) {
+// usando os tipos do Pokémon
+// ou da forma selecionada.
+export async function calcularRelacoesDeTipo(
+    pokemon
+) {
     const relacoes = {};
 
 
-    for (const tipo of pokemon.types) {
+    for (
+        const tipo of pokemon.types
+    ) {
         const resposta =
-            await fetch(tipo.type.url);
+            await fetch(
+                tipo.type.url
+            );
 
 
         if (!resposta.ok) {
@@ -68,30 +87,42 @@ export async function calcularRelacoesDeTipo(pokemon) {
         // Fraquezas
         dadosTipo.damage_relations
             .double_damage_from
-            .forEach((item) => {
+            .forEach(
+                (item) => {
 
-                relacoes[item.name] =
-                    (relacoes[item.name] ?? 1) * 2;
-            });
+                    relacoes[item.name] =
+                        (
+                            relacoes[item.name] ??
+                            1
+                        ) * 2;
+                }
+            );
 
 
         // Resistências
         dadosTipo.damage_relations
             .half_damage_from
-            .forEach((item) => {
+            .forEach(
+                (item) => {
 
-                relacoes[item.name] =
-                    (relacoes[item.name] ?? 1) * 0.5;
-            });
+                    relacoes[item.name] =
+                        (
+                            relacoes[item.name] ??
+                            1
+                        ) * 0.5;
+                }
+            );
 
 
         // Imunidades
         dadosTipo.damage_relations
             .no_damage_from
-            .forEach((item) => {
+            .forEach(
+                (item) => {
 
-                relacoes[item.name] = 0;
-            });
+                    relacoes[item.name] = 0;
+                }
+            );
     }
 
 
@@ -99,15 +130,26 @@ export async function calcularRelacoesDeTipo(pokemon) {
     const resistencias = [];
 
 
-    Object.entries(relacoes).forEach(
+    Object.entries(
+        relacoes
+    ).forEach(
         ([tipo, multiplicador]) => {
 
-            if (multiplicador > 1) {
-                fraquezas.push(tipo);
+            if (
+                multiplicador > 1
+            ) {
+                fraquezas.push(
+                    tipo
+                );
             }
 
-            if (multiplicador < 1) {
-                resistencias.push(tipo);
+
+            if (
+                multiplicador < 1
+            ) {
+                resistencias.push(
+                    tipo
+                );
             }
         }
     );
@@ -124,13 +166,20 @@ export async function calcularRelacoesDeTipo(pokemon) {
 // RELAÇÕES DE TIPO
 // =========================
 
-// Cria as etiquetas de fraquezas ou resistências
-export function criarListaRelacoes(tipos) {
-    return tipos.map((tipo) => `
-        <span class="tipo ${tipo}">
-            ${traduzirTipo(tipo)}
-        </span>
-    `).join("");
+// Cria as etiquetas de
+// fraquezas ou resistências.
+export function criarListaRelacoes(
+    tipos
+) {
+    return tipos
+        .map(
+            (tipo) => `
+                <span class="tipo ${tipo}">
+                    ${traduzirTipo(tipo)}
+                </span>
+            `
+        )
+        .join("");
 }
 
 
@@ -138,11 +187,19 @@ export function criarListaRelacoes(tipos) {
 // CATEGORIA
 // =========================
 
-function obterCategoria(especie) {
+function obterCategoria(
+    especie
+) {
     const categoria =
-        especie.genera.find((genero) => {
-            return genero.language.name === "en";
-        });
+        especie.genera.find(
+            (genero) => {
+
+                return (
+                    genero.language.name ===
+                    "en"
+                );
+            }
+        );
 
 
     return categoria
@@ -155,7 +212,7 @@ function obterCategoria(especie) {
 // CONTEÚDO DO MODAL
 // =========================
 
-// Monta todo o HTML principal do modal
+// Monta todo o HTML principal do modal.
 export function criarConteudoModal(
     pokemon,
     especie,
@@ -163,7 +220,9 @@ export function criarConteudoModal(
     golpesPrincipais
 ) {
     const numeroFormatado =
-        String(pokemon.id).padStart(
+        String(
+            pokemon.id
+        ).padStart(
             3,
             "0"
         );
@@ -187,10 +246,21 @@ export function criarConteudoModal(
         );
 
 
+    const possuiDiferencaVisualSexo =
+        possuiDiferencaSexo(
+            pokemon
+        );
+
+
     const habilidades =
-        pokemon.abilities.map((habilidade) => {
-            return habilidade.ability.name;
-        });
+        pokemon.abilities.map(
+            (habilidade) => {
+
+                return (
+                    habilidade.ability.name
+                );
+            }
+        );
 
 
     const {
@@ -219,13 +289,16 @@ export function criarConteudoModal(
 
                                 <select id="seletor-forma">
 
-                                    ${formasDisponiveis
-                                        .map((forma) => `
-                                            <option value="${forma.id}">
-                                                ${forma.nome}
-                                            </option>
-                                        `)
-                                        .join("")
+                                    ${
+                                        formasDisponiveis
+                                            .map(
+                                                (forma) => `
+                                                    <option value="${forma.id}">
+                                                        ${forma.nome}
+                                                    </option>
+                                                `
+                                            )
+                                            .join("")
                                     }
 
                                 </select>
@@ -236,28 +309,56 @@ export function criarConteudoModal(
                 }
 
 
+                <!-- =========================
+                     APARÊNCIA
+                ========================== -->
+
                 <div class="controle-aparencia">
 
                     <span>
                         Aparência
                     </span>
 
+
                     <div class="botoes-aparencia">
 
-                        <button
-                            type="button"
-                            class="botao-aparencia ativo"
-                            data-shiny="false"
-                        >
-                            Normal
-                        </button>
+                        ${
+                            possuiDiferencaVisualSexo
+                                ? `
+                                    <button
+                                        type="button"
+                                        class="botao-controle-visual botao-sexo"
+                                        id="botao-sexo"
+                                        data-sexo="male"
+                                        aria-label="Exibindo forma macho. Clique para alterar para fêmea."
+                                        title="Macho"
+                                    >
+                                        <img
+                                            id="icone-sexo"
+                                            src="assets/images/interface/aparencia/masculino.png"
+                                            alt=""
+                                            aria-hidden="true"
+                                        >
+                                    </button>
+                                `
+                                : ""
+                        }
+
 
                         <button
                             type="button"
-                            class="botao-aparencia"
-                            data-shiny="true"
+                            class="botao-controle-visual botao-shiny"
+                            id="botao-shiny"
+                            aria-pressed="false"
+                            aria-label="Ativar aparência Shiny"
+                            title="Shiny"
                         >
-                            Shiny
+                            <img
+                                id="icone-shiny"
+                                src="assets/images/interface/aparencia/shinyoff.png"
+                                alt=""
+                                aria-hidden="true"
+                            >
                         </button>
 
                     </div>
@@ -267,6 +368,10 @@ export function criarConteudoModal(
             </div>
 
 
+            <!-- =========================
+                 IMAGEM
+            ========================== -->
+
             <img
                 class="imagem-modal"
                 id="imagem-pokemon-modal"
@@ -274,6 +379,10 @@ export function criarConteudoModal(
                 alt="${nomeFormatado}"
             >
 
+
+            <!-- =========================
+                 IDENTIFICAÇÃO
+            ========================== -->
 
             <span class="numero-modal">
                 #${numeroFormatado}
@@ -357,25 +466,32 @@ export function criarConteudoModal(
                 Habilidades
             </h3>
 
+
             <div
                 class="lista-habilidades"
                 id="lista-habilidades-modal"
             >
 
-                ${habilidades.map((habilidade) => `
-                    <span class="habilidade">
+                ${
+                    habilidades
+                        .map(
+                            (habilidade) => `
+                                <span class="habilidade">
 
-                        <span
-                            class="icone-habilidade"
-                            aria-hidden="true"
-                        >
-                            ✦
-                        </span>
+                                    <span
+                                        class="icone-habilidade"
+                                        aria-hidden="true"
+                                    >
+                                        ✦
+                                    </span>
 
-                        ${habilidade}
+                                    ${habilidade}
 
-                    </span>
-                `).join("")}
+                                </span>
+                            `
+                        )
+                        .join("")
+                }
 
             </div>
 
@@ -391,6 +507,7 @@ export function criarConteudoModal(
             <h3>
                 Estatísticas
             </h3>
+
 
             <div
                 class="grafico-stats"
@@ -414,6 +531,7 @@ export function criarConteudoModal(
                     Fraquezas
                 </h3>
 
+
                 <div
                     class="lista-relacoes"
                     id="fraquezas-pokemon-modal"
@@ -429,6 +547,7 @@ export function criarConteudoModal(
                 <h3>
                     Resistências
                 </h3>
+
 
                 <div
                     class="lista-relacoes"
@@ -452,65 +571,68 @@ export function criarConteudoModal(
                 Golpes principais
             </h3>
 
+
             <div class="lista-golpes">
 
                 ${
                     golpesPrincipais.length > 0
 
                         ? golpesPrincipais
-                            .map((golpe) => `
-                                <div class="golpe-item">
+                            .map(
+                                (golpe) => `
+                                    <div class="golpe-item">
 
-                                    <div class="golpe-cabecalho">
+                                        <div class="golpe-cabecalho">
 
-                                        <span class="tipo ${golpe.tipo}">
-                                            ${golpe.tipoTraduzido}
-                                        </span>
+                                            <span class="tipo ${golpe.tipo}">
+                                                ${golpe.tipoTraduzido}
+                                            </span>
 
-                                        <span class="nome-golpe">
-                                            ${golpe.nome}
-                                        </span>
+                                            <span class="nome-golpe">
+                                                ${golpe.nome}
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="golpe-detalhes">
+
+                                            <span>
+                                                ${
+                                                    golpe.nivel === 0
+                                                        ? "Inicial"
+                                                        : `Nv. ${golpe.nivel}`
+                                                }
+                                            </span>
+
+
+                                            <span>
+                                                Poder:
+
+                                                <strong>
+                                                    ${golpe.poder ?? "—"}
+                                                </strong>
+                                            </span>
+
+
+                                            <span>
+                                                Precisão:
+
+                                                <strong>
+                                                    ${golpe.precisao ?? "—"}
+                                                </strong>
+                                            </span>
+
+                                        </div>
 
                                     </div>
-
-
-                                    <div class="golpe-detalhes">
-
-                                        <span>
-                                            ${
-                                                golpe.nivel === 0
-                                                    ? "Inicial"
-                                                    : `Nv. ${golpe.nivel}`
-                                            }
-                                        </span>
-
-
-                                        <span>
-                                            Poder:
-
-                                            <strong>
-                                                ${golpe.poder ?? "—"}
-                                            </strong>
-                                        </span>
-
-
-                                        <span>
-                                            Precisão:
-
-                                            <strong>
-                                                ${golpe.precisao ?? "—"}
-                                            </strong>
-                                        </span>
-
-                                    </div>
-
-                                </div>
-                            `)
+                                `
+                            )
                             .join("")
 
                         : `
                             <p class="sem-golpes">
-                                Nenhum golpe por nível encontrado em Red/Blue.
+                                Nenhum golpe por nível encontrado.
                             </p>
                         `
                 }
@@ -529,6 +651,7 @@ export function criarConteudoModal(
             <h3>
                 Evoluções
             </h3>
+
 
             <div id="lista-evolucoes">
                 Carregando evoluções...

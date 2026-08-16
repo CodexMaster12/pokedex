@@ -56,7 +56,7 @@
 
 
 /* =========================
-   FECHAR
+   BOTÃO FECHAR
 ========================= */
 
 #fechar-modal {
@@ -77,10 +77,10 @@
 
     padding: 0;
 
+    background-color: transparent;
+
     border: none;
     border-radius: 50%;
-
-    background-color: transparent;
 
     color: #222;
 
@@ -126,11 +126,6 @@
 
     color: rgba(30, 30, 30, 0.75);
 
-    font-size: 30px;
-    font-weight: 300;
-
-    line-height: 1;
-
     cursor: pointer;
 
     box-shadow:
@@ -143,24 +138,51 @@
         transform 0.2s,
         background-color 0.2s,
         color 0.2s,
-        opacity 0.2s;
+        opacity 0.2s,
+        box-shadow 0.2s;
 }
 
 
+/* Ícone das setas */
+.navegacao-modal svg {
+    display: block;
+
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 2.2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    pointer-events: none;
+}
+
+
+/* Hover */
 .navegacao-modal:hover:not(:disabled) {
     background-color: rgba(255, 255, 255, 0.9);
 
     color: #d62828;
 
     transform: scale(1.04);
+
+    box-shadow:
+        0 3px 10px
+        rgba(0, 0, 0, 0.1);
 }
 
 
+/* Clique */
 .navegacao-modal:active:not(:disabled) {
     transform: scale(0.96);
 }
 
 
+/* Sem Pokémon anterior / próximo */
 .navegacao-modal:disabled {
     opacity: 0.12;
 
@@ -208,7 +230,7 @@
 
 
 /* =========================
-   RESPONSIVIDADE DA NAVEGAÇÃO
+   RESPONSIVIDADE
 ========================= */
 
 @media (max-width: 900px) {
@@ -224,8 +246,12 @@
     .navegacao-modal {
         width: 36px;
         height: 36px;
+    }
 
-        font-size: 28px;
+
+    .navegacao-modal svg {
+        width: 17px;
+        height: 17px;
     }
 }
 
@@ -233,8 +259,6 @@
 @media (max-width: 700px) {
 
     .modal {
-        position: fixed;
-
         padding: 10px;
     }
 
@@ -244,6 +268,8 @@
     }
 
 
+    /* As setas ficam sobrepostas
+       nas laterais no celular */
     .navegacao-modal {
         position: fixed;
 
@@ -254,8 +280,6 @@
         width: 34px;
         height: 34px;
 
-        font-size: 26px;
-
         transform:
             translateY(-50%);
 
@@ -264,10 +288,23 @@
     }
 
 
+    .navegacao-modal svg {
+        width: 16px;
+        height: 16px;
+    }
+
+
     .navegacao-modal:hover:not(:disabled) {
         transform:
             translateY(-50%)
             scale(1.04);
+    }
+
+
+    .navegacao-modal:active:not(:disabled) {
+        transform:
+            translateY(-50%)
+            scale(0.96);
     }
 
 

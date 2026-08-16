@@ -26,6 +26,17 @@ import {
     atualizarDestaqueEvolucao
 } from "./modal-evolucoes.js";
 
+import {
+    criarEstadoAparencia,
+    definirForma,
+    alternarShiny,
+    alternarSexo
+} from "./aparencia.js";
+
+import {
+    possuiDiferencaSexo
+} from "./sexos.js";
+
 
 // =========================
 // HABILIDADES
@@ -74,9 +85,27 @@ export function configurarFormasModal(
         );
 
 
-    const botoesAparencia =
-        document.querySelectorAll(
-            ".botao-aparencia"
+    const botaoSexo =
+        document.getElementById(
+            "botao-sexo"
+        );
+
+
+    const iconeSexo =
+        document.getElementById(
+            "icone-sexo"
+        );
+
+
+    const botaoShiny =
+        document.getElementById(
+            "botao-shiny"
+        );
+
+
+    const iconeShiny =
+        document.getElementById(
+            "icone-shiny"
         );
 
 
@@ -128,13 +157,22 @@ export function configurarFormasModal(
         );
 
 
-    let formaSelecionada =
-        seletorForma
-            ? seletorForma.value
-            : "normal";
+    // =========================
+    // ESTADO VISUAL
+    // =========================
+
+    const estadoAparencia =
+        criarEstadoAparencia(
+            pokemon
+        );
 
 
-    let shiny = false;
+    if (seletorForma) {
+        definirForma(
+            estadoAparencia,
+            seletorForma.value
+        );
+    }
 
 
     // =========================
@@ -145,8 +183,7 @@ export function configurarFormasModal(
         imagem.src =
             obterImagemForma(
                 pokemon,
-                formaSelecionada,
-                shiny
+                estadoAparencia
             );
     }
 
@@ -158,7 +195,7 @@ export function configurarFormasModal(
     function atualizarDestaque() {
         atualizarDestaqueEvolucao(
             pokemon.id,
-            formaSelecionada
+            estadoAparencia.forma
         );
     }
 
@@ -204,13 +241,6 @@ export function configurarFormasModal(
             );
 
 
-        /*
-            Algumas formas podem não possuir
-            golpes próprios disponíveis.
-
-            Nesse caso usamos os golpes
-            do Pokémon base como fallback.
-        */
         if (
             golpes.length === 0 &&
             dadosPokemon !== pokemon
@@ -297,11 +327,10 @@ export function configurarFormasModal(
         const forma =
             obterFormaSelecionada(
                 pokemon,
-                formaSelecionada
+                estadoAparencia.forma
             );
 
 
-        // Forma normal
         if (
             forma.id === "normal"
         ) {
@@ -311,7 +340,6 @@ export function configurarFormasModal(
         }
 
 
-        // Forma sem dados próprios na PokéAPI
         if (!forma.api) {
             await restaurarDadosNormais();
 
@@ -331,13 +359,124 @@ export function configurarFormasModal(
                 false
             );
 
-
         } catch (erro) {
             console.error(
                 "Erro ao carregar dados da forma:",
                 erro
             );
         }
+    }
+
+
+    // =========================
+    // MACHO / FÊMEA
+    // =========================
+
+    function atualizarBotaoSexo() {
+        if (
+            !botaoSexo ||
+            !iconeSexo
+        ) {
+            return;
+        }
+
+
+        const possuiDiferencaNaForma =
+            possuiDiferencaSexo(
+                pokemon,
+                estadoAparencia.forma
+            );
+
+
+        botaoSexo.classList.toggle(
+            "oculto",
+            !possuiDiferencaNaForma
+        );
+
+
+        if (!possuiDiferencaNaForma) {
+            estadoAparencia.sexo =
+                "male";
+
+            return;
+        }
+
+
+        const feminino =
+            estadoAparencia.sexo ===
+            "female";
+
+
+        iconeSexo.src =
+            feminino
+                ? "assets/images/interface/aparencia/feminino.png"
+                : "assets/images/interface/aparencia/masculino.png";
+
+
+        botaoSexo.dataset.sexo =
+            feminino
+                ? "female"
+                : "male";
+
+
+        botaoSexo.title =
+            feminino
+                ? "Fêmea"
+                : "Macho";
+
+
+        botaoSexo.setAttribute(
+            "aria-label",
+            feminino
+                ? "Exibindo forma fêmea. Clique para alterar para macho."
+                : "Exibindo forma macho. Clique para alterar para fêmea."
+        );
+    }
+
+
+    // =========================
+    // SHINY
+    // =========================
+
+    function atualizarBotaoShiny() {
+        if (
+            !botaoShiny ||
+            !iconeShiny
+        ) {
+            return;
+        }
+
+
+        const shinyAtivo =
+            estadoAparencia.shiny;
+
+
+        iconeShiny.src =
+            shinyAtivo
+                ? "assets/images/interface/aparencia/shiny.png"
+                : "assets/images/interface/aparencia/shinyoff.png";
+
+
+        botaoShiny.classList.toggle(
+            "ativo",
+            shinyAtivo
+        );
+
+
+        botaoShiny.setAttribute(
+            "aria-pressed",
+            String(
+                shinyAtivo
+            )
+        );
+
+
+        botaoShiny.setAttribute(
+            "aria-label",
+            shinyAtivo
+                ? "Desativar aparência Shiny"
+                : "Ativar aparência Shiny"
+        );
     }
 
 
@@ -350,9 +489,13 @@ export function configurarFormasModal(
             "change",
             async () => {
 
-                formaSelecionada =
-                    seletorForma.value;
+                definirForma(
+                    estadoAparencia,
+                    seletorForma.value
+                );
 
+
+                atualizarBotaoSexo();
 
                 atualizarImagem();
 
@@ -365,43 +508,51 @@ export function configurarFormasModal(
 
 
     // =========================
-    // NORMAL / SHINY
+    // EVENTO DE SEXO
     // =========================
 
-    botoesAparencia.forEach(
-        (botao) => {
-
-            botao.addEventListener(
-                "click",
-                () => {
-
-                    shiny =
-                        botao.dataset.shiny ===
-                        "true";
+    if (botaoSexo) {
+        atualizarBotaoSexo();
 
 
-                    botoesAparencia.forEach(
-                        (item) => {
+        botaoSexo.addEventListener(
+            "click",
+            () => {
 
-                            item.classList.remove(
-                                "ativo"
-                            );
-                        }
-                    );
-
-
-                    botao.classList.add(
-                        "ativo"
-                    );
+                alternarSexo(
+                    estadoAparencia
+                );
 
 
-                    /*
-                        Shiny altera apenas
-                        a aparência da imagem.
-                    */
-                    atualizarImagem();
-                }
-            );
-        }
-    );
+                atualizarBotaoSexo();
+
+                atualizarImagem();
+            }
+        );
+    }
+
+
+    // =========================
+    // EVENTO DE SHINY
+    // =========================
+
+    if (botaoShiny) {
+        atualizarBotaoShiny();
+
+
+        botaoShiny.addEventListener(
+            "click",
+            () => {
+
+                alternarShiny(
+                    estadoAparencia
+                );
+
+
+                atualizarBotaoShiny();
+
+                atualizarImagem();
+            }
+        );
+    }
 }

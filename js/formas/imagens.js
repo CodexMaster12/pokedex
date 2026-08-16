@@ -7,12 +7,66 @@ import {
 // IMAGENS DAS FORMAS
 // =========================
 
-// Monta o caminho da imagem
-// correspondente à forma selecionada.
-export function obterImagemForma(
-    pokemon,
-    formaSelecionada = "normal",
-    shiny = false
+
+// Normaliza os dados recebidos.
+//
+// Aceita:
+// - estadoAparencia completo
+// - formato antigo: forma + shiny
+function normalizarEstadoAparencia(
+    estadoOuForma = "normal",
+    shinyAntigo = false
+) {
+    if (
+        typeof estadoOuForma === "object" &&
+        estadoOuForma !== null
+    ) {
+        return {
+            forma:
+                estadoOuForma.forma ??
+                "normal",
+
+            shiny:
+                Boolean(
+                    estadoOuForma.shiny
+                ),
+
+            sexo:
+                estadoOuForma.sexo ??
+                "male",
+
+            animado:
+                Boolean(
+                    estadoOuForma.animado
+                )
+        };
+    }
+
+
+    return {
+        forma:
+            estadoOuForma,
+
+        shiny:
+            Boolean(
+                shinyAntigo
+            ),
+
+        sexo:
+            "male",
+
+        animado:
+            false
+    };
+}
+
+
+// =========================
+// DADOS DA IMAGEM
+// =========================
+
+function obterDadosImagem(
+    pokemon
 ) {
     const numero =
         String(
@@ -34,38 +88,79 @@ export function obterImagemForma(
             `Geração não encontrada para o Pokémon #${pokemon.id}`
         );
 
-        return "";
+        return null;
     }
 
 
+    return {
+        numero,
+        pastaGeracao
+    };
+}
+
+
+// =========================
+// FORMA NORMAL
+// =========================
+
+function obterImagemFormaNormal(
+    numero,
+    pastaGeracao,
+    estadoAparencia
+) {
+
     // =========================
-    // FORMA NORMAL
+    // FÊMEA
     // =========================
 
     if (
-        formaSelecionada === "normal"
+        estadoAparencia.sexo ===
+        "female"
     ) {
-        const aparencia =
-            shiny
-                ? "shiny"
-                : "normal";
+        const nomeArquivo =
+            estadoAparencia.shiny
+                ? `${numero}-shiny.png`
+                : `${numero}.png`;
 
 
         return (
             `assets/images/pokemon/` +
-            `${pastaGeracao}/` +
-            `${aparencia}/` +
-            `${numero}.png`
+            `${pastaGeracao}/female/` +
+            `${nomeArquivo}`
         );
     }
 
 
     // =========================
-    // FORMAS ESPECIAIS
+    // MACHO / PADRÃO
     // =========================
 
+    const pastaAparencia =
+        estadoAparencia.shiny
+            ? "shiny"
+            : "normal";
+
+
+    return (
+        `assets/images/pokemon/` +
+        `${pastaGeracao}/` +
+        `${pastaAparencia}/` +
+        `${numero}.png`
+    );
+}
+
+
+// =========================
+// FORMAS ESPECIAIS
+// =========================
+
+function obterImagemFormaEspecial(
+    numero,
+    pastaGeracao,
+    estadoAparencia
+) {
     const sufixoShiny =
-        shiny
+        estadoAparencia.shiny
             ? "-shiny"
             : "";
 
@@ -74,7 +169,86 @@ export function obterImagemForma(
         `assets/images/pokemon/` +
         `${pastaGeracao}/forms/` +
         `${numero}/` +
-        `${formaSelecionada}` +
+        `${estadoAparencia.forma}` +
         `${sufixoShiny}.png`
+    );
+}
+
+
+// =========================
+// IMAGEM ESTÁTICA
+// =========================
+
+function obterImagemEstatica(
+    pokemon,
+    estadoAparencia
+) {
+    const dadosImagem =
+        obterDadosImagem(
+            pokemon
+        );
+
+
+    if (!dadosImagem) {
+        return "";
+    }
+
+
+    const {
+        numero,
+        pastaGeracao
+    } = dadosImagem;
+
+
+    if (
+        estadoAparencia.forma ===
+        "normal"
+    ) {
+        return obterImagemFormaNormal(
+            numero,
+            pastaGeracao,
+            estadoAparencia
+        );
+    }
+
+
+    return obterImagemFormaEspecial(
+        numero,
+        pastaGeracao,
+        estadoAparencia
+    );
+}
+
+
+// =========================
+// IMAGEM PRINCIPAL
+// =========================
+
+// Retorna a imagem correspondente
+// ao estado visual atual.
+//
+// Atualmente:
+// - forma funciona;
+// - shiny funciona;
+// - sexo funciona na forma normal;
+// - animado está preparado.
+//
+// O formato antigo continua aceito
+// para manter compatibilidade.
+export function obterImagemForma(
+    pokemon,
+    estadoOuForma = "normal",
+    shinyAntigo = false
+) {
+    const estadoAparencia =
+        normalizarEstadoAparencia(
+            estadoOuForma,
+            shinyAntigo
+        );
+
+
+    return obterImagemEstatica(
+        pokemon,
+        estadoAparencia
     );
 }
