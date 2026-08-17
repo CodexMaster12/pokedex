@@ -72,13 +72,10 @@ export const FORMAS_GEN_2 =
 
         // Meganium
         154: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "meganium-mega"
             )
         ),
 
@@ -95,13 +92,10 @@ export const FORMAS_GEN_2 =
 
         // Feraligatr
         160: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "feraligatr-mega"
             )
         ),
 
@@ -202,13 +196,10 @@ export const FORMAS_GEN_2 =
 
         // Skarmory
         227: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "skarmory-mega"
             )
         ),
 

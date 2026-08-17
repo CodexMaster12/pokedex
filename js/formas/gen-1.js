@@ -161,17 +161,16 @@ export const FORMAS_GEN_1 =
                 "raichu-alola"
             ),
 
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega-x",
-                "Mega X"
+                "Mega X",
+                "raichu-mega-x"
             ),
 
             criarForma(
                 "mega-y",
-                "Mega Y"
+                "Mega Y",
+                "raichu-mega-y"
             )
         ),
 
@@ -198,13 +197,10 @@ export const FORMAS_GEN_1 =
 
         // Clefable
         36: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "clefable-mega"
             )
         ),
 
@@ -326,13 +322,10 @@ export const FORMAS_GEN_1 =
 
         // Victreebel
         71: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "victreebel-mega"
             )
         ),
 
@@ -537,13 +530,10 @@ export const FORMAS_GEN_1 =
 
         // Starmie
         121: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "starmie-mega"
             )
         ),
 
@@ -675,13 +665,10 @@ export const FORMAS_GEN_1 =
 
         // Dragonite
         149: criarListaFormas(
-
-            // Mega recente:
-            // imagem disponível,
-            // dados ainda não integrados.
             criarForma(
                 "mega",
-                "Mega"
+                "Mega",
+                "dragonite-mega"
             )
         ),
 
