@@ -29,13 +29,19 @@ import {
 import {
     criarEstadoAparencia,
     definirForma,
+    definirAnimado,
     alternarShiny,
-    alternarSexo
+    alternarSexo,
+    alternarAnimado
 } from "./aparencia.js";
 
 import {
     possuiDiferencaSexo
 } from "./sexos.js";
+
+import {
+    possuiAnimacaoPokemon
+} from "./animacoes.js";
 
 
 // =========================
@@ -106,6 +112,12 @@ export function configurarFormasModal(
     const iconeShiny =
         document.getElementById(
             "icone-shiny"
+        );
+
+
+    const botaoAnimado =
+        document.getElementById(
+            "botao-animado"
         );
 
 
@@ -359,6 +371,7 @@ export function configurarFormasModal(
                 false
             );
 
+
         } catch (erro) {
             console.error(
                 "Erro ao carregar dados da forma:",
@@ -481,6 +494,65 @@ export function configurarFormasModal(
 
 
     // =========================
+    // ANIMADO
+    // =========================
+
+    function atualizarBotaoAnimado() {
+        if (!botaoAnimado) {
+            return;
+        }
+
+
+        const possuiAnimacao =
+            possuiAnimacaoPokemon(
+                pokemon,
+                estadoAparencia
+            );
+
+
+        botaoAnimado.classList.toggle(
+            "oculto",
+            !possuiAnimacao
+        );
+
+
+        /*
+            Se a combinação atual não possui
+            animação, voltamos automaticamente
+            para a imagem estática.
+        */
+        if (!possuiAnimacao) {
+            definirAnimado(
+                estadoAparencia,
+                false
+            );
+        }
+
+
+        botaoAnimado.classList.toggle(
+            "ativo",
+            estadoAparencia.animado
+        );
+
+
+        botaoAnimado.setAttribute(
+            "aria-pressed",
+            String(
+                estadoAparencia.animado
+            )
+        );
+
+
+        botaoAnimado.setAttribute(
+            "aria-label",
+            estadoAparencia.animado
+                ? "Desativar animação"
+                : "Ativar animação"
+        );
+    }
+
+
+    // =========================
     // TROCA DE FORMA
     // =========================
 
@@ -496,6 +568,8 @@ export function configurarFormasModal(
 
 
                 atualizarBotaoSexo();
+
+                atualizarBotaoAnimado();
 
                 atualizarImagem();
 
@@ -526,6 +600,8 @@ export function configurarFormasModal(
 
                 atualizarBotaoSexo();
 
+                atualizarBotaoAnimado();
+
                 atualizarImagem();
             }
         );
@@ -550,6 +626,45 @@ export function configurarFormasModal(
 
 
                 atualizarBotaoShiny();
+
+                atualizarBotaoAnimado();
+
+                atualizarImagem();
+            }
+        );
+    }
+
+
+    // =========================
+    // EVENTO DE ANIMAÇÃO
+    // =========================
+
+    if (botaoAnimado) {
+        atualizarBotaoAnimado();
+
+
+        botaoAnimado.addEventListener(
+            "click",
+            () => {
+
+                const possuiAnimacao =
+                    possuiAnimacaoPokemon(
+                        pokemon,
+                        estadoAparencia
+                    );
+
+
+                if (!possuiAnimacao) {
+                    return;
+                }
+
+
+                alternarAnimado(
+                    estadoAparencia
+                );
+
+
+                atualizarBotaoAnimado();
 
                 atualizarImagem();
             }

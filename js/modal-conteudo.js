@@ -361,6 +361,15 @@ export function criarConteudoModal(
                             >
                         </button>
 
+                        <button
+                            type="button"
+                            class="botao-animado"
+                            id="botao-animado"
+                            aria-pressed="false"
+                        >
+                            Animado
+                        </button>
+
                     </div>
 
                 </div>
