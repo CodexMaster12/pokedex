@@ -28,7 +28,6 @@ import {
 // TIPOS
 // =========================
 
-// Cria as etiquetas de tipos
 export function criarTipos(
     tipos
 ) {
@@ -55,9 +54,6 @@ export function criarTipos(
 // FRAQUEZAS E RESISTÊNCIAS
 // =========================
 
-// Calcula fraquezas e resistências
-// usando os tipos do Pokémon
-// ou da forma selecionada.
 export async function calcularRelacoesDeTipo(
     pokemon
 ) {
@@ -84,7 +80,6 @@ export async function calcularRelacoesDeTipo(
             await resposta.json();
 
 
-        // Fraquezas
         dadosTipo.damage_relations
             .double_damage_from
             .forEach(
@@ -99,7 +94,6 @@ export async function calcularRelacoesDeTipo(
             );
 
 
-        // Resistências
         dadosTipo.damage_relations
             .half_damage_from
             .forEach(
@@ -114,7 +108,6 @@ export async function calcularRelacoesDeTipo(
             );
 
 
-        // Imunidades
         dadosTipo.damage_relations
             .no_damage_from
             .forEach(
@@ -166,8 +159,6 @@ export async function calcularRelacoesDeTipo(
 // RELAÇÕES DE TIPO
 // =========================
 
-// Cria as etiquetas de
-// fraquezas ou resistências.
 export function criarListaRelacoes(
     tipos
 ) {
@@ -212,7 +203,6 @@ function obterCategoria(
 // CONTEÚDO DO MODAL
 // =========================
 
-// Monta todo o HTML principal do modal.
 export function criarConteudoModal(
     pokemon,
     especie,
@@ -361,13 +351,21 @@ export function criarConteudoModal(
                             >
                         </button>
 
+
                         <button
                             type="button"
-                            class="botao-animado"
+                            class="botao-controle-visual botao-animado"
                             id="botao-animado"
                             aria-pressed="false"
+                            aria-label="Ativar animação"
+                            title="Animado"
                         >
-                            Animado
+                            <img
+                                id="icone-animado"
+                                src="assets/images/interface/aparencia/animadooff.png"
+                                alt=""
+                                aria-hidden="true"
+                            >
                         </button>
 
                     </div>
@@ -377,10 +375,6 @@ export function criarConteudoModal(
             </div>
 
 
-            <!-- =========================
-                 IMAGEM
-            ========================== -->
-
             <img
                 class="imagem-modal"
                 id="imagem-pokemon-modal"
@@ -388,10 +382,6 @@ export function criarConteudoModal(
                 alt="${nomeFormatado}"
             >
 
-
-            <!-- =========================
-                 IDENTIFICAÇÃO
-            ========================== -->
 
             <span class="numero-modal">
                 #${numeroFormatado}

@@ -121,6 +121,12 @@ export function configurarFormasModal(
         );
 
 
+    const iconeAnimado =
+        document.getElementById(
+            "icone-animado"
+        );
+
+
     const tiposModal =
         document.getElementById(
             "tipos-pokemon-modal"
@@ -273,7 +279,7 @@ export function configurarFormasModal(
 
 
     // =========================
-    // APLICA DADOS DO POKÉMON
+    // APLICA DADOS
     // =========================
 
     async function aplicarDadosPokemon(
@@ -498,7 +504,10 @@ export function configurarFormasModal(
     // =========================
 
     function atualizarBotaoAnimado() {
-        if (!botaoAnimado) {
+        if (
+            !botaoAnimado ||
+            !iconeAnimado
+        ) {
             return;
         }
 
@@ -516,11 +525,6 @@ export function configurarFormasModal(
         );
 
 
-        /*
-            Se a combinação atual não possui
-            animação, voltamos automaticamente
-            para a imagem estática.
-        */
         if (!possuiAnimacao) {
             definirAnimado(
                 estadoAparencia,
@@ -529,26 +533,42 @@ export function configurarFormasModal(
         }
 
 
+        const animadoAtivo =
+            estadoAparencia.animado;
+
+
+        iconeAnimado.src =
+            animadoAtivo
+                ? "assets/images/interface/aparencia/animado.png"
+                : "assets/images/interface/aparencia/animadooff.png";
+
+
         botaoAnimado.classList.toggle(
             "ativo",
-            estadoAparencia.animado
+            animadoAtivo
         );
 
 
         botaoAnimado.setAttribute(
             "aria-pressed",
             String(
-                estadoAparencia.animado
+                animadoAtivo
             )
         );
 
 
         botaoAnimado.setAttribute(
             "aria-label",
-            estadoAparencia.animado
+            animadoAtivo
                 ? "Desativar animação"
                 : "Ativar animação"
         );
+
+
+        botaoAnimado.title =
+            animadoAtivo
+                ? "Animado"
+                : "Estático";
     }
 
 
@@ -647,14 +667,12 @@ export function configurarFormasModal(
             "click",
             () => {
 
-                const possuiAnimacao =
-                    possuiAnimacaoPokemon(
+                if (
+                    !possuiAnimacaoPokemon(
                         pokemon,
                         estadoAparencia
-                    );
-
-
-                if (!possuiAnimacao) {
+                    )
+                ) {
                     return;
                 }
 
