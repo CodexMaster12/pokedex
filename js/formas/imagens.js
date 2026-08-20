@@ -99,7 +99,43 @@ function obterDadosImagem(
 
 
 // =========================
-// ESTÁTICO — NORMAL
+// SUFIXO DE APARÊNCIA
+// =========================
+
+function obterSufixoForma(
+    estadoAparencia
+) {
+    const feminino =
+        estadoAparencia.sexo ===
+        "female";
+
+
+    if (
+        feminino &&
+        estadoAparencia.shiny
+    ) {
+        return "-female-shiny";
+    }
+
+
+    if (feminino) {
+        return "-female";
+    }
+
+
+    if (
+        estadoAparencia.shiny
+    ) {
+        return "-shiny";
+    }
+
+
+    return "";
+}
+
+
+// =========================
+// ESTÁTICO — FORMA NORMAL
 // =========================
 
 function obterImagemFormaNormal(
@@ -149,10 +185,10 @@ function obterImagemFormaEspecial(
     pastaGeracao,
     estadoAparencia
 ) {
-    const sufixoShiny =
-        estadoAparencia.shiny
-            ? "-shiny"
-            : "";
+    const sufixo =
+        obterSufixoForma(
+            estadoAparencia
+        );
 
 
     return (
@@ -160,13 +196,13 @@ function obterImagemFormaEspecial(
         `${pastaGeracao}/forms/` +
         `${numero}/` +
         `${estadoAparencia.forma}` +
-        `${sufixoShiny}.png`
+        `${sufixo}.png`
     );
 }
 
 
 // =========================
-// ANIMADO — NORMAL
+// ANIMADO — FORMA NORMAL
 // =========================
 
 function obterAnimacaoFormaNormal(
@@ -217,10 +253,10 @@ function obterAnimacaoFormaEspecial(
     pastaGeracao,
     estadoAparencia
 ) {
-    const sufixoShiny =
-        estadoAparencia.shiny
-            ? "-shiny"
-            : "";
+    const sufixo =
+        obterSufixoForma(
+            estadoAparencia
+        );
 
 
     return (
@@ -228,7 +264,7 @@ function obterAnimacaoFormaEspecial(
         `${pastaGeracao}/animated/forms/` +
         `${numero}/` +
         `${estadoAparencia.forma}` +
-        `${sufixoShiny}.gif`
+        `${sufixo}.gif`
     );
 }
 
@@ -270,7 +306,9 @@ export function obterImagemForma(
     // ANIMADO
     // =========================
 
-    if (estadoAparencia.animado) {
+    if (
+        estadoAparencia.animado
+    ) {
         if (
             estadoAparencia.forma ===
             "normal"
