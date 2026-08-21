@@ -4,8 +4,8 @@
 
 
 // Último Pokémon atualmente implementado.
-// Gen 1 + Gen 2.
-export const LIMITE_POKEDEX_ATUAL = 251;
+// Gen 1 + Gen 2 + Gen 3.
+export const LIMITE_POKEDEX_ATUAL = 386;
 
 
 // Pokémon de gerações futuras que já queremos
@@ -16,10 +16,13 @@ export const POKEMONS_FUTUROS = new Set([
     // RELACIONADOS À GEN 1
     // =========================
 
+    // Pré-evoluções posteriores
     439, // Mime Jr.
     440, // Happiny
     446, // Munchlax
 
+
+    // Evoluções posteriores
     462, // Magnezone
     463, // Lickilicky
     464, // Rhyperior
@@ -34,9 +37,7 @@ export const POKEMONS_FUTUROS = new Set([
     700, // Sylveon
 
     865, // Sirfetch'd
-
     900, // Kleavor
-
     979, // Annihilape
 
 
@@ -44,13 +45,7 @@ export const POKEMONS_FUTUROS = new Set([
     // RELACIONADOS À GEN 2
     // =========================
 
-    // =========================
-    // POKÉMON FUTUROS
-    // =========================
-
     // Pré-evoluções posteriores
-    298, // Azurill
-    360, // Wynaut
     438, // Bonsly
     458, // Mantyke
 
@@ -68,28 +63,60 @@ export const POKEMONS_FUTUROS = new Set([
 
     472, // Gliscor
     473, // Mamoswine
-    
-    865, // Sirfetch'd
 
     899, // Wyrdeer
-    900, // Kleavor
     901, // Ursaluna
 
-    979, // Annihilape
     981, // Farigiraf
-    982  // Dudunsparce
+    982, // Dudunsparce
+
+
+    // =========================
+    // RELACIONADOS À GEN 3
+    // =========================
+
+    // Pré-evoluções posteriores
+    406, // Budew
+    433, // Chingling
+
+
+    // Evoluções posteriores
+    407, // Roserade
+
+    475, // Gallade
+    476, // Probopass
+    477, // Dusknoir
+    478  // Froslass
 ]);
 
 
 // Pokémon cujas evoluções ficam melhores
 // organizadas verticalmente.
 export const POKEMONS_LAYOUT_VERTICAL = new Set([
+    // =========================
+    // GERAÇÃO 1 — KANTO
+    // =========================
+
     25,  // Pikachu
     102, // Exeggcute
     104, // Cubone
     109, // Koffing
     133, // Eevee
-    236  // Tyrogue
+
+
+    // =========================
+    // GERAÇÃO 2 — JOHTO
+    // =========================
+
+    236, // Tyrogue
+
+
+    // =========================
+    // GERAÇÃO 3 — HOENN
+    // =========================
+
+    281, // Kirlia
+    361  // Snorunt
 ]);
 
 
