@@ -232,7 +232,6 @@ const DIFERENCAS_SEXO = {
     // GERAÇÃO 2 — JOHTO
     // =========================
 
-
     // Meganium
     154: {
         sexoPadrao: "male",
@@ -426,6 +425,172 @@ const DIFERENCAS_SEXO = {
 
     // Donphan
     232: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // =========================
+    // GERAÇÃO 3 — HOENN
+    // =========================
+
+    // Torchic
+    255: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Combusken
+    256: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Blaziken
+    257: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Beautifly
+    267: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Dustox
+    269: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Ludicolo
+    272: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Nuzleaf
+    274: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Shiftry
+    275: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Meditite
+    307: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Medicham
+    308: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Roselia
+    315: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Gulpin
+    316: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Swalot
+    317: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Numel
+    322: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Camerupt
+    323: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Cacturne
+    332: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Milotic
+    350: {
+        sexoPadrao: "male",
+        formas: [
+            "normal"
+        ]
+    },
+
+
+    // Relicanth
+    369: {
         sexoPadrao: "male",
         formas: [
             "normal"

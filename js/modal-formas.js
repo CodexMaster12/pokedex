@@ -43,6 +43,10 @@ import {
     possuiAnimacaoPokemon
 } from "./animacoes.js";
 
+import {
+    configurarSpindaModal
+} from "./especiais/spinda.js";
+
 
 // =========================
 // HABILIDADES
@@ -194,10 +198,31 @@ export function configurarFormasModal(
 
 
     // =========================
+    // SPINDA
+    // =========================
+
+    const controladorSpinda =
+        configurarSpindaModal(
+            pokemon,
+            imagem,
+            estadoAparencia
+        );
+
+
+    // =========================
     // IMAGEM
     // =========================
 
     function atualizarImagem() {
+
+        // Spinda possui renderização própria.
+        if (controladorSpinda) {
+            controladorSpinda.atualizar();
+
+            return;
+        }
+
+
         imagem.src =
             obterImagemForma(
                 pokemon,

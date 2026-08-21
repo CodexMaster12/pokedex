@@ -195,6 +195,10 @@ export function criarControles() {
                                 Johto
                             </option>
 
+                            <option value="3">
+                                Hoenn
+                            </option>
+
                         </select>
 
                     </div>

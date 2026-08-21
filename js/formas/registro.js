@@ -10,6 +10,10 @@ import {
     FORMAS_GEN_2
 } from "./gen-2.js";
 
+import {
+    FORMAS_GEN_3
+} from "./gen-3.js";
+
 
 // =========================
 // REGISTRO GLOBAL
@@ -20,7 +24,8 @@ import {
 const FORMAS_POKEMON =
     Object.freeze({
         ...FORMAS_GEN_1,
-        ...FORMAS_GEN_2
+        ...FORMAS_GEN_2,
+        ...FORMAS_GEN_3
     });
 
 

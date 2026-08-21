@@ -14,7 +14,7 @@ export function criarHeader() {
                 </span>
 
                 <span class="badge-geracao">
-                    Nova Geração: Johto
+                    Nova Geração: Hoenn
                 </span>
 
             </div>
@@ -44,7 +44,7 @@ export function criarHeader() {
 
 
                 <span class="geracao-atual">
-                    #001 — #251
+                    #001 — #386
                 </span>
 
             </div>
