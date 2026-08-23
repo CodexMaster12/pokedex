@@ -9,7 +9,8 @@ const NOMES_ESPECIAIS = {
     "nidoran-m": "Nidoran ♂",
     "mr-mime": "Mr. Mime",
     "farfetchd": "Farfetch'd",
-    "mime-jr": "Mime Jr."
+    "mime-jr": "Mime Jr.",
+    "deoxys-normal": "Deoxys"
 };
 
 

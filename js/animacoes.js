@@ -14,6 +14,14 @@
 // - Female quase completo
 // - Formas alternativas quase completas
 //
+// Geração 3:
+// - Forma normal completa,
+//   exceto Spinda
+// - Shiny completo,
+//   exceto Spinda
+// - Female completo
+// - Formas alternativas quase completas
+//
 // Aqui registramos apenas as combinações
 // que NÃO possuem animação.
 // =========================
@@ -29,7 +37,6 @@ const ANIMACOES_INDISPONIVEIS =
         // =========================
         // GERAÇÃO 1 — KANTO
         // =========================
-
 
         // Venusaur - Gigantamax
         "3:gigantamax:normal",
@@ -74,7 +81,6 @@ const ANIMACOES_INDISPONIVEIS =
         // GERAÇÃO 2 — JOHTO
         // =========================
 
-
         // Meganium - Mega
         "154:mega:normal",
         "154:mega:shiny",
@@ -97,7 +103,27 @@ const ANIMACOES_INDISPONIVEIS =
 
         // Skarmory - Mega
         "227:mega:normal",
-        "227:mega:shiny"
+        "227:mega:shiny",
+
+
+        // =========================
+        // GERAÇÃO 3 — HOENN
+        // =========================
+
+        // Spinda
+        // Somente versão estática.
+        "327:normal:normal",
+        "327:normal:shiny",
+
+
+        // Chimecho - Mega
+        "358:mega:normal",
+        "358:mega:shiny",
+
+
+        // Absol - Mega Z
+        "359:mega-z:normal",
+        "359:mega-z:shiny"
     ]);
 
 
@@ -106,7 +132,7 @@ const ANIMACOES_INDISPONIVEIS =
 // =========================
 
 const PRIMEIRO_POKEMON_ANIMADO = 1;
-const ULTIMO_POKEMON_ANIMADO = 251;
+const ULTIMO_POKEMON_ANIMADO = 386;
 
 
 // =========================
@@ -144,7 +170,8 @@ export function possuiAnimacaoPokemon(
 ) {
 
     // Atualmente as animações estão
-    // disponíveis para Kanto e Johto.
+    // disponíveis para Kanto,
+    // Johto e Hoenn.
     if (
         pokemon.id <
             PRIMEIRO_POKEMON_ANIMADO ||
