@@ -160,32 +160,38 @@ export const FORMAS_GEN_1 =
 
             criarForma(
                 "belle",
-                "Belle"
+                "Belle",
+                "pikachu-belle"
             ),
 
             criarForma(
                 "cosplay",
-                "Cosplay"
+                "Cosplay",
+                "pikachu-cosplay"
             ),
 
             criarForma(
                 "libre",
-                "Libre"
+                "Libre",
+                "pikachu-libre"
             ),
 
             criarForma(
                 "phd",
-                "PhD"
+                "PhD",
+                "pikachu-phd"
             ),
 
             criarForma(
                 "pop-star",
-                "Pop Star"
+                "Pop Star",
+                "pikachu-pop-star"
             ),
 
             criarForma(
                 "rock-star",
-                "Rock Star"
+                "Rock Star",
+                "pikachu-rock-star"
             ),
 
 
@@ -196,7 +202,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-original",
                 "Original Cap",
-                null,
+                "pikachu-original-cap",
                 {
                     permiteShiny: false
                 }
@@ -205,7 +211,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-hoenn",
                 "Hoenn Cap",
-                null,
+                "pikachu-hoenn-cap",
                 {
                     permiteShiny: false
                 }
@@ -214,7 +220,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-sinnoh",
                 "Sinnoh Cap",
-                null,
+                "pikachu-sinnoh-cap",
                 {
                     permiteShiny: false
                 }
@@ -223,7 +229,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-unova",
                 "Unova Cap",
-                null,
+                "pikachu-unova-cap",
                 {
                     permiteShiny: false
                 }
@@ -232,7 +238,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-kalos",
                 "Kalos Cap",
-                null,
+                "pikachu-kalos-cap",
                 {
                     permiteShiny: false
                 }
@@ -241,7 +247,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-alola",
                 "Alola Cap",
-                null,
+                "pikachu-alola-cap",
                 {
                     permiteShiny: false
                 }
@@ -250,7 +256,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-partner",
                 "Partner Cap",
-                null,
+                "pikachu-partner-cap",
                 {
                     permiteShiny: false
                 }
@@ -259,7 +265,7 @@ export const FORMAS_GEN_1 =
             criarForma(
                 "cap-world",
                 "World Cap",
-                null,
+                "pikachu-world-cap",
                 {
                     permiteShiny: false
                 }
@@ -294,14 +300,12 @@ export const FORMAS_GEN_1 =
 
             criarForma(
                 "mega-x",
-                "Mega X",
-                "raichu-mega-x"
+                "Mega X"
             ),
 
             criarForma(
                 "mega-y",
-                "Mega Y",
-                "raichu-mega-y"
+                "Mega Y"
             )
         ),
 
@@ -330,8 +334,7 @@ export const FORMAS_GEN_1 =
         36: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "clefable-mega"
+                "Mega"
             )
         ),
 
@@ -455,8 +458,7 @@ export const FORMAS_GEN_1 =
         71: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "victreebel-mega"
+                "Mega"
             )
         ),
 
@@ -663,8 +665,7 @@ export const FORMAS_GEN_1 =
         121: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "starmie-mega"
+                "Mega"
             )
         ),
 
@@ -798,8 +799,7 @@ export const FORMAS_GEN_1 =
         149: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "dragonite-mega"
+                "Mega"
             )
         ),
 

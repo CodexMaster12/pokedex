@@ -43,7 +43,6 @@ const FORMAS_UNOWN =
             .split("")
             .map(
                 (letra) => {
-
                     return criarForma(
                         letra,
                         letra.toUpperCase()
@@ -74,8 +73,7 @@ export const FORMAS_GEN_2 =
         154: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "meganium-mega"
+                "Mega"
             )
         ),
 
@@ -94,8 +92,7 @@ export const FORMAS_GEN_2 =
         160: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "feraligatr-mega"
+                "Mega"
             )
         ),
 
@@ -198,8 +195,7 @@ export const FORMAS_GEN_2 =
         227: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "skarmory-mega"
+                "Mega"
             )
         ),
 

@@ -254,8 +254,7 @@ export const FORMAS_GEN_3 =
         358: criarListaFormas(
             criarForma(
                 "mega",
-                "Mega",
-                "chimecho-mega"
+                "Mega"
             )
         ),
 
@@ -273,8 +272,7 @@ export const FORMAS_GEN_3 =
 
             criarForma(
                 "mega-z",
-                "Mega Z",
-                "absol-mega-z"
+                "Mega Z"
             )
         ),
 
