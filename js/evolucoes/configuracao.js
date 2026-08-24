@@ -68,7 +68,14 @@ export const POKEMONS_LAYOUT_VERTICAL = new Set([
     // =========================
 
     281, // Kirlia
-    361  // Snorunt
+    361, // Snorunt
+
+
+    // =========================
+    // GERAÇÃO 4 — SINNOH
+    // =========================
+
+    412  // Burmy
 ]);
 
 
