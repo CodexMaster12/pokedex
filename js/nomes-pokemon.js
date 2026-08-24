@@ -10,7 +10,11 @@ const NOMES_ESPECIAIS = {
     "mr-mime": "Mr. Mime",
     "farfetchd": "Farfetch'd",
     "mime-jr": "Mime Jr.",
-    "deoxys-normal": "Deoxys"
+    "deoxys-normal": "Deoxys",
+
+    "wormadam-plant": "Wormadam",
+    "giratina-altered": "Giratina",
+    "shaymin-land": "Shaymin"
 };
 
 

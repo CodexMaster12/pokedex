@@ -91,6 +91,28 @@ export async function buscarPokemonPorIdentificador(
 
 
 // =========================
+// FORMA POR IDENTIFICADOR
+// =========================
+
+// Busca uma forma visual registrada
+// no endpoint /pokemon-form.
+//
+// Exemplos:
+// "burmy-sandy"
+// "cherrim-sunshine"
+// "shellos-east"
+// "gastrodon-east"
+// "arceus-bug"
+export async function buscarFormaPokemonPorIdentificador(
+    identificador
+) {
+    return await buscarDados(
+        `${API_URL}/pokemon-form/${identificador}`
+    );
+}
+
+
+// =========================
 // POKÉMON POR NOME
 // =========================
 
@@ -109,7 +131,7 @@ export async function buscarPokemonPorNome(
 // ESPÉCIE
 // =========================
 
-// Busca os dados da espécie do Pokémon
+// Busca os dados da espécie do Pokémon.
 export async function buscarEspecie(
     pokemon
 ) {
