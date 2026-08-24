@@ -13,7 +13,8 @@ const API_URL =
 // Gen 1: #001 - #151
 // Gen 2: #152 - #251
 // Gen 3: #252 - #386
-const LIMITE_POKEDEX = 386;
+// Gen 4: #387 - #493
+const LIMITE_POKEDEX = 493;
 
 
 // =========================
