@@ -5,15 +5,27 @@
 
 // Cria uma forma no padrão
 // utilizado pelo sistema.
+//
+// Configurações opcionais:
+// - permiteShiny
+// =========================
+
 export function criarForma(
     id,
     nome,
-    api = null
+    api = null,
+    configuracao = {}
 ) {
+    const {
+        permiteShiny = true
+    } = configuracao;
+
+
     return Object.freeze({
         id,
         nome,
-        api
+        api,
+        permiteShiny
     });
 }
 

@@ -47,6 +47,61 @@ const ANIMACOES_INDISPONIVEIS =
         "9:gigantamax:normal",
         "9:gigantamax:shiny",
 
+        // =========================
+        // PIKACHU — FORMAS ESPECIAIS
+        // =========================
+
+        // Belle
+        "25:belle:normal",
+        "25:belle:shiny",
+
+        // Cosplay
+        "25:cosplay:normal",
+        "25:cosplay:shiny",
+
+        // Libre
+        "25:libre:normal",
+        "25:libre:shiny",
+
+        // PhD
+        "25:phd:normal",
+        "25:phd:shiny",
+
+        // Pop Star
+        "25:pop-star:normal",
+        "25:pop-star:shiny",
+
+        // Rock Star
+        "25:rock-star:normal",
+        "25:rock-star:shiny",
+
+        // Original Cap
+        "25:cap-original:normal",
+
+        // Hoenn Cap
+        "25:cap-hoenn:normal",
+
+        // Sinnoh Cap
+        "25:cap-sinnoh:normal",
+
+        // Unova Cap
+        "25:cap-unova:normal",
+
+        // Kalos Cap
+        "25:cap-kalos:normal",
+
+        // Alola Cap
+        "25:cap-alola:normal",
+
+        // Partner Cap
+        "25:cap-partner:normal",
+
+        // World Cap
+        "25:cap-world:normal",
+
+        // Peakychu
+        "25:peakychu:normal",
+
 
         // Raichu - Mega X
         "26:mega-x:normal",

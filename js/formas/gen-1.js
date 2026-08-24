@@ -140,12 +140,143 @@ export const FORMAS_GEN_1 =
         ),
 
 
-        // Pikachu
+        // =========================
+        // PIKACHU
+        // =========================
+
         25: criarListaFormas(
+
+            // Gigantamax
             criarForma(
                 "gigantamax",
                 "Gigantamax",
                 "pikachu-gmax"
+            ),
+
+
+            // =========================
+            // COSPLAY
+            // =========================
+
+            criarForma(
+                "belle",
+                "Belle"
+            ),
+
+            criarForma(
+                "cosplay",
+                "Cosplay"
+            ),
+
+            criarForma(
+                "libre",
+                "Libre"
+            ),
+
+            criarForma(
+                "phd",
+                "PhD"
+            ),
+
+            criarForma(
+                "pop-star",
+                "Pop Star"
+            ),
+
+            criarForma(
+                "rock-star",
+                "Rock Star"
+            ),
+
+
+            // =========================
+            // PIKACHU COM BONÉ
+            // =========================
+
+            criarForma(
+                "cap-original",
+                "Original Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-hoenn",
+                "Hoenn Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-sinnoh",
+                "Sinnoh Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-unova",
+                "Unova Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-kalos",
+                "Kalos Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-alola",
+                "Alola Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-partner",
+                "Partner Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+            criarForma(
+                "cap-world",
+                "World Cap",
+                null,
+                {
+                    permiteShiny: false
+                }
+            ),
+
+
+            // =========================
+            // FORMA ESPECIAL
+            // =========================
+
+            criarForma(
+                "peakychu",
+                "Peakychu",
+                null,
+                {
+                    permiteShiny: false
+                }
             )
         ),
 

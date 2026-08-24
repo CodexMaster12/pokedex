@@ -388,3 +388,7 @@
         rotate(25deg)
         scale(0.94);
 }
+
+.controle-aparencia.oculto {
+    display: none;
+}

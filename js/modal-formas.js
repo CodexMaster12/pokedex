@@ -95,6 +95,12 @@ export function configurarFormasModal(
         );
 
 
+    const controleAparencia =
+        document.querySelector(
+            ".controle-aparencia"
+        );
+
+
     const botaoSexo =
         document.getElementById(
             "botao-sexo"
@@ -491,6 +497,52 @@ export function configurarFormasModal(
         }
 
 
+        const forma =
+            obterFormaSelecionada(
+                pokemon,
+                estadoAparencia.forma
+            );
+
+
+        const permiteShiny =
+            forma.permiteShiny !==
+            false;
+
+
+        botaoShiny.classList.toggle(
+            "oculto",
+            !permiteShiny
+        );
+
+
+        // =========================
+        // FORMA SEM SHINY
+        // =========================
+
+        if (!permiteShiny) {
+            estadoAparencia.shiny =
+                false;
+
+
+            botaoShiny.classList.remove(
+                "ativo"
+            );
+
+
+            botaoShiny.setAttribute(
+                "aria-pressed",
+                "false"
+            );
+
+
+            return;
+        }
+
+
+        // =========================
+        // FORMA COM SHINY
+        // =========================
+
         const shinyAtivo =
             estadoAparencia.shiny;
 
@@ -598,6 +650,50 @@ export function configurarFormasModal(
 
 
     // =========================
+    // GRUPO APARÊNCIA
+    // =========================
+
+    function atualizarGrupoAparencia() {
+        if (!controleAparencia) {
+            return;
+        }
+
+
+        const sexoVisivel =
+            botaoSexo &&
+            !botaoSexo.classList.contains(
+                "oculto"
+            );
+
+
+        const shinyVisivel =
+            botaoShiny &&
+            !botaoShiny.classList.contains(
+                "oculto"
+            );
+
+
+        const animadoVisivel =
+            botaoAnimado &&
+            !botaoAnimado.classList.contains(
+                "oculto"
+            );
+
+
+        const possuiControleVisivel =
+            sexoVisivel ||
+            shinyVisivel ||
+            animadoVisivel;
+
+
+        controleAparencia.classList.toggle(
+            "oculto",
+            !possuiControleVisivel
+        );
+    }
+
+
+    // =========================
     // TROCA DE FORMA
     // =========================
 
@@ -614,7 +710,11 @@ export function configurarFormasModal(
 
                 atualizarBotaoSexo();
 
+                atualizarBotaoShiny();
+
                 atualizarBotaoAnimado();
+
+                atualizarGrupoAparencia();
 
                 atualizarImagem();
 
@@ -647,6 +747,8 @@ export function configurarFormasModal(
 
                 atualizarBotaoAnimado();
 
+                atualizarGrupoAparencia();
+
                 atualizarImagem();
             }
         );
@@ -665,6 +767,21 @@ export function configurarFormasModal(
             "click",
             () => {
 
+                const forma =
+                    obterFormaSelecionada(
+                        pokemon,
+                        estadoAparencia.forma
+                    );
+
+
+                if (
+                    forma.permiteShiny ===
+                    false
+                ) {
+                    return;
+                }
+
+
                 alternarShiny(
                     estadoAparencia
                 );
@@ -673,6 +790,8 @@ export function configurarFormasModal(
                 atualizarBotaoShiny();
 
                 atualizarBotaoAnimado();
+
+                atualizarGrupoAparencia();
 
                 atualizarImagem();
             }
@@ -709,8 +828,17 @@ export function configurarFormasModal(
 
                 atualizarBotaoAnimado();
 
+                atualizarGrupoAparencia();
+
                 atualizarImagem();
             }
         );
     }
+
+
+    // =========================
+    // ESTADO INICIAL
+    // =========================
+
+    atualizarGrupoAparencia();
 }
