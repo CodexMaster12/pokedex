@@ -14,7 +14,7 @@ export function criarHeader() {
                 </span>
 
                 <span class="badge-geracao">
-                    Nova Geração: Sinnoh
+                    Nova Geração: Unova
                 </span>
 
             </div>
@@ -44,7 +44,7 @@ export function criarHeader() {
 
 
                 <span class="geracao-atual">
-                    #001 — #493
+                    #001 — #649
                 </span>
 
             </div>

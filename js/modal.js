@@ -1,5 +1,6 @@
 import {
-    buscarEspecie
+    buscarEspecie,
+    buscarPokemonPorIdentificador
 } from "./api.js";
 
 import {
@@ -103,11 +104,51 @@ function atualizarBotoesNavegacao() {
 
 
 // =========================
+// DADOS COMPLETOS
+// =========================
+
+// Verifica se o objeto recebido já possui
+// os dados completos do endpoint /pokemon.
+function pokemonPossuiDadosCompletos(
+    pokemon
+) {
+    return (
+        pokemon &&
+        pokemon.species &&
+        Array.isArray(pokemon.types) &&
+        pokemon.types.length > 0
+    );
+}
+
+
+// Busca os dados completos somente quando
+// eles ainda não estiverem disponíveis.
+async function obterPokemonCompleto(
+    pokemon
+) {
+    if (
+        pokemonPossuiDadosCompletos(
+            pokemon
+        )
+    ) {
+        return pokemon;
+    }
+
+
+    return await buscarPokemonPorIdentificador(
+        pokemon.id
+    );
+}
+
+
+// =========================
 // ABERTURA DO MODAL
 // =========================
 
-// Abre o modal com os detalhes do Pokémon
-export async function abrirModal(pokemon) {
+// Abre o modal com os detalhes do Pokémon.
+export async function abrirModal(
+    pokemon
+) {
     const modal =
         document.getElementById(
             "modal-pokemon"
@@ -120,16 +161,33 @@ export async function abrirModal(pokemon) {
         );
 
 
-    // Localiza o Pokémon na lista de navegação
+    if (
+        !modal ||
+        !detalhes
+    ) {
+        return;
+    }
+
+
+    // =========================
+    // ÍNDICE DE NAVEGAÇÃO
+    // =========================
+
     indicePokemonAtual =
         pokemonsNavegacao.findIndex(
             (item) => {
-                return item.id === pokemon.id;
+                return (
+                    item.id ===
+                    pokemon.id
+                );
             }
         );
 
 
-    // Mostra o modal
+    // =========================
+    // MOSTRA O MODAL IMEDIATAMENTE
+    // =========================
+
     modal.classList.add(
         "ativo"
     );
@@ -141,7 +199,6 @@ export async function abrirModal(pokemon) {
     );
 
 
-    // Impede rolagem da página ao fundo
     document.body.style.overflow =
         "hidden";
 
@@ -160,49 +217,103 @@ export async function abrirModal(pokemon) {
 
 
     try {
-        // Carrega os dados necessários ao mesmo tempo
+
+        // =========================
+        // COMPLETA O POKÉMON
+        // =========================
+
+        /*
+            Se o carregamento geral ainda
+            não chegou neste Pokémon,
+            buscamos somente ele.
+
+            O modal já está aberto enquanto
+            essa consulta acontece.
+        */
+        const pokemonCompleto =
+            await obterPokemonCompleto(
+                pokemon
+            );
+
+
+        // =========================
+        // ATUALIZA NAVEGAÇÃO
+        // =========================
+
+        /*
+            Guardamos o objeto completo na
+            própria lista de navegação.
+
+            Assim, voltar para este Pokémon
+            não exige nova consulta.
+        */
+        if (
+            indicePokemonAtual >= 0
+        ) {
+            pokemonsNavegacao[
+                indicePokemonAtual
+            ] = pokemonCompleto;
+        }
+
+
+        // =========================
+        // DADOS DO MODAL
+        // =========================
+
         const [
             especie,
             relacoesTipo,
             golpesPrincipais
         ] = await Promise.all([
+
             buscarEspecie(
-                pokemon
+                pokemonCompleto
             ),
 
             calcularRelacoesDeTipo(
-                pokemon
+                pokemonCompleto
             ),
 
             buscarGolpesPrincipais(
-                pokemon
+                pokemonCompleto
             )
+
         ]);
 
 
-        // Cria o conteúdo principal
+        // =========================
+        // CONTEÚDO PRINCIPAL
+        // =========================
+
         detalhes.innerHTML =
             criarConteudoModal(
-                pokemon,
+                pokemonCompleto,
                 especie,
                 relacoesTipo,
                 golpesPrincipais
             );
 
 
-        // Ativa os controles de forma
+        // =========================
+        // FORMAS
+        // =========================
+
         configurarFormasModal(
-            pokemon
+            pokemonCompleto
         );
 
 
-        // Carrega a cadeia evolutiva
+        // =========================
+        // EVOLUÇÕES
+        // =========================
+
         await carregarEvolucoesModal(
-            pokemon
+            pokemonCompleto
         );
 
 
         atualizarBotoesNavegacao();
+
 
     } catch (erro) {
         console.error(
@@ -278,6 +389,11 @@ function fecharModal() {
         );
 
 
+    if (!modal) {
+        return;
+    }
+
+
     modal.classList.remove(
         "ativo"
     );
@@ -289,7 +405,6 @@ function fecharModal() {
     );
 
 
-    // Libera a rolagem da página
     document.body.style.overflow =
         "";
 }
@@ -299,7 +414,6 @@ function fecharModal() {
 // CONFIGURAÇÃO DO MODAL
 // =========================
 
-// Configura todas as interações do modal
 export function configurarModal() {
     const modal =
         document.getElementById(
@@ -329,24 +443,26 @@ export function configurarModal() {
     // FECHAR
     // =========================
 
-    botaoFechar.addEventListener(
-        "click",
-        fecharModal
-    );
+    if (botaoFechar) {
+        botaoFechar.addEventListener(
+            "click",
+            fecharModal
+        );
+    }
 
 
-    // Clique fora do conteúdo
-    modal.addEventListener(
-        "click",
-        (evento) => {
-
-            if (
-                evento.target === modal
-            ) {
-                fecharModal();
+    if (modal) {
+        modal.addEventListener(
+            "click",
+            (evento) => {
+                if (
+                    evento.target === modal
+                ) {
+                    fecharModal();
+                }
             }
-        }
-    );
+        );
+    }
 
 
     // =========================
@@ -378,6 +494,7 @@ export function configurarModal() {
         async (evento) => {
 
             if (
+                !modal ||
                 !modal.classList.contains(
                     "ativo"
                 )

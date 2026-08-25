@@ -4,6 +4,25 @@ import {
 
 
 // =========================
+// UTILIDADES
+// =========================
+
+function criarTiposFallback(
+    tipos = []
+) {
+    return tipos.map(
+        (tipo) => {
+            return {
+                type: {
+                    name: tipo
+                }
+            };
+        }
+    );
+}
+
+
+// =========================
 // CADEIAS REGIONAIS
 // =========================
 
@@ -12,7 +31,6 @@ const CADEIAS_REGIONAIS = [
     // =========================
     // GERAÇÃO 1
     // =========================
-
 
     // Rattata → Raticate Alola
     {
@@ -245,7 +263,6 @@ const CADEIAS_REGIONAIS = [
     // GERAÇÃO 2
     // =========================
 
-
     // Wooper Paldea → Clodsire
     {
         familia: [194],
@@ -353,12 +370,90 @@ const CADEIAS_REGIONAIS = [
                 forma: null
             }
         ]
+    },
+
+
+    // =========================
+    // GERAÇÃO 5
+    // =========================
+
+    // Darumaka Galar → Darmanitan Galar
+    {
+        familia: [554, 555],
+
+        cadeia: [
+            {
+                numero: 554,
+                nome: "darumaka",
+                api: "darumaka-galar",
+                forma: "Galar",
+                tiposFallback: [
+                    "ice"
+                ]
+            },
+
+            {
+                numero: 555,
+                nome: "darmanitan",
+                api: "darmanitan-galar-standard",
+                forma: "Galar",
+                tiposFallback: [
+                    "ice"
+                ]
+            }
+        ]
+    },
+
+
+    // Yamask Galar → Runerigus
+    {
+        familia: [562],
+
+        cadeia: [
+            {
+                numero: 562,
+                nome: "yamask",
+                api: "yamask-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 867,
+                nome: "runerigus",
+                api: "runerigus",
+                forma: null
+            }
+        ]
+    },
+
+
+    // Zorua Hisui → Zoroark Hisui
+    {
+        familia: [570, 571],
+
+        cadeia: [
+            {
+                numero: 570,
+                nome: "zorua",
+                api: "zorua-hisui",
+                forma: "Hisui"
+            },
+
+            {
+                numero: 571,
+                nome: "zoroark",
+                api: "zoroark-hisui",
+                forma: "Hisui"
+            }
+        ]
     }
+
 ];
 
 
 // =========================
 // CARREGAMENTO
+
 // =========================
 
 async function carregarCadeia(
@@ -377,6 +472,28 @@ async function carregarCadeia(
                 );
 
 
+            /*
+                Em condições normais os tipos
+                vêm diretamente da PokéAPI.
+
+                O fallback serve apenas para
+                impedir uma forma conhecida de
+                aparecer sem tipo.
+            */
+            if (
+                etapa.tiposFallback &&
+                (
+                    !Array.isArray(pokemon.types) ||
+                    pokemon.types.length === 0
+                )
+            ) {
+                pokemon.types =
+                    criarTiposFallback(
+                        etapa.tiposFallback
+                    );
+            }
+
+
             etapas.push({
                 pokemon,
 
@@ -392,14 +509,8 @@ async function carregarCadeia(
                 evolucoes: []
             });
 
-        } catch (erro) {
 
-            /*
-                Caso uma evolução futura ainda
-                não esteja disponível na API,
-                ela não deve quebrar o restante
-                da árvore.
-            */
+        } catch (erro) {
 
             console.warn(
                 `Não foi possível carregar ${etapa.api}.`,
@@ -411,7 +522,12 @@ async function carregarCadeia(
                 pokemon: {
                     id: etapa.numero,
                     name: etapa.nome,
-                    types: [],
+
+                    types:
+                        criarTiposFallback(
+                            etapa.tiposFallback || []
+                        ),
+
                     placeholder: true
                 },
 
@@ -438,15 +554,12 @@ async function carregarCadeia(
 // CONSULTA
 // =========================
 
-// Retorna as cadeias regionais relacionadas
-// ao Pokémon aberto.
 export async function carregarCadeiasRegionais(
     pokemonId
 ) {
     const configuracoes =
         CADEIAS_REGIONAIS.filter(
             (configuracao) => {
-
                 return configuracao.familia.includes(
                     pokemonId
                 );
@@ -457,7 +570,6 @@ export async function carregarCadeiasRegionais(
     return await Promise.all(
         configuracoes.map(
             (configuracao) => {
-
                 return carregarCadeia(
                     configuracao
                 );

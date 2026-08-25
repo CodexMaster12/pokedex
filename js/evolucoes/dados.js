@@ -17,7 +17,9 @@ import {
 
 // Extrai o número nacional através da URL
 // da espécie retornada pela PokéAPI.
-function extrairIdDaUrl(url) {
+function extrairIdDaUrl(
+    url
+) {
     if (!url) {
         return null;
     }
@@ -47,10 +49,14 @@ function extrairIdDaUrl(url) {
 // ÁRVORE BÁSICA
 // =========================
 
-// Mantém nome e ID da espécie.
-// O ID é importante caso o endpoint /pokemon
-// daquela espécie não esteja disponível.
-export function extrairEvolucoes(cadeia) {
+export function extrairEvolucoes(
+    cadeia
+) {
+    if (!cadeia) {
+        return null;
+    }
+
+
     return {
         nome:
             cadeia.species.name,
@@ -63,7 +69,6 @@ export function extrairEvolucoes(cadeia) {
         evolucoes:
             cadeia.evolves_to.map(
                 (proximaEvolucao) => {
-
                     return extrairEvolucoes(
                         proximaEvolucao
                     );
@@ -77,39 +82,36 @@ export function extrairEvolucoes(cadeia) {
 // BUSCA SEGURA
 // =========================
 
-async function buscarPokemonSeguro(no) {
+async function buscarPokemonSeguro(
+    no
+) {
     try {
         return await buscarPokemonPorNome(
             no.nome
         );
 
+
     } catch (erro) {
 
         /*
-            Se for um Pokémon futuro que queremos
-            mostrar, a ausência de dados não deve
-            quebrar todo o modal.
-
-            Exemplo atual:
-            Dudunsparce.
+            Pokémon futuros permitidos podem
+            aparecer mesmo que a consulta
+            completa falhe.
         */
-
         if (
             no.id &&
             pokemonDeveAparecer(no.id)
         ) {
             console.warn(
-                `Dados completos de ${no.nome} indisponíveis. Usando placeholder.`
+                `Dados completos de ${no.nome} indisponíveis. Usando placeholder.`,
+                erro
             );
 
 
             return {
                 id: no.id,
-
                 name: no.nome,
-
                 types: [],
-
                 placeholder: true
             };
         }
@@ -127,17 +129,56 @@ async function buscarPokemonSeguro(no) {
 export async function carregarDadosArvore(
     no
 ) {
+    if (!no) {
+        return [];
+    }
+
+
+    /*
+        Se o Pokémon nem faz parte da Pokédex
+        atual nem da lista de futuros, não
+        precisamos consultar /pokemon para ele.
+
+        Ainda percorremos os descendentes,
+        caso exista algum nó permitido abaixo.
+    */
+    if (
+        no.id &&
+        !pokemonDeveAparecer(no.id)
+    ) {
+        const descendentes =
+            await Promise.all(
+                no.evolucoes.map(
+                    (evolucao) => {
+                        return carregarDadosArvore(
+                            evolucao
+                        );
+                    }
+                )
+            );
+
+
+        return descendentes.flat();
+    }
+
+
     const pokemon =
         await buscarPokemonSeguro(
             no
         );
 
 
-    const evolucoes =
-        await Promise.all(
+    /*
+        Cada descendente é tratado de maneira
+        independente.
+
+        Assim, uma evolução problemática não
+        destrói toda a árvore.
+    */
+    const resultadosEvolucoes =
+        await Promise.allSettled(
             no.evolucoes.map(
                 (evolucao) => {
-
                     return carregarDadosArvore(
                         evolucao
                     );
@@ -147,31 +188,69 @@ export async function carregarDadosArvore(
 
 
     let evolucoesValidas =
-        evolucoes.flat();
+        resultadosEvolucoes
+            .filter(
+                (resultado) => {
+                    return (
+                        resultado.status ===
+                        "fulfilled"
+                    );
+                }
+            )
+            .flatMap(
+                (resultado) => {
+                    return resultado.value;
+                }
+            );
 
 
-    // Evoluções alternativas
-    // Ex.: Pikachu → Raichu Alola.
-    const alternativas =
-        await carregarEvolucoesAlternativas(
-            pokemon.id
+    resultadosEvolucoes
+        .filter(
+            (resultado) => {
+                return (
+                    resultado.status ===
+                    "rejected"
+                );
+            }
+        )
+        .forEach(
+            (resultado) => {
+                console.warn(
+                    "Uma evolução não pôde ser carregada.",
+                    resultado.reason
+                );
+            }
         );
 
 
-    evolucoesValidas = [
-        ...evolucoesValidas,
-        ...alternativas
-    ];
+    // =========================
+    // EVOLUÇÕES ALTERNATIVAS
+    // =========================
+
+    try {
+        const alternativas =
+            await carregarEvolucoesAlternativas(
+                pokemon.id
+            );
 
 
-    // Se não faz parte do projeto nem da
-    // lista futura, não mostramos esse nó.
-    if (
-        !pokemonDeveAparecer(
-            pokemon.id
-        )
-    ) {
-        return evolucoesValidas;
+        evolucoesValidas = [
+            ...evolucoesValidas,
+            ...alternativas
+        ];
+
+
+    } catch (erro) {
+
+        /*
+            Uma forma alternativa com problema
+            também não deve destruir a árvore
+            principal.
+        */
+        console.warn(
+            `Não foi possível carregar evoluções alternativas de ${pokemon.name}.`,
+            erro
+        );
     }
 
 
@@ -180,9 +259,11 @@ export async function carregarDadosArvore(
             pokemon,
 
             numeroExibido:
+                no.id ??
                 pokemon.id,
 
             nomeBase:
+                no.nome ??
                 pokemon.name,
 
             forma: null,

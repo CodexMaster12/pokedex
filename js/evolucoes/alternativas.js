@@ -9,6 +9,10 @@ import {
 
 const EVOLUCOES_ALTERNATIVAS = {
 
+    // =========================
+    // GERAÇÃO 1
+    // =========================
+
     // Pikachu → Raichu Alola
     25: [
         {
@@ -53,6 +57,10 @@ const EVOLUCOES_ALTERNATIVAS = {
     ],
 
 
+    // =========================
+    // GERAÇÃO 2
+    // =========================
+
     // Quilava → Typhlosion Hisui
     156: [
         {
@@ -61,7 +69,45 @@ const EVOLUCOES_ALTERNATIVAS = {
             api: "typhlosion-hisui",
             forma: "Hisui"
         }
+    ],
+
+
+    // =========================
+    // GERAÇÃO 5
+    // =========================
+
+    // Dewott → Samurott Hisui
+    502: [
+        {
+            numero: 503,
+            nome: "samurott",
+            api: "samurott-hisui",
+            forma: "Hisui"
+        }
+    ],
+
+
+    // Petilil → Lilligant Hisui
+    548: [
+        {
+            numero: 549,
+            nome: "lilligant",
+            api: "lilligant-hisui",
+            forma: "Hisui"
+        }
+    ],
+
+
+    // Rufflet → Braviary Hisui
+    627: [
+        {
+            numero: 628,
+            nome: "braviary",
+            api: "braviary-hisui",
+            forma: "Hisui"
+        }
     ]
+
 };
 
 
@@ -82,7 +128,6 @@ export async function carregarEvolucoesAlternativas(
         await Promise.all(
             alternativas.map(
                 async (alternativa) => {
-
                     try {
                         const pokemon =
                             await buscarPokemonPorIdentificador(
@@ -92,24 +137,22 @@ export async function carregarEvolucoesAlternativas(
 
                         return {
                             pokemon,
-
                             numeroExibido:
                                 alternativa.numero,
-
                             nomeBase:
                                 alternativa.nome,
-
                             forma:
                                 alternativa.forma,
-
                             evolucoes: []
                         };
+
 
                     } catch (erro) {
                         console.warn(
                             `Não foi possível carregar a forma ${alternativa.api}.`,
                             erro
                         );
+
 
                         return null;
                     }
@@ -119,6 +162,7 @@ export async function carregarEvolucoesAlternativas(
 
 
     return resultados.filter(
-        (resultado) => resultado !== null
+        (resultado) =>
+            resultado !== null
     );
 }

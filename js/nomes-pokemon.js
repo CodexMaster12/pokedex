@@ -5,16 +5,39 @@
 
 // Nomes que precisam de formatação especial
 const NOMES_ESPECIAIS = {
+
+    // =========================
+    // GERAÇÕES ANTERIORES
+    // =========================
+
     "nidoran-f": "Nidoran ♀",
     "nidoran-m": "Nidoran ♂",
     "mr-mime": "Mr. Mime",
     "farfetchd": "Farfetch'd",
     "mime-jr": "Mime Jr.",
-    "deoxys-normal": "Deoxys",
 
+    "deoxys-normal": "Deoxys",
     "wormadam-plant": "Wormadam",
     "giratina-altered": "Giratina",
-    "shaymin-land": "Shaymin"
+    "shaymin-land": "Shaymin",
+
+
+    // =========================
+    // GERAÇÃO 5
+    // =========================
+
+    "basculin-red-striped": "Basculin",
+    "darmanitan-standard": "Darmanitan",
+
+    "frillish": "Frillish",
+    "jellicent": "Jellicent",
+
+    "tornadus-incarnate": "Tornadus",
+    "thundurus-incarnate": "Thundurus",
+    "landorus-incarnate": "Landorus",
+
+    "keldeo-ordinary": "Keldeo",
+    "meloetta-aria": "Meloetta"
 };
 
 
@@ -23,7 +46,9 @@ const NOMES_ESPECIAIS = {
 // =========================
 
 // Formata o nome do Pokémon para exibição.
-export function formatarNomePokemon(nome) {
+export function formatarNomePokemon(
+    nome
+) {
     const nomeEspecial =
         NOMES_ESPECIAIS[nome];
 
@@ -35,12 +60,13 @@ export function formatarNomePokemon(nome) {
 
     return nome
         .split("-")
-        .map((parte) => {
-
-            return (
-                parte.charAt(0).toUpperCase() +
-                parte.slice(1)
-            );
-        })
+        .map(
+            (parte) => {
+                return (
+                    parte.charAt(0).toUpperCase() +
+                    parte.slice(1)
+                );
+            }
+        )
         .join(" ");
 }

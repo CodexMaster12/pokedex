@@ -14,6 +14,10 @@ import {
     DIFERENCAS_SEXO_GEN_4
 } from "./gen-4.js";
 
+import {
+    DIFERENCAS_SEXO_GEN_5
+} from "./gen-5.js";
+
 
 // =========================
 // REGISTRO GLOBAL
@@ -24,15 +28,11 @@ import {
 // nas gerações disponíveis.
 const DIFERENCAS_SEXO =
     Object.freeze({
-
         ...DIFERENCAS_SEXO_GEN_1,
-
         ...DIFERENCAS_SEXO_GEN_2,
-
         ...DIFERENCAS_SEXO_GEN_3,
-
-        ...DIFERENCAS_SEXO_GEN_4
-
+        ...DIFERENCAS_SEXO_GEN_4,
+        ...DIFERENCAS_SEXO_GEN_5
     });
 
 

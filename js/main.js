@@ -7,7 +7,8 @@ import {
 } from "./controles-ui.js";
 
 import {
-    buscarPokemons
+    buscarListaPokemons,
+    buscarPokemonsDetalhados
 } from "./api.js";
 
 import {
@@ -43,28 +44,76 @@ async function iniciarPokedex() {
 
 
         // =========================
-        // DADOS
+        // LISTA RÁPIDA
         // =========================
 
-        const pokemons =
-            await buscarPokemons();
+        const listaPokemons =
+            await buscarListaPokemons();
 
 
         // =========================
-        // NAVEGAÇÃO DO MODAL
+        // NAVEGAÇÃO IMEDIATA
         // =========================
 
+        /*
+            A navegação anterior/próximo
+            já pode funcionar usando apenas
+            número e nome.
+
+            Não precisamos esperar os
+            649 detalhes da PokéAPI.
+        */
         definirPokemonsNavegacao(
-            pokemons
+            listaPokemons
         );
 
 
         // =========================
-        // CARDS
+        // CARDS IMEDIATOS
         // =========================
 
         exibirPokemons(
-            pokemons
+            listaPokemons
+        );
+
+
+        // =========================
+        // DETALHES EM SEGUNDO PLANO
+        // =========================
+
+        /*
+            Os cards já estão visíveis.
+
+            Agora carregamos tipos e demais
+            informações sem impedir o uso
+            da Pokédex.
+        */
+        const pokemonsDetalhados =
+            await buscarPokemonsDetalhados(
+                listaPokemons
+            );
+
+
+        // =========================
+        // ATUALIZA NAVEGAÇÃO
+        // =========================
+
+        /*
+            Substituímos a lista básica pela
+            lista completa quando ela estiver
+            pronta.
+        */
+        definirPokemonsNavegacao(
+            pokemonsDetalhados
+        );
+
+
+        // =========================
+        // CARDS COMPLETOS
+        // =========================
+
+        exibirPokemons(
+            pokemonsDetalhados
         );
 
 
@@ -73,7 +122,7 @@ async function iniciarPokedex() {
         // =========================
 
         configurarFiltros(
-            pokemons,
+            pokemonsDetalhados,
             exibirPokemons
         );
 

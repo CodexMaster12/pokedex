@@ -18,6 +18,10 @@ import {
     FORMAS_GEN_4
 } from "./gen-4.js";
 
+import {
+    FORMAS_GEN_5
+} from "./gen-5.js";
+
 
 // =========================
 // REGISTRO GLOBAL
@@ -30,7 +34,8 @@ const FORMAS_POKEMON =
         ...FORMAS_GEN_1,
         ...FORMAS_GEN_2,
         ...FORMAS_GEN_3,
-        ...FORMAS_GEN_4
+        ...FORMAS_GEN_4,
+        ...FORMAS_GEN_5
     });
 
 

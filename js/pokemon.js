@@ -20,9 +20,13 @@ import {
 // CARD DO POKÉMON
 // =========================
 
-function criarCardPokemon(pokemon) {
+function criarCardPokemon(
+    pokemon
+) {
     const numeroFormatado =
-        String(pokemon.id).padStart(
+        String(
+            pokemon.id
+        ).padStart(
             3,
             "0"
         );
@@ -47,11 +51,15 @@ function criarCardPokemon(pokemon) {
 
 
     const tipos =
-        pokemon.types.map(
-            (tipo) => {
-                return tipo.type.name;
-            }
-        );
+        Array.isArray(
+            pokemon.types
+        )
+            ? pokemon.types.map(
+                (tipo) => {
+                    return tipo.type.name;
+                }
+            )
+            : [];
 
 
     const card =
@@ -100,26 +108,35 @@ function criarCardPokemon(pokemon) {
         </h2>
 
         <div class="tipos-pokemon">
-
-            ${tipos
-                .map(
-                    (tipo) => `
-                        <span class="tipo ${tipo}">
-                            ${traduzirTipo(tipo)}
-                        </span>
-                    `
-                )
-                .join("")
+            ${
+                tipos
+                    .map(
+                        (tipo) => `
+                            <span class="tipo ${tipo}">
+                                ${traduzirTipo(tipo)}
+                            </span>
+                        `
+                    )
+                    .join("")
             }
-
         </div>
     `;
 
 
-    // Clique
+    // =========================
+    // CLIQUE
+    // =========================
+
     card.addEventListener(
         "click",
         () => {
+            /*
+                O modal aparece imediatamente.
+
+                Se os dados completos ainda
+                não estiverem carregados,
+                o próprio modal irá buscá-los.
+            */
             abrirModal(
                 pokemon
             );
@@ -127,16 +144,19 @@ function criarCardPokemon(pokemon) {
     );
 
 
-    // Teclado
+    // =========================
+    // TECLADO
+    // =========================
+
     card.addEventListener(
         "keydown",
         (evento) => {
-
             if (
                 evento.key === "Enter" ||
                 evento.key === " "
             ) {
                 evento.preventDefault();
+
 
                 abrirModal(
                     pokemon
@@ -154,7 +174,6 @@ function criarCardPokemon(pokemon) {
 // LISTA DE POKÉMON
 // =========================
 
-// Cria e exibe os cards dos Pokémon.
 export function exibirPokemons(
     pokemons
 ) {
@@ -164,21 +183,34 @@ export function exibirPokemons(
         );
 
 
+    if (!lista) {
+        return;
+    }
+
+
     lista.innerHTML = "";
+
+
+    const fragmento =
+        document.createDocumentFragment();
 
 
     pokemons.forEach(
         (pokemon) => {
-
             const card =
                 criarCardPokemon(
                     pokemon
                 );
 
 
-            lista.appendChild(
+            fragmento.appendChild(
                 card
             );
         }
+    );
+
+
+    lista.appendChild(
+        fragmento
     );
 }

@@ -203,6 +203,10 @@ export function criarControles() {
                                 Sinnoh
                             </option>
 
+                            <option value="5">
+                                Unova
+                            </option>
+
                         </select>
 
                     </div>

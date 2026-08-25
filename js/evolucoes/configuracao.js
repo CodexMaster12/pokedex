@@ -4,8 +4,9 @@
 
 
 // Último Pokémon atualmente implementado.
-// Gen 1 + Gen 2 + Gen 3 + Gen 4.
-export const LIMITE_POKEDEX_ATUAL = 493;
+//
+// Gen 1 + Gen 2 + Gen 3 + Gen 4 + Gen 5.
+export const LIMITE_POKEDEX_ATUAL = 649;
 
 
 // Pokémon de gerações futuras que já queremos
@@ -16,13 +17,9 @@ export const POKEMONS_FUTUROS = new Set([
     // RELACIONADOS À GEN 1
     // =========================
 
-    // Evoluções posteriores à Gen 4
     700, // Sylveon
-
     865, // Sirfetch'd
-
     900, // Kleavor
-
     979, // Annihilape
 
 
@@ -30,14 +27,20 @@ export const POKEMONS_FUTUROS = new Set([
     // RELACIONADOS À GEN 2
     // =========================
 
-    // Evoluções posteriores à Gen 4
     899, // Wyrdeer
-
     901, // Ursaluna
-
     981, // Farigiraf
+    982, // Dudunsparce
 
-    982  // Dudunsparce
+
+    // =========================
+    // RELACIONADOS À GEN 5
+    // =========================
+
+    867, // Runerigus
+    902, // Basculegion
+    983  // Kingambit
+
 ]);
 
 
@@ -75,12 +78,24 @@ export const POKEMONS_LAYOUT_VERTICAL = new Set([
     // GERAÇÃO 4 — SINNOH
     // =========================
 
-    412  // Burmy
+    412, // Burmy
+
+
+    // =========================
+    // GERAÇÃO 5 — UNOVA
+    // =========================
+
+    502, // Dewott
+    548, // Petilil
+    627  // Rufflet
+
 ]);
 
 
 // Diz se o Pokémon deve aparecer na árvore.
-export function pokemonDeveAparecer(id) {
+export function pokemonDeveAparecer(
+    id
+) {
     return (
         id <= LIMITE_POKEDEX_ATUAL ||
         POKEMONS_FUTUROS.has(id)
@@ -90,6 +105,8 @@ export function pokemonDeveAparecer(id) {
 
 // Diz se já temos imagem oficial dele
 // dentro das gerações implementadas.
-export function pokemonPossuiImagem(id) {
+export function pokemonPossuiImagem(
+    id
+) {
     return id <= LIMITE_POKEDEX_ATUAL;
 }

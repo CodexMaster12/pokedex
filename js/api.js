@@ -14,16 +14,27 @@ const API_URL =
 // Gen 2: #152 - #251
 // Gen 3: #252 - #386
 // Gen 4: #387 - #493
-const LIMITE_POKEDEX = 493;
+// Gen 5: #494 - #649
+const LIMITE_POKEDEX = 649;
+
+
+// =========================
+// CACHE
+// =========================
+
+// Evita buscar novamente um Pokémon
+// que já foi carregado anteriormente.
+const CACHE_POKEMON =
+    new Map();
 
 
 // =========================
 // FUNÇÃO AUXILIAR
 // =========================
 
-// Faz uma requisição e retorna
-// os dados já convertidos para JSON.
-async function buscarDados(url) {
+async function buscarDados(
+    url
+) {
     const resposta =
         await fetch(url);
 
@@ -40,32 +51,43 @@ async function buscarDados(url) {
 
 
 // =========================
-// LISTA DE POKÉMON
+// LISTA RÁPIDA
 // =========================
 
-// Busca todos os Pokémon disponíveis
-// atualmente no projeto.
-export async function buscarPokemons() {
+// Busca somente:
+//
+// - id
+// - nome
+// - URL
+//
+// Não busca os detalhes dos 649 Pokémon.
+// Isso permite montar os cards imediatamente.
+export async function buscarListaPokemons() {
     const dados =
         await buscarDados(
             `${API_URL}/pokemon?limit=${LIMITE_POKEDEX}&offset=0`
         );
 
 
-    // Busca os detalhes de todos os Pokémon
-    const pokemonsDetalhados =
-        await Promise.all(
-            dados.results.map(
-                (pokemon) => {
-                    return buscarDados(
-                        pokemon.url
-                    );
-                }
-            )
-        );
+    return dados.results.map(
+        (pokemon, indice) => {
+            return {
+                id:
+                    indice + 1,
 
+                name:
+                    pokemon.name,
 
-    return pokemonsDetalhados;
+                url:
+                    pokemon.url,
+
+                types: [],
+
+                carregado:
+                    false
+            };
+        }
+    );
 }
 
 
@@ -73,19 +95,156 @@ export async function buscarPokemons() {
 // POKÉMON POR IDENTIFICADOR
 // =========================
 
-// Busca um Pokémon por qualquer identificador
-// aceito pela PokéAPI.
-//
-// Exemplos:
-// 25
-// "pikachu"
-// "raichu-alola"
-// "charizard-mega-x"
 export async function buscarPokemonPorIdentificador(
     identificador
 ) {
-    return await buscarDados(
-        `${API_URL}/pokemon/${identificador}`
+    const chave =
+        String(
+            identificador
+        );
+
+
+    if (
+        CACHE_POKEMON.has(
+            chave
+        )
+    ) {
+        return CACHE_POKEMON.get(
+            chave
+        );
+    }
+
+
+    const pokemon =
+        await buscarDados(
+            `${API_URL}/pokemon/${identificador}`
+        );
+
+
+    /*
+        Guardamos tanto pelo ID quanto
+        pelo nome para reutilização futura.
+    */
+    CACHE_POKEMON.set(
+        String(pokemon.id),
+        pokemon
+    );
+
+    CACHE_POKEMON.set(
+        pokemon.name,
+        pokemon
+    );
+
+
+    return pokemon;
+}
+
+
+// =========================
+// DETALHES DA POKÉDEX
+// =========================
+
+// Carrega os detalhes em segundo plano.
+//
+// Existe um número limitado de workers.
+// Cada worker pega um Pokémon de cada vez,
+// evitando 649 fetches simultâneos.
+export async function buscarPokemonsDetalhados(
+    listaPokemons,
+    quantidadeWorkers = 30
+) {
+    const resultados =
+        new Array(
+            listaPokemons.length
+        );
+
+
+    let proximoIndice = 0;
+
+
+    async function worker() {
+        while (
+            proximoIndice <
+            listaPokemons.length
+        ) {
+            const indice =
+                proximoIndice++;
+
+
+            const pokemonBase =
+                listaPokemons[
+                    indice
+                ];
+
+
+            try {
+                const pokemon =
+                    await buscarPokemonPorIdentificador(
+                        pokemonBase.id
+                    );
+
+
+                pokemon.carregado =
+                    true;
+
+
+                resultados[
+                    indice
+                ] = pokemon;
+
+
+            } catch (erro) {
+                console.warn(
+                    `Não foi possível carregar #${pokemonBase.id} ${pokemonBase.name}.`,
+                    erro
+                );
+
+
+                resultados[
+                    indice
+                ] = pokemonBase;
+            }
+        }
+    }
+
+
+    const workers =
+        Array.from(
+            {
+                length:
+                    Math.min(
+                        quantidadeWorkers,
+                        listaPokemons.length
+                    )
+            },
+
+            () => worker()
+        );
+
+
+    await Promise.all(
+        workers
+    );
+
+
+    return resultados;
+}
+
+
+// =========================
+// COMPATIBILIDADE
+// =========================
+
+// Mantemos esta função caso algum outro
+// ponto do projeto ainda utilize
+// buscarPokemons().
+export async function buscarPokemons() {
+    const lista =
+        await buscarListaPokemons();
+
+
+    return await buscarPokemonsDetalhados(
+        lista
     );
 }
 
@@ -94,15 +253,6 @@ export async function buscarPokemonPorIdentificador(
 // FORMA POR IDENTIFICADOR
 // =========================
 
-// Busca uma forma visual registrada
-// no endpoint /pokemon-form.
-//
-// Exemplos:
-// "burmy-sandy"
-// "cherrim-sunshine"
-// "shellos-east"
-// "gastrodon-east"
-// "arceus-bug"
 export async function buscarFormaPokemonPorIdentificador(
     identificador
 ) {
@@ -116,8 +266,6 @@ export async function buscarFormaPokemonPorIdentificador(
 // POKÉMON POR NOME
 // =========================
 
-// Mantemos esta função porque ela deixa
-// mais clara a intenção em outros arquivos.
 export async function buscarPokemonPorNome(
     nome
 ) {
@@ -131,7 +279,6 @@ export async function buscarPokemonPorNome(
 // ESPÉCIE
 // =========================
 
-// Busca os dados da espécie do Pokémon.
 export async function buscarEspecie(
     pokemon
 ) {
@@ -145,8 +292,6 @@ export async function buscarEspecie(
 // EVOLUÇÕES
 // =========================
 
-// Busca a cadeia de evolução
-// relacionada ao Pokémon.
 export async function buscarEvolucoes(
     pokemon
 ) {
