@@ -5,10 +5,11 @@
 .lista-pokemon {
     display: grid;
 
-    grid-template-columns: repeat(
-        auto-fill,
-        minmax(200px, 1fr)
-    );
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(200px, 1fr)
+        );
 
     gap: 20px;
 }
@@ -19,17 +20,18 @@
 ========================= */
 
 .card-pokemon {
+    padding: 20px;
+
     background-color: white;
 
     border-radius: 12px;
 
-    padding: 20px;
-
     text-align: center;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
     cursor: pointer;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.1);
 
     transition:
         transform 0.2s,
@@ -41,7 +43,26 @@
 .card-pokemon:hover {
     transform: translateY(-3px);
 
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+/*
+    Destaque para navegação por teclado.
+
+    Os cards recebem tabindex="0"
+    através do JavaScript.
+*/
+.card-pokemon:focus-visible {
+    outline: 3px solid rgba(214, 40, 40, 0.35);
+
+    outline-offset: 3px;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -109,11 +130,11 @@
 
     justify-content: center;
 
+    flex-wrap: wrap;
+
     gap: 6px;
 
     margin-top: 10px;
-
-    flex-wrap: wrap;
 }
 
 

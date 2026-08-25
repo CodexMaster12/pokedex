@@ -3,6 +3,10 @@ import {
 } from "./tipos.js";
 
 import {
+    formatarNomePokemon
+} from "./nomes-pokemon.js";
+
+import {
     obterGeracaoPorId
 } from "./geracoes.js";
 
@@ -42,35 +46,85 @@ const CORES_TIPOS = {
 
 
 // =========================
+// UTILIDADES
+// =========================
+
+function obterTiposPokemon(
+    pokemon
+) {
+    if (
+        !Array.isArray(
+            pokemon.types
+        )
+    ) {
+        return [];
+    }
+
+
+    return pokemon.types
+        .map(
+            (tipo) => {
+                return tipo?.type?.name;
+            }
+        )
+        .filter(Boolean);
+}
+
+
+function obterNomeExibicao(
+    pokemon
+) {
+    return formatarNomePokemon(
+        pokemon.name
+    );
+}
+
+
+// =========================
 // TIPOS
 // =========================
 
-// Preenche o filtro com os tipos disponíveis.
 function carregarTipos(
     pokemons,
     filtroTipo
 ) {
+    const valorAtual =
+        filtroTipo.value;
+
+
+    // Remove apenas os tipos antigos.
+    // Mantém "Todos os tipos".
+    filtroTipo
+        .querySelectorAll(
+            'option:not([value="todos"])'
+        )
+        .forEach(
+            (option) => {
+                option.remove();
+            }
+        );
+
+
     const tipos =
         pokemons.flatMap(
             (pokemon) => {
-
-                return pokemon.types.map(
-                    (tipo) => {
-                        return tipo.type.name;
-                    }
+                return obterTiposPokemon(
+                    pokemon
                 );
             }
         );
 
 
     const tiposUnicos =
-        [...new Set(tipos)];
+        [
+            ...new Set(
+                tipos
+            )
+        ];
 
 
-    // Ordena pelo nome traduzido.
     tiposUnicos.sort(
         (a, b) => {
-
             return traduzirTipo(a)
                 .localeCompare(
                     traduzirTipo(b),
@@ -82,7 +136,6 @@ function carregarTipos(
 
     tiposUnicos.forEach(
         (tipo) => {
-
             const option =
                 document.createElement(
                     "option"
@@ -113,6 +166,27 @@ function carregarTipos(
             );
         }
     );
+
+
+    // Preserva o tipo selecionado
+    // caso ele continue disponível.
+    const valorAindaExiste =
+        [
+            ...filtroTipo.options
+        ].some(
+            (option) => {
+                return (
+                    option.value ===
+                    valorAtual
+                );
+            }
+        );
+
+
+    filtroTipo.value =
+        valorAindaExiste
+            ? valorAtual
+            : "todos";
 }
 
 
@@ -129,11 +203,24 @@ function filtrarPorPesquisa(
     }
 
 
+    const buscaSemCerquilha =
+        textoBusca.replace(
+            /^#/,
+            ""
+        );
+
+
     return pokemons.filter(
         (pokemon) => {
-
-            const nome =
+            const nomeOriginal =
                 pokemon.name
+                    .toLowerCase();
+
+
+            const nomeExibicao =
+                obterNomeExibicao(
+                    pokemon
+                )
                     .toLowerCase();
 
 
@@ -151,15 +238,16 @@ function filtrarPorPesquisa(
 
 
             return (
-                nome.includes(
+                nomeOriginal.includes(
                     textoBusca
                 ) ||
-
-                numero ===
-                    textoBusca ||
-
-                numeroFormatado ===
+                nomeExibicao.includes(
                     textoBusca
+                ) ||
+                numero ===
+                    buscaSemCerquilha ||
+                numeroFormatado ===
+                    buscaSemCerquilha
             );
         }
     );
@@ -175,7 +263,8 @@ function filtrarPorTipo(
     tipoSelecionado
 ) {
     if (
-        tipoSelecionado === "todos"
+        tipoSelecionado ===
+        "todos"
     ) {
         return pokemons;
     }
@@ -183,15 +272,14 @@ function filtrarPorTipo(
 
     return pokemons.filter(
         (pokemon) => {
+            const tipos =
+                obterTiposPokemon(
+                    pokemon
+                );
 
-            return pokemon.types.some(
-                (tipo) => {
 
-                    return (
-                        tipo.type.name ===
-                        tipoSelecionado
-                    );
-                }
+            return tipos.includes(
+                tipoSelecionado
             );
         }
     );
@@ -207,7 +295,8 @@ function filtrarPorGeracao(
     geracaoSelecionada
 ) {
     if (
-        geracaoSelecionada === "todas"
+        geracaoSelecionada ===
+        "todas"
     ) {
         return pokemons;
     }
@@ -221,7 +310,6 @@ function filtrarPorGeracao(
 
     return pokemons.filter(
         (pokemon) => {
-
             return (
                 obterGeracaoPorId(
                     pokemon.id
@@ -242,7 +330,8 @@ function filtrarPorFormaRegional(
     regionalSelecionado
 ) {
     if (
-        regionalSelecionado === "todas"
+        regionalSelecionado ===
+        "todas"
     ) {
         return pokemons;
     }
@@ -250,7 +339,6 @@ function filtrarPorFormaRegional(
 
     return pokemons.filter(
         (pokemon) => {
-
             const formas =
                 obterFormasPokemon(
                     pokemon
@@ -259,11 +347,9 @@ function filtrarPorFormaRegional(
 
             return formas.some(
                 (forma) => {
-
                     return (
                         forma.id ===
                             regionalSelecionado ||
-
                         forma.id.startsWith(
                             `${regionalSelecionado}-`
                         )
@@ -288,50 +374,68 @@ function ordenarPokemons(
 
 
     if (
-        ordem === "numero-asc"
+        ordem ===
+        "numero-asc"
     ) {
         resultado.sort(
             (a, b) => {
                 return a.id - b.id;
             }
         );
+
+
+        return resultado;
     }
 
 
     if (
-        ordem === "numero-desc"
+        ordem ===
+        "numero-desc"
     ) {
         resultado.sort(
             (a, b) => {
                 return b.id - a.id;
             }
         );
+
+
+        return resultado;
     }
 
 
     if (
-        ordem === "nome-az"
-    ) {
-        resultado.sort(
-            (a, b) => {
-
-                return a.name.localeCompare(
-                    b.name
-                );
-            }
-        );
-    }
-
-
-    if (
+        ordem === "nome-az" ||
         ordem === "nome-za"
     ) {
         resultado.sort(
             (a, b) => {
+                const nomeA =
+                    obterNomeExibicao(
+                        a
+                    );
 
-                return b.name.localeCompare(
-                    a.name
-                );
+
+                const nomeB =
+                    obterNomeExibicao(
+                        b
+                    );
+
+
+                const comparacao =
+                    nomeA.localeCompare(
+                        nomeB,
+                        "pt-BR",
+                        {
+                            sensitivity:
+                                "base"
+                        }
+                    );
+
+
+                return ordem ===
+                    "nome-az"
+                        ? comparacao
+                        : -comparacao;
             }
         );
     }
@@ -379,8 +483,33 @@ export function configurarFiltros(
         );
 
 
+    if (
+        !campoBusca ||
+        !filtroTipo ||
+        !filtroGeracao ||
+        !filtroRegional ||
+        !campoOrdenacao
+    ) {
+        console.warn(
+            "Não foi possível configurar todos os filtros da Pokédex."
+        );
+
+        return null;
+    }
+
+
+    // =========================
+    // FONTE DE DADOS
+    // =========================
+
+    let pokemonsAtuais =
+        Array.isArray(pokemons)
+            ? [...pokemons]
+            : [];
+
+
     carregarTipos(
-        pokemons,
+        pokemonsAtuais,
         filtroTipo
     );
 
@@ -413,7 +542,7 @@ export function configurarFiltros(
 
 
         let resultado =
-            [...pokemons];
+            [...pokemonsAtuais];
 
 
         resultado =
@@ -451,8 +580,6 @@ export function configurarFiltros(
             );
 
 
-        // Mantém a navegação do modal
-        // sincronizada com os cards visíveis.
         definirPokemonsNavegacao(
             resultado
         );
@@ -461,6 +588,40 @@ export function configurarFiltros(
         exibirPokemons(
             resultado
         );
+    }
+
+
+    // =========================
+    // ATUALIZA DADOS
+    // =========================
+
+    function atualizarPokemons(
+        novosPokemons
+    ) {
+        if (
+            !Array.isArray(
+                novosPokemons
+            )
+        ) {
+            return;
+        }
+
+
+        pokemonsAtuais =
+            [...novosPokemons];
+
+
+        // Agora que temos os detalhes,
+        // podemos preencher os tipos.
+        carregarTipos(
+            pokemonsAtuais,
+            filtroTipo
+        );
+
+
+        // Preserva busca, geração,
+        // região, tipo e ordenação atuais.
+        aplicarFiltros();
     }
 
 
@@ -496,4 +657,14 @@ export function configurarFiltros(
         "change",
         aplicarFiltros
     );
+
+
+    // =========================
+    // CONTROLADOR
+    // =========================
+
+    return {
+        aplicarFiltros,
+        atualizarPokemons
+    };
 }

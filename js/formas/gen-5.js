@@ -1,39 +1,8 @@
 import {
     criarForma,
-    FORMA_NORMAL
+    criarListaFormas,
+    criarListaFormasComNomeNormal
 } from "./base.js";
-
-
-// =========================
-// FUNÇÕES AUXILIARES
-// =========================
-
-// Cria a lista de formas incluindo
-// sempre a forma normal.
-function criarListaFormas(
-    ...formas
-) {
-    return Object.freeze([
-        FORMA_NORMAL,
-        ...formas
-    ]);
-}
-
-
-// Permite alterar somente o nome
-// visual da forma normal.
-function criarListaFormasComNomeNormal(
-    nomeNormal,
-    ...formas
-) {
-    return Object.freeze([
-        criarForma(
-            "normal",
-            nomeNormal
-        ),
-        ...formas
-    ]);
-}
 
 
 // =========================
@@ -124,6 +93,7 @@ export const FORMAS_GEN_5 =
 
         // Forma normal:
         // Red-Striped Form
+
         550: criarListaFormasComNomeNormal(
             "Red-Striped",
 
@@ -251,6 +221,7 @@ export const FORMAS_GEN_5 =
 
         // Forma normal:
         // Spring
+
         585: criarListaFormasComNomeNormal(
             "Spring",
 
@@ -277,6 +248,7 @@ export const FORMAS_GEN_5 =
 
         // Forma normal:
         // Spring
+
         586: criarListaFormasComNomeNormal(
             "Spring",
 

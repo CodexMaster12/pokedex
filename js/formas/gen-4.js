@@ -1,40 +1,8 @@
 import {
     criarForma,
-    FORMA_NORMAL
+    criarListaFormas,
+    criarListaFormasComNomeNormal
 } from "./base.js";
-
-
-// =========================
-// FUNÇÃO AUXILIAR
-// =========================
-
-// Cria a lista de formas de um Pokémon
-// incluindo sempre a forma normal.
-function criarListaFormas(
-    ...formas
-) {
-    return Object.freeze([
-        FORMA_NORMAL,
-        ...formas
-    ]);
-}
-
-// Cria a lista de formas permitindo
-// personalizar somente o nome visual
-// da forma normal no seletor.
-function criarListaFormasComNomeNormal(
-    nomeNormal,
-    ...formas
-) {
-    return Object.freeze([
-        criarForma(
-            "normal",
-            nomeNormal
-        ),
-
-        ...formas
-    ]);
-}
 
 
 // =========================
@@ -156,7 +124,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         428: criarListaFormas(
-
             criarForma(
                 "mega",
                 "Mega",
@@ -170,7 +137,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         445: criarListaFormas(
-
             criarForma(
                 "mega",
                 "Mega",
@@ -190,7 +156,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         448: criarListaFormas(
-
             criarForma(
                 "mega",
                 "Mega",
@@ -210,7 +175,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         460: criarListaFormas(
-
             criarForma(
                 "mega",
                 "Mega",
@@ -224,7 +188,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         475: criarListaFormas(
-
             criarForma(
                 "mega",
                 "Mega",
@@ -252,7 +215,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         479: criarListaFormas(
-
             criarForma(
                 "heat",
                 "Heat",
@@ -290,7 +252,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         483: criarListaFormas(
-
             criarForma(
                 "origin",
                 "Origin",
@@ -304,7 +265,6 @@ export const FORMAS_GEN_4 =
         // =========================
 
         484: criarListaFormas(
-
             criarForma(
                 "origin",
                 "Origin",
@@ -334,7 +294,6 @@ export const FORMAS_GEN_4 =
         // Forma normal:
         // Altered Forme
         487: criarListaFormas(
-
             criarForma(
                 "origin",
                 "Origin",
@@ -384,7 +343,6 @@ export const FORMAS_GEN_4 =
         // As demais formas representam
         // os tipos assumidos pelo Arceus.
         493: criarListaFormas(
-
             criarForma(
                 "bug",
                 "Bug"

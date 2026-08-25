@@ -25,12 +25,29 @@ import {
 // ESTADO DO MODAL
 // =========================
 
-// Lista usada pela navegação anterior / próximo
+// Lista usada pela navegação
+// anterior / próximo.
 let pokemonsNavegacao = [];
 
 
-// Pokémon atualmente aberto
+// Índice atualmente aberto.
 let indicePokemonAtual = -1;
+
+
+// ID nacional atualmente aberto.
+let idPokemonAtual = null;
+
+
+// Identifica cada carregamento.
+//
+// Impede que uma resposta antiga da API
+// sobrescreva um Pokémon aberto depois.
+let idCarregamentoModal = 0;
+
+
+// Elemento que possuía foco antes
+// da abertura do modal.
+let elementoFocoAnterior = null;
 
 
 // =========================
@@ -43,7 +60,32 @@ export function definirPokemonsNavegacao(
     pokemons
 ) {
     pokemonsNavegacao =
-        [...pokemons];
+        Array.isArray(pokemons)
+            ? [...pokemons]
+            : [];
+
+
+    /*
+        Caso a lista seja atualizada enquanto
+        um Pokémon está aberto, recalculamos
+        sua posição pelo ID.
+
+        Isso evita índices desatualizados.
+    */
+    if (idPokemonAtual !== null) {
+        indicePokemonAtual =
+            pokemonsNavegacao.findIndex(
+                (pokemon) => {
+                    return (
+                        pokemon.id ===
+                        idPokemonAtual
+                    );
+                }
+            );
+
+
+        atualizarBotoesNavegacao();
+    }
 }
 
 
@@ -142,6 +184,210 @@ async function obterPokemonCompleto(
 
 
 // =========================
+// CONTROLE DE CARREGAMENTO
+// =========================
+
+// Verifica se uma operação assíncrona ainda
+// pertence ao Pokémon atualmente aberto.
+function carregamentoAindaEhAtual(
+    identificadorCarregamento,
+    pokemonId
+) {
+    return (
+        identificadorCarregamento ===
+            idCarregamentoModal &&
+        pokemonId ===
+            idPokemonAtual
+    );
+}
+
+
+// =========================
+// FOCO
+// =========================
+
+// Retorna os elementos que podem receber
+// foco dentro do modal.
+function obterElementosFocaveis(
+    modal
+) {
+    const seletor = [
+        "a[href]",
+        "button:not([disabled])",
+        "input:not([disabled])",
+        "select:not([disabled])",
+        "textarea:not([disabled])",
+        "[tabindex]:not([tabindex='-1'])"
+    ].join(",");
+
+
+    return [
+        ...modal.querySelectorAll(
+            seletor
+        )
+    ].filter(
+        (elemento) => {
+            return (
+                elemento.getClientRects()
+                    .length > 0
+            );
+        }
+    );
+}
+
+
+// Mantém a navegação com Tab
+// dentro do modal.
+function controlarFocoModal(
+    evento,
+    modal
+) {
+    if (
+        evento.key !== "Tab"
+    ) {
+        return;
+    }
+
+
+    const elementos =
+        obterElementosFocaveis(
+            modal
+        );
+
+
+    // =========================
+    // SEM ELEMENTOS FOCÁVEIS
+    // =========================
+
+    if (
+        elementos.length === 0
+    ) {
+        evento.preventDefault();
+
+        modal.focus();
+
+        return;
+    }
+
+
+    const primeiroElemento =
+        elementos[0];
+
+
+    const ultimoElemento =
+        elementos[
+            elementos.length - 1
+        ];
+
+
+    const focoAtual =
+        document.activeElement;
+
+
+    const focoEstaDentroDoModal =
+        focoAtual instanceof Node &&
+        modal.contains(
+            focoAtual
+        );
+
+
+    // =========================
+    // FOCO NO PRÓPRIO MODAL
+    // =========================
+
+    /*
+        O modal recebe foco quando é aberto.
+
+        Se o usuário pressionar Tab ou
+        Shift + Tab nesse momento, enviamos
+        diretamente para o primeiro ou
+        último elemento interativo.
+
+        Isso impede que o foco escape
+        para a página atrás do modal.
+    */
+    if (
+        focoAtual === modal ||
+        !focoEstaDentroDoModal
+    ) {
+        evento.preventDefault();
+
+
+        if (evento.shiftKey) {
+            ultimoElemento.focus();
+        } else {
+            primeiroElemento.focus();
+        }
+
+
+        return;
+    }
+
+
+    // =========================
+    // SHIFT + TAB
+    // =========================
+
+    if (
+        evento.shiftKey &&
+        focoAtual ===
+            primeiroElemento
+    ) {
+        evento.preventDefault();
+
+        ultimoElemento.focus();
+
+        return;
+    }
+
+
+    // =========================
+    // TAB
+    // =========================
+
+    if (
+        !evento.shiftKey &&
+        focoAtual ===
+            ultimoElemento
+    ) {
+        evento.preventDefault();
+
+        primeiroElemento.focus();
+    }
+}
+
+
+// =========================
+// CONTROLES INTERATIVOS
+// =========================
+
+// Evita que ← e → troquem de Pokémon
+// quando o usuário estiver usando
+// um campo ou seletor do modal.
+function eventoVeioDeCampoInterativo(
+    evento
+) {
+    const elemento =
+        evento.target;
+
+
+    if (
+        !(elemento instanceof HTMLElement)
+    ) {
+        return false;
+    }
+
+
+    return (
+        elemento.matches(
+            "input, select, textarea"
+        ) ||
+        elemento.isContentEditable
+    );
+}
+
+
+// =========================
 // ABERTURA DO MODAL
 // =========================
 
@@ -163,10 +409,43 @@ export async function abrirModal(
 
     if (
         !modal ||
-        !detalhes
+        !detalhes ||
+        !pokemon
     ) {
         return;
     }
+
+
+    // =========================
+    // FOCO ANTERIOR
+    // =========================
+
+    const modalJaEstavaAberto =
+        modal.classList.contains(
+            "ativo"
+        );
+
+
+    if (!modalJaEstavaAberto) {
+        elementoFocoAnterior =
+            document.activeElement;
+    }
+
+
+    // =========================
+    // NOVO CARREGAMENTO
+    // =========================
+
+    const pokemonId =
+        pokemon.id;
+
+
+    idPokemonAtual =
+        pokemonId;
+
+
+    const identificadorCarregamento =
+        ++idCarregamentoModal;
 
 
     // =========================
@@ -178,14 +457,14 @@ export async function abrirModal(
             (item) => {
                 return (
                     item.id ===
-                    pokemon.id
+                    pokemonId
                 );
             }
         );
 
 
     // =========================
-    // MOSTRA O MODAL IMEDIATAMENTE
+    // MOSTRA O MODAL
     // =========================
 
     modal.classList.add(
@@ -222,37 +501,52 @@ export async function abrirModal(
         // COMPLETA O POKÉMON
         // =========================
 
-        /*
-            Se o carregamento geral ainda
-            não chegou neste Pokémon,
-            buscamos somente ele.
-
-            O modal já está aberto enquanto
-            essa consulta acontece.
-        */
         const pokemonCompleto =
             await obterPokemonCompleto(
                 pokemon
             );
 
 
+        /*
+            Se outro Pokémon foi aberto
+            enquanto aguardávamos a API,
+            abandonamos este carregamento.
+        */
+        if (
+            !carregamentoAindaEhAtual(
+                identificadorCarregamento,
+                pokemonId
+            )
+        ) {
+            return;
+        }
+
+
         // =========================
         // ATUALIZA NAVEGAÇÃO
         // =========================
 
-        /*
-            Guardamos o objeto completo na
-            própria lista de navegação.
+        const indiceAtualizado =
+            pokemonsNavegacao.findIndex(
+                (item) => {
+                    return (
+                        item.id ===
+                        pokemonCompleto.id
+                    );
+                }
+            );
 
-            Assim, voltar para este Pokémon
-            não exige nova consulta.
-        */
+
         if (
-            indicePokemonAtual >= 0
+            indiceAtualizado >= 0
         ) {
             pokemonsNavegacao[
-                indicePokemonAtual
+                indiceAtualizado
             ] = pokemonCompleto;
+
+
+            indicePokemonAtual =
+                indiceAtualizado;
         }
 
 
@@ -279,6 +573,20 @@ export async function abrirModal(
             )
 
         ]);
+
+
+        /*
+            Outra proteção após o segundo
+            grupo de operações assíncronas.
+        */
+        if (
+            !carregamentoAindaEhAtual(
+                identificadorCarregamento,
+                pokemonId
+            )
+        ) {
+            return;
+        }
 
 
         // =========================
@@ -312,10 +620,39 @@ export async function abrirModal(
         );
 
 
+        /*
+            O usuário pode ter navegado
+            enquanto as evoluções carregavam.
+        */
+        if (
+            !carregamentoAindaEhAtual(
+                identificadorCarregamento,
+                pokemonId
+            )
+        ) {
+            return;
+        }
+
+
         atualizarBotoesNavegacao();
 
 
     } catch (erro) {
+
+        /*
+            Erros de requisições antigas
+            não devem alterar o modal atual.
+        */
+        if (
+            !carregamentoAindaEhAtual(
+                identificadorCarregamento,
+                pokemonId
+            )
+        ) {
+            return;
+        }
+
+
         console.error(
             "Erro ao carregar detalhes:",
             erro
@@ -394,6 +731,13 @@ function fecharModal() {
     }
 
 
+    /*
+        Invalida qualquer requisição
+        que ainda esteja em andamento.
+    */
+    idCarregamentoModal++;
+
+
     modal.classList.remove(
         "ativo"
     );
@@ -407,6 +751,33 @@ function fecharModal() {
 
     document.body.style.overflow =
         "";
+
+
+    idPokemonAtual =
+        null;
+
+
+    indicePokemonAtual =
+        -1;
+
+
+    atualizarBotoesNavegacao();
+
+
+    // =========================
+    // RESTAURA O FOCO
+    // =========================
+
+    if (
+        elementoFocoAnterior instanceof HTMLElement &&
+        elementoFocoAnterior.isConnected
+    ) {
+        elementoFocoAnterior.focus();
+    }
+
+
+    elementoFocoAnterior =
+        null;
 }
 
 
@@ -439,6 +810,15 @@ export function configurarModal() {
         );
 
 
+    if (!modal) {
+        console.warn(
+            "Modal da Pokédex não encontrado."
+        );
+
+        return;
+    }
+
+
     // =========================
     // FECHAR
     // =========================
@@ -451,18 +831,17 @@ export function configurarModal() {
     }
 
 
-    if (modal) {
-        modal.addEventListener(
-            "click",
-            (evento) => {
-                if (
-                    evento.target === modal
-                ) {
-                    fecharModal();
-                }
+    modal.addEventListener(
+        "click",
+        (evento) => {
+            if (
+                evento.target ===
+                modal
+            ) {
+                fecharModal();
             }
-        );
-    }
+        }
+    );
 
 
     // =========================
@@ -494,7 +873,6 @@ export function configurarModal() {
         async (evento) => {
 
             if (
-                !modal ||
                 !modal.classList.contains(
                     "ativo"
                 )
@@ -503,27 +881,78 @@ export function configurarModal() {
             }
 
 
+            // =========================
+            // ESCAPE
+            // =========================
+
             if (
-                evento.key === "Escape"
+                evento.key ===
+                "Escape"
             ) {
+                evento.preventDefault();
+
                 fecharModal();
 
                 return;
             }
 
 
+            // =========================
+            // TAB
+            // =========================
+
+            if (
+                evento.key ===
+                "Tab"
+            ) {
+                controlarFocoModal(
+                    evento,
+                    modal
+                );
+
+                return;
+            }
+
+
+            // =========================
+            // CAMPOS INTERATIVOS
+            // =========================
+
+            if (
+                eventoVeioDeCampoInterativo(
+                    evento
+                )
+            ) {
+                return;
+            }
+
+
+            // =========================
+            // ANTERIOR
+            // =========================
+
             if (
                 evento.key ===
                 "ArrowLeft"
             ) {
+                evento.preventDefault();
+
                 await abrirPokemonAnterior();
+
+                return;
             }
 
+
+            // =========================
+            // PRÓXIMO
+            // =========================
 
             if (
                 evento.key ===
                 "ArrowRight"
             ) {
+                evento.preventDefault();
+
                 await abrirPokemonProximo();
             }
         }

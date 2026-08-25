@@ -8,11 +8,11 @@
     justify-content: center;
     align-items: flex-start;
 
+    flex-wrap: wrap;
+
     gap: 14px;
 
     margin-bottom: 15px;
-
-    flex-wrap: wrap;
 }
 
 
@@ -25,7 +25,6 @@
     display: flex;
 
     flex-direction: column;
-
     align-items: center;
 
     gap: 6px;
@@ -47,7 +46,6 @@
     font-weight: 600;
 
     line-height: 14px;
-
     letter-spacing: 0.5px;
 
     text-transform: uppercase;
@@ -59,9 +57,8 @@
 ========================= */
 
 #seletor-forma {
-    height: 36px;
-
     min-width: 150px;
+    height: 36px;
 
     padding:
         0 34px
@@ -121,13 +118,13 @@
 ========================= */
 
 .botao-controle-visual {
-    width: 34px;
-    height: 34px;
-
     display: flex;
 
     justify-content: center;
     align-items: center;
+
+    width: 34px;
+    height: 34px;
 
     padding: 5px;
 
@@ -239,9 +236,11 @@
    CONTROLES OCULTOS
 ========================= */
 
-.botao-controle-visual.oculto {
+.botao-controle-visual.oculto,
+.controle-aparencia.oculto {
     display: none;
 }
+
 
 /* =========================
    SPINDA
@@ -253,16 +252,15 @@
 
 
 .canvas-spinda {
+    display: block;
+
     width: 100%;
     max-width: 360px;
-
     height: auto;
 
     margin:
         10px auto
         6px;
-
-    display: block;
 }
 
 
@@ -274,7 +272,6 @@
     display: flex;
 
     flex-direction: column;
-
     align-items: center;
 
     gap: 6px;
@@ -294,7 +291,6 @@
     font-weight: 600;
 
     line-height: 14px;
-
     letter-spacing: 0.5px;
 
     text-transform: uppercase;
@@ -302,22 +298,22 @@
 
 
 .padrao-spinda {
-    height: 36px;
-
     display: flex;
 
     align-items: center;
+
+    height: 36px;
 
     gap: 6px;
 }
 
 
 .codigo-padrao-spinda {
-    height: 34px;
-
     display: flex;
 
     align-items: center;
+
+    height: 34px;
 
     padding:
         0 10px;
@@ -340,13 +336,13 @@
 
 
 .botao-novo-padrao-spinda {
-    width: 34px;
-    height: 34px;
-
     display: flex;
 
     justify-content: center;
     align-items: center;
+
+    width: 34px;
+    height: 34px;
 
     padding: 0;
 
@@ -360,6 +356,8 @@
     font-size: 18px;
 
     cursor: pointer;
+
+    outline: none;
 
     transition:
         transform 0.2s,
@@ -383,12 +381,17 @@
 }
 
 
+.botao-novo-padrao-spinda:focus-visible {
+    border-color: #e52d2d;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(229, 45, 45, 0.08);
+}
+
+
 .botao-novo-padrao-spinda:active {
     transform:
         rotate(25deg)
         scale(0.94);
-}
-
-.controle-aparencia.oculto {
-    display: none;
 }

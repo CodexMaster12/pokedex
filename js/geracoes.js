@@ -69,26 +69,86 @@ const GERACOES = [
 
 
 // =========================
+// GERAÇÃO IMPLEMENTADA
+// =========================
+
+// Última geração atualmente
+// disponível na Pokédex.
+export const ULTIMA_GERACAO_IMPLEMENTADA = 5;
+
+
+const DADOS_ULTIMA_GERACAO =
+    GERACOES.find(
+        (geracao) => {
+            return (
+                geracao.geracao ===
+                ULTIMA_GERACAO_IMPLEMENTADA
+            );
+        }
+    );
+
+
+// Último número atualmente
+// disponível na Pokédex.
+export const LIMITE_POKEDEX_ATUAL =
+    DADOS_ULTIMA_GERACAO?.fim ?? 0;
+
+
+// Região da última geração
+// atualmente implementada.
+export const REGIAO_ATUAL =
+    DADOS_ULTIMA_GERACAO?.regiao ?? "";
+
+
+// =========================
+// GERAÇÕES IMPLEMENTADAS
+// =========================
+
+// Retorna somente as gerações que
+// já estão disponíveis no projeto.
+//
+// Utilizado, por exemplo, para montar
+// dinamicamente o filtro da interface.
+export function obterGeracoesImplementadas() {
+    return GERACOES.filter(
+        (geracao) => {
+            return (
+                geracao.geracao <=
+                ULTIMA_GERACAO_IMPLEMENTADA
+            );
+        }
+    );
+}
+
+
+// =========================
 // GERAÇÃO
 // =========================
 
 // Retorna os dados da geração
-// correspondente ao número da Pokédex Nacional.
-function obterDadosGeracao(id) {
-    return GERACOES.find(
-        (geracao) => {
-
-            return (
-                id >= geracao.inicio &&
-                id <= geracao.fim
-            );
-        }
-    ) || null;
+// correspondente ao número
+// da Pokédex Nacional.
+function obterDadosGeracao(
+    id
+) {
+    return (
+        GERACOES.find(
+            (geracao) => {
+                return (
+                    id >= geracao.inicio &&
+                    id <= geracao.fim
+                );
+            }
+        ) ||
+        null
+    );
 }
 
 
 // Retorna o número da geração.
-export function obterGeracaoPorId(id) {
+export function obterGeracaoPorId(
+    id
+) {
     const dadosGeracao =
         obterDadosGeracao(
             id
@@ -107,7 +167,9 @@ export function obterGeracaoPorId(id) {
 
 // Retorna o nome da pasta correspondente
 // à geração do Pokémon.
-export function obterPastaGeracao(id) {
+export function obterPastaGeracao(
+    id
+) {
     const geracao =
         obterGeracaoPorId(
             id
@@ -129,7 +191,9 @@ export function obterPastaGeracao(id) {
 
 // Retorna o nome da região correspondente
 // ao Pokémon pela sua geração.
-export function obterRegiaoPorId(id) {
+export function obterRegiaoPorId(
+    id
+) {
     const dadosGeracao =
         obterDadosGeracao(
             id

@@ -35,7 +35,7 @@ function criarHabilidades(
     habilidades
 ) {
     if (
-        !habilidades ||
+        !Array.isArray(habilidades) ||
         habilidades.length === 0
     ) {
         return `
@@ -46,7 +46,33 @@ function criarHabilidades(
     }
 
 
-    return habilidades
+    const nomesHabilidades =
+        habilidades
+            .map(
+                (habilidade) => {
+                    return (
+                        habilidade
+                            ?.ability
+                            ?.name ||
+                        null
+                    );
+                }
+            )
+            .filter(Boolean);
+
+
+    if (
+        nomesHabilidades.length === 0
+    ) {
+        return `
+            <span class="sem-informacoes">
+                Sem informações
+            </span>
+        `;
+    }
+
+
+    return nomesHabilidades
         .map(
             (habilidade) => `
                 <span class="habilidade">
@@ -58,7 +84,7 @@ function criarHabilidades(
                         ✦
                     </span>
 
-                    ${habilidade.ability.name}
+                    ${habilidade}
 
                 </span>
             `
@@ -126,8 +152,11 @@ function combinarDadosPokemonForm(
         ...pokemon,
 
         types:
-            dadosForma.types &&
+            Array.isArray(
+                dadosForma?.types
+            ) &&
             dadosForma.types.length > 0
+
                 ? dadosForma.types
                 : pokemon.types
     };
@@ -138,9 +167,6 @@ function combinarDadosPokemonForm(
 // IDENTIFICADOR POKÉMON-FORM
 // =========================
 
-// Monta automaticamente o identificador
-// utilizado pelo endpoint /pokemon-form.
-//
 // Exemplos:
 //
 // Burmy + sandy
@@ -183,16 +209,57 @@ export function criarControladorDadosForma(
 
 
     // =========================
+    // CONTROLE DE ATUALIZAÇÃO
+    // =========================
+
+    /*
+        Cada troca de forma recebe um ID.
+
+        Se uma requisição antiga terminar
+        depois de uma troca mais recente,
+        seu resultado será ignorado.
+    */
+    let idAtualizacaoDados = 0;
+
+
+    function iniciarAtualizacao() {
+        idAtualizacaoDados++;
+
+        return idAtualizacaoDados;
+    }
+
+
+    function atualizacaoEhAtual(
+        idAtualizacao
+    ) {
+        return (
+            idAtualizacao ===
+            idAtualizacaoDados
+        );
+    }
+
+
+    // =========================
     // FRAQUEZAS / RESISTÊNCIAS
     // =========================
 
     async function atualizarRelacoesTipo(
-        dadosPokemon
+        dadosPokemon,
+        idAtualizacao
     ) {
         const relacoes =
             await calcularRelacoesDeTipo(
                 dadosPokemon
             );
+
+
+        if (
+            !atualizacaoEhAtual(
+                idAtualizacao
+            )
+        ) {
+            return;
+        }
 
 
         fraquezasModal.innerHTML =
@@ -214,7 +281,8 @@ export function criarControladorDadosForma(
 
     async function atualizarGolpes(
         dadosPokemon,
-        usarVersaoKanto
+        usarVersaoKanto,
+        idAtualizacao
     ) {
         let golpes =
             await buscarGolpesPrincipais(
@@ -224,6 +292,22 @@ export function criarControladorDadosForma(
 
 
         if (
+            !atualizacaoEhAtual(
+                idAtualizacao
+            )
+        ) {
+            return;
+        }
+
+
+        /*
+            Algumas formas não possuem
+            lista própria de golpes.
+
+            Nesse caso, usamos os golpes
+            do Pokémon base.
+        */
+        if (
             golpes.length === 0 &&
             dadosPokemon !== pokemon
         ) {
@@ -232,6 +316,15 @@ export function criarControladorDadosForma(
                     pokemon,
                     true
                 );
+
+
+            if (
+                !atualizacaoEhAtual(
+                    idAtualizacao
+                )
+            ) {
+                return;
+            }
         }
 
 
@@ -248,25 +341,55 @@ export function criarControladorDadosForma(
 
     async function aplicarDadosPokemon(
         dadosPokemon,
-        usarVersaoKanto
+        usarVersaoKanto,
+        idAtualizacao
     ) {
+        if (
+            !atualizacaoEhAtual(
+                idAtualizacao
+            )
+        ) {
+            return;
+        }
+
+
+        // =========================
+        // TIPOS
+        // =========================
+
         tiposModal.innerHTML =
             criarTipos(
                 dadosPokemon.types
             );
 
 
+        // =========================
+        // ALTURA
+        // =========================
+
         alturaModal.textContent =
-            dadosPokemon.height != null
+            typeof dadosPokemon.height ===
+                "number"
+
                 ? `${dadosPokemon.height / 10} m`
                 : "Sem informações";
 
 
+        // =========================
+        // PESO
+        // =========================
+
         pesoModal.textContent =
-            dadosPokemon.weight != null
+            typeof dadosPokemon.weight ===
+                "number"
+
                 ? `${dadosPokemon.weight / 10} kg`
                 : "Sem informações";
 
+
+        // =========================
+        // HABILIDADES
+        // =========================
 
         habilidadesModal.innerHTML =
             criarHabilidades(
@@ -274,12 +397,20 @@ export function criarControladorDadosForma(
             );
 
 
+        // =========================
+        // STATS
+        // =========================
+
         statsModal.innerHTML =
-            dadosPokemon.stats &&
+            Array.isArray(
+                dadosPokemon.stats
+            ) &&
             dadosPokemon.stats.length > 0
+
                 ? criarStats(
                     dadosPokemon.stats
                 )
+
                 : `
                     <span class="sem-informacoes">
                         Sem informações
@@ -287,27 +418,51 @@ export function criarControladorDadosForma(
                 `;
 
 
+        // =========================
+        // DADOS ASSÍNCRONOS
+        // =========================
+
         await Promise.all([
             atualizarRelacoesTipo(
-                dadosPokemon
+                dadosPokemon,
+                idAtualizacao
             ),
 
             atualizarGolpes(
                 dadosPokemon,
-                usarVersaoKanto
+                usarVersaoKanto,
+                idAtualizacao
             )
         ]);
     }
 
 
     // =========================
-    // NORMAL
+    // NORMAL — INTERNO
+    // =========================
+
+    async function aplicarDadosNormais(
+        idAtualizacao
+    ) {
+        await aplicarDadosPokemon(
+            pokemon,
+            true,
+            idAtualizacao
+        );
+    }
+
+
+    // =========================
+    // NORMAL — PÚBLICO
     // =========================
 
     async function restaurarDadosNormais() {
-        await aplicarDadosPokemon(
-            pokemon,
-            true
+        const idAtualizacao =
+            iniciarAtualizacao();
+
+
+        await aplicarDadosNormais(
+            idAtualizacao
         );
     }
 
@@ -317,7 +472,8 @@ export function criarControladorDadosForma(
     // =========================
 
     async function tentarAplicarPokemonForm(
-        forma
+        forma,
+        idAtualizacao
     ) {
         const identificador =
             criarIdentificadorPokemonForm(
@@ -333,6 +489,15 @@ export function criarControladorDadosForma(
                 );
 
 
+            if (
+                !atualizacaoEhAtual(
+                    idAtualizacao
+                )
+            ) {
+                return true;
+            }
+
+
             const dadosCombinados =
                 combinarDadosPokemonForm(
                     pokemon,
@@ -342,7 +507,8 @@ export function criarControladorDadosForma(
 
             await aplicarDadosPokemon(
                 dadosCombinados,
-                false
+                false,
+                idAtualizacao
             );
 
 
@@ -360,6 +526,10 @@ export function criarControladorDadosForma(
     // =========================
 
     async function atualizarDadosForma() {
+        const idAtualizacao =
+            iniciarAtualizacao();
+
+
         const forma =
             obterFormaSelecionada(
                 pokemon,
@@ -375,7 +545,9 @@ export function criarControladorDadosForma(
             forma.id ===
             "normal"
         ) {
-            await restaurarDadosNormais();
+            await aplicarDadosNormais(
+                idAtualizacao
+            );
 
             return;
         }
@@ -393,9 +565,19 @@ export function criarControladorDadosForma(
                     );
 
 
+                if (
+                    !atualizacaoEhAtual(
+                        idAtualizacao
+                    )
+                ) {
+                    return;
+                }
+
+
                 await aplicarDadosPokemon(
                     dadosForma,
-                    false
+                    false,
+                    idAtualizacao
                 );
 
 
@@ -403,11 +585,27 @@ export function criarControladorDadosForma(
 
 
             } catch (erro) {
-                console.error(
-                    "Erro ao carregar dados da forma:",
-                    erro
-                );
+
+                if (
+                    atualizacaoEhAtual(
+                        idAtualizacao
+                    )
+                ) {
+                    console.error(
+                        "Erro ao carregar dados da forma:",
+                        erro
+                    );
+                }
             }
+        }
+
+
+        if (
+            !atualizacaoEhAtual(
+                idAtualizacao
+            )
+        ) {
+            return;
         }
 
 
@@ -432,7 +630,8 @@ export function criarControladorDadosForma(
 
             await aplicarDadosPokemon(
                 dadosCombinados,
-                false
+                false,
+                idAtualizacao
             );
 
 
@@ -446,8 +645,18 @@ export function criarControladorDadosForma(
 
         const pokemonFormAplicado =
             await tentarAplicarPokemonForm(
-                forma
+                forma,
+                idAtualizacao
             );
+
+
+        if (
+            !atualizacaoEhAtual(
+                idAtualizacao
+            )
+        ) {
+            return;
+        }
 
 
         if (pokemonFormAplicado) {
@@ -459,7 +668,9 @@ export function criarControladorDadosForma(
         // FALLBACK
         // =========================
 
-        await restaurarDadosNormais();
+        await aplicarDadosNormais(
+            idAtualizacao
+        );
     }
 
 

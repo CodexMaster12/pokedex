@@ -1,8 +1,36 @@
+import {
+    obterGeracoesImplementadas
+} from "../geracoes.js";
+
+
+// =========================
+// OPÇÕES DE GERAÇÃO
+// =========================
+
+function criarOpcoesGeracoes() {
+    return obterGeracoesImplementadas()
+        .map(
+            (geracao) => {
+                return `
+                    <option value="${geracao.geracao}">
+                        ${geracao.regiao}
+                    </option>
+                `;
+            }
+        )
+        .join("");
+}
+
+
 // =========================
 // CONTROLES DA POKÉDEX
 // =========================
 
 export function criarControles() {
+    const opcoesGeracoes =
+        criarOpcoesGeracoes();
+
+
     return `
         <section
             class="controles"
@@ -187,25 +215,7 @@ export function criarControles() {
                                 Todas as gerações
                             </option>
 
-                            <option value="1">
-                                Kanto
-                            </option>
-
-                            <option value="2">
-                                Johto
-                            </option>
-
-                            <option value="3">
-                                Hoenn
-                            </option>
-
-                            <option value="4">
-                                Sinnoh
-                            </option>
-
-                            <option value="5">
-                                Unova
-                            </option>
+                            ${opcoesGeracoes}
 
                         </select>
 

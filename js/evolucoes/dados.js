@@ -1,5 +1,5 @@
 import {
-    buscarPokemonPorNome
+    buscarPokemonPorIdentificador
 } from "../api.js";
 
 import {
@@ -52,9 +52,20 @@ function extrairIdDaUrl(
 export function extrairEvolucoes(
     cadeia
 ) {
-    if (!cadeia) {
+    if (
+        !cadeia ||
+        !cadeia.species
+    ) {
         return null;
     }
+
+
+    const evolucoes =
+        Array.isArray(
+            cadeia.evolves_to
+        )
+            ? cadeia.evolves_to
+            : [];
 
 
     return {
@@ -67,13 +78,15 @@ export function extrairEvolucoes(
             ),
 
         evolucoes:
-            cadeia.evolves_to.map(
-                (proximaEvolucao) => {
-                    return extrairEvolucoes(
-                        proximaEvolucao
-                    );
-                }
-            )
+            evolucoes
+                .map(
+                    (proximaEvolucao) => {
+                        return extrairEvolucoes(
+                            proximaEvolucao
+                        );
+                    }
+                )
+                .filter(Boolean)
     };
 }
 
@@ -86,21 +99,42 @@ async function buscarPokemonSeguro(
     no
 ) {
     try {
-        return await buscarPokemonPorNome(
-            no.nome
+
+        /*
+            Sempre que tivermos o número
+            nacional, usamos o ID.
+
+            A espécie da cadeia de evolução
+            nem sempre possui exatamente
+            o mesmo nome utilizado pelo
+            endpoint /pokemon.
+
+            Exemplos desse tipo de situação
+            incluem formas padrão que possuem
+            sufixos internos na PokéAPI.
+        */
+        const identificador =
+            no.id ??
+            no.nome;
+
+
+        return await buscarPokemonPorIdentificador(
+            identificador
         );
 
 
     } catch (erro) {
 
         /*
-            Pokémon futuros permitidos podem
-            aparecer mesmo que a consulta
-            completa falhe.
+            Pokémon permitidos podem continuar
+            aparecendo mesmo quando não for
+            possível obter seus dados completos.
         */
         if (
             no.id &&
-            pokemonDeveAparecer(no.id)
+            pokemonDeveAparecer(
+                no.id
+            )
         ) {
             console.warn(
                 `Dados completos de ${no.nome} indisponíveis. Usando placeholder.`,
@@ -109,10 +143,17 @@ async function buscarPokemonSeguro(
 
 
             return {
-                id: no.id,
-                name: no.nome,
-                types: [],
-                placeholder: true
+                id:
+                    no.id,
+
+                name:
+                    no.nome,
+
+                types:
+                    [],
+
+                placeholder:
+                    true
             };
         }
 
@@ -135,7 +176,7 @@ export async function carregarDadosArvore(
 
 
     /*
-        Se o Pokémon nem faz parte da Pokédex
+        Se o Pokémon não faz parte da Pokédex
         atual nem da lista de futuros, não
         precisamos consultar /pokemon para ele.
 
@@ -144,7 +185,9 @@ export async function carregarDadosArvore(
     */
     if (
         no.id &&
-        !pokemonDeveAparecer(no.id)
+        !pokemonDeveAparecer(
+            no.id
+        )
     ) {
         const descendentes =
             await Promise.all(
@@ -169,11 +212,11 @@ export async function carregarDadosArvore(
 
 
     /*
-        Cada descendente é tratado de maneira
-        independente.
+        Cada descendente é tratado
+        independentemente.
 
-        Assim, uma evolução problemática não
-        destrói toda a árvore.
+        Assim, uma evolução problemática
+        não destrói toda a árvore.
     */
     const resultadosEvolucoes =
         await Promise.allSettled(
@@ -266,7 +309,8 @@ export async function carregarDadosArvore(
                 no.nome ??
                 pokemon.name,
 
-            forma: null,
+            forma:
+                null,
 
             evolucoes:
                 evolucoesValidas

@@ -1,8 +1,23 @@
+import {
+    REGIAO_ATUAL,
+    LIMITE_POKEDEX_ATUAL
+} from "../geracoes.js";
+
+
 // =========================
 // CABEÇALHO
 // =========================
 
 export function criarHeader() {
+    const limiteFormatado =
+        String(
+            LIMITE_POKEDEX_ATUAL
+        ).padStart(
+            3,
+            "0"
+        );
+
+
     return `
         <header class="cabecalho">
 
@@ -14,7 +29,7 @@ export function criarHeader() {
                 </span>
 
                 <span class="badge-geracao">
-                    Nova Geração: Unova
+                    Nova Geração: ${REGIAO_ATUAL}
                 </span>
 
             </div>
@@ -44,7 +59,7 @@ export function criarHeader() {
 
 
                 <span class="geracao-atual">
-                    #001 — #649
+                    #001 — #${limiteFormatado}
                 </span>
 
             </div>

@@ -1,23 +1,7 @@
 import {
     criarForma,
-    FORMA_NORMAL
+    criarListaFormas
 } from "./base.js";
-
-
-// =========================
-// FUNÇÃO AUXILIAR
-// =========================
-
-// Cria a lista de formas de um Pokémon
-// incluindo sempre a forma normal.
-function criarListaFormas(
-    ...formas
-) {
-    return Object.freeze([
-        FORMA_NORMAL,
-        ...formas
-    ]);
-}
 
 
 // =========================
@@ -26,7 +10,9 @@ function criarListaFormas(
 
 // A forma A usa internamente "normal"
 // para continuar usando:
+//
 // gen-2/normal/201.png
+//
 // gen-2/shiny/201.png
 const FORMA_UNOWN_A =
     criarForma(

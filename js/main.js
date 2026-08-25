@@ -55,14 +55,6 @@ async function iniciarPokedex() {
         // NAVEGAÇÃO IMEDIATA
         // =========================
 
-        /*
-            A navegação anterior/próximo
-            já pode funcionar usando apenas
-            número e nome.
-
-            Não precisamos esperar os
-            649 detalhes da PokéAPI.
-        */
         definirPokemonsNavegacao(
             listaPokemons
         );
@@ -78,16 +70,28 @@ async function iniciarPokedex() {
 
 
         // =========================
-        // DETALHES EM SEGUNDO PLANO
+        // FILTROS IMEDIATOS
         // =========================
 
         /*
-            Os cards já estão visíveis.
+            Pesquisa, geração, região e
+            ordenação já funcionam usando
+            somente ID e nome.
 
-            Agora carregamos tipos e demais
-            informações sem impedir o uso
-            da Pokédex.
+            O filtro de tipos será preenchido
+            quando os detalhes terminarem.
         */
+        const controladorFiltros =
+            configurarFiltros(
+                listaPokemons,
+                exibirPokemons
+            );
+
+
+        // =========================
+        // DETALHES EM SEGUNDO PLANO
+        // =========================
+
         const pokemonsDetalhados =
             await buscarPokemonsDetalhados(
                 listaPokemons
@@ -95,36 +99,20 @@ async function iniciarPokedex() {
 
 
         // =========================
-        // ATUALIZA NAVEGAÇÃO
+        // ATUALIZA FILTROS
         // =========================
 
         /*
-            Substituímos a lista básica pela
-            lista completa quando ela estiver
-            pronta.
+            Substitui a lista básica pela
+            completa e reaplica os filtros
+            que o usuário já estiver usando.
+
+            Também preenche o filtro de tipos.
         */
-        definirPokemonsNavegacao(
-            pokemonsDetalhados
-        );
-
-
-        // =========================
-        // CARDS COMPLETOS
-        // =========================
-
-        exibirPokemons(
-            pokemonsDetalhados
-        );
-
-
-        // =========================
-        // FILTROS
-        // =========================
-
-        configurarFiltros(
-            pokemonsDetalhados,
-            exibirPokemons
-        );
+        controladorFiltros
+            ?.atualizarPokemons(
+                pokemonsDetalhados
+            );
 
 
     } catch (erro) {

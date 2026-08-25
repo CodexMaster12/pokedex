@@ -22,6 +22,39 @@ function criarTiposFallback(
 }
 
 
+// Aplica tipos de fallback sem alterar
+// diretamente o objeto armazenado
+// no cache global da API.
+function aplicarTiposFallback(
+    pokemon,
+    tiposFallback = []
+) {
+    if (
+        Array.isArray(pokemon.types) &&
+        pokemon.types.length > 0
+    ) {
+        return pokemon;
+    }
+
+
+    if (
+        tiposFallback.length === 0
+    ) {
+        return pokemon;
+    }
+
+
+    return {
+        ...pokemon,
+
+        types:
+            criarTiposFallback(
+                tiposFallback
+            )
+    };
+}
+
+
 // =========================
 // CADEIAS REGIONAIS
 // =========================
@@ -142,6 +175,28 @@ const CADEIAS_REGIONAIS = [
     },
 
 
+    // Meowth Galar → Perrserker
+    {
+        familia: [52],
+
+        cadeia: [
+            {
+                numero: 52,
+                nome: "meowth",
+                api: "meowth-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 863,
+                nome: "perrserker",
+                api: "perrserker",
+                forma: null
+            }
+        ]
+    },
+
+
     // Growlithe → Arcanine Hisui
     {
         familia: [58, 59],
@@ -215,6 +270,72 @@ const CADEIAS_REGIONAIS = [
     },
 
 
+    // Slowpoke Galar → Slowbro Galar
+    {
+        familia: [79, 80],
+
+        cadeia: [
+            {
+                numero: 79,
+                nome: "slowpoke",
+                api: "slowpoke-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 80,
+                nome: "slowbro",
+                api: "slowbro-galar",
+                forma: "Galar"
+            }
+        ]
+    },
+
+
+    // Slowpoke Galar → Slowking Galar
+    {
+        familia: [79, 199],
+
+        cadeia: [
+            {
+                numero: 79,
+                nome: "slowpoke",
+                api: "slowpoke-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 199,
+                nome: "slowking",
+                api: "slowking-galar",
+                forma: "Galar"
+            }
+        ]
+    },
+
+
+    // Farfetch'd Galar → Sirfetch'd
+    {
+        familia: [83],
+
+        cadeia: [
+            {
+                numero: 83,
+                nome: "farfetchd",
+                api: "farfetchd-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 865,
+                nome: "sirfetchd",
+                api: "sirfetchd",
+                forma: null
+            }
+        ]
+    },
+
+
     // Grimer → Muk Alola
     {
         familia: [88, 89],
@@ -259,6 +380,28 @@ const CADEIAS_REGIONAIS = [
     },
 
 
+    // Mr. Mime Galar → Mr. Rime
+    {
+        familia: [122],
+
+        cadeia: [
+            {
+                numero: 122,
+                nome: "mr-mime",
+                api: "mr-mime-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 866,
+                nome: "mr-rime",
+                api: "mr-rime",
+                forma: null
+            }
+        ]
+    },
+
+
     // =========================
     // GERAÇÃO 2
     // =========================
@@ -280,28 +423,6 @@ const CADEIAS_REGIONAIS = [
                 nome: "clodsire",
                 api: "clodsire",
                 forma: null
-            }
-        ]
-    },
-
-
-    // Slowpoke Galar → Slowking Galar
-    {
-        familia: [79, 199],
-
-        cadeia: [
-            {
-                numero: 79,
-                nome: "slowpoke",
-                api: "slowpoke-galar",
-                forma: "Galar"
-            },
-
-            {
-                numero: 199,
-                nome: "slowking",
-                api: "slowking-galar",
-                forma: "Galar"
             }
         ]
     },
@@ -374,6 +495,41 @@ const CADEIAS_REGIONAIS = [
 
 
     // =========================
+    // GERAÇÃO 3
+    // =========================
+
+    // Zigzagoon Galar
+    // → Linoone Galar
+    // → Obstagoon
+    {
+        familia: [263, 264],
+
+        cadeia: [
+            {
+                numero: 263,
+                nome: "zigzagoon",
+                api: "zigzagoon-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 264,
+                nome: "linoone",
+                api: "linoone-galar",
+                forma: "Galar"
+            },
+
+            {
+                numero: 862,
+                nome: "obstagoon",
+                api: "obstagoon",
+                forma: null
+            }
+        ]
+    },
+
+
+    // =========================
     // GERAÇÃO 5
     // =========================
 
@@ -387,6 +543,7 @@ const CADEIAS_REGIONAIS = [
                 nome: "darumaka",
                 api: "darumaka-galar",
                 forma: "Galar",
+
                 tiposFallback: [
                     "ice"
                 ]
@@ -397,6 +554,7 @@ const CADEIAS_REGIONAIS = [
                 nome: "darmanitan",
                 api: "darmanitan-galar-standard",
                 forma: "Galar",
+
                 tiposFallback: [
                     "ice"
                 ]
@@ -453,7 +611,6 @@ const CADEIAS_REGIONAIS = [
 
 // =========================
 // CARREGAMENTO
-
 // =========================
 
 async function carregarCadeia(
@@ -466,32 +623,17 @@ async function carregarCadeia(
         const etapa of configuracao.cadeia
     ) {
         try {
-            const pokemon =
+            const pokemonCarregado =
                 await buscarPokemonPorIdentificador(
                     etapa.api
                 );
 
 
-            /*
-                Em condições normais os tipos
-                vêm diretamente da PokéAPI.
-
-                O fallback serve apenas para
-                impedir uma forma conhecida de
-                aparecer sem tipo.
-            */
-            if (
-                etapa.tiposFallback &&
-                (
-                    !Array.isArray(pokemon.types) ||
-                    pokemon.types.length === 0
-                )
-            ) {
-                pokemon.types =
-                    criarTiposFallback(
-                        etapa.tiposFallback
-                    );
-            }
+            const pokemon =
+                aplicarTiposFallback(
+                    pokemonCarregado,
+                    etapa.tiposFallback
+                );
 
 
             etapas.push({
@@ -520,15 +662,19 @@ async function carregarCadeia(
 
             etapas.push({
                 pokemon: {
-                    id: etapa.numero,
-                    name: etapa.nome,
+                    id:
+                        etapa.numero,
+
+                    name:
+                        etapa.nome,
 
                     types:
                         criarTiposFallback(
                             etapa.tiposFallback || []
                         ),
 
-                    placeholder: true
+                    placeholder:
+                        true
                 },
 
                 numeroExibido:

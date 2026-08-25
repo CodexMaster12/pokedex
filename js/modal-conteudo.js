@@ -23,6 +23,142 @@ import {
     possuiDiferencaSexo
 } from "./sexos.js";
 
+import {
+    criarListaGolpes
+} from "./golpes.js";
+
+
+// =========================
+// CONFIGURAÇÃO
+// =========================
+
+const API_TIPOS =
+    "https://pokeapi.co/api/v2/type";
+
+
+// =========================
+// CACHE DOS TIPOS
+// =========================
+
+// Guarda relações de tipo já carregadas.
+const CACHE_TIPOS =
+    new Map();
+
+
+// Evita duas requisições simultâneas
+// para o mesmo tipo.
+const REQUISICOES_TIPOS =
+    new Map();
+
+
+// =========================
+// UTILIDADES DE TIPO
+// =========================
+
+function obterNomeTipo(
+    tipo
+) {
+    return (
+        tipo?.type?.name ||
+        null
+    );
+}
+
+
+async function buscarDadosTipo(
+    tipo
+) {
+    const nomeTipo =
+        obterNomeTipo(
+            tipo
+        );
+
+
+    if (!nomeTipo) {
+        return null;
+    }
+
+
+    if (
+        CACHE_TIPOS.has(
+            nomeTipo
+        )
+    ) {
+        return CACHE_TIPOS.get(
+            nomeTipo
+        );
+    }
+
+
+    if (
+        REQUISICOES_TIPOS.has(
+            nomeTipo
+        )
+    ) {
+        return await REQUISICOES_TIPOS.get(
+            nomeTipo
+        );
+    }
+
+
+    /*
+        Formas vindas do endpoint /pokemon
+        normalmente possuem type.url.
+
+        Dados manuais podem possuir somente
+        type.name, então criamos a URL através
+        do nome como fallback.
+    */
+    const url =
+        tipo?.type?.url ||
+        `${API_TIPOS}/${encodeURIComponent(nomeTipo)}`;
+
+
+    const requisicao =
+        (async () => {
+            const resposta =
+                await fetch(
+                    url
+                );
+
+
+            if (!resposta.ok) {
+                throw new Error(
+                    `Erro ao buscar relações do tipo ${nomeTipo}`
+                );
+            }
+
+
+            return await resposta.json();
+        })();
+
+
+    REQUISICOES_TIPOS.set(
+        nomeTipo,
+        requisicao
+    );
+
+
+    try {
+        const dados =
+            await requisicao;
+
+
+        CACHE_TIPOS.set(
+            nomeTipo,
+            dados
+        );
+
+
+        return dados;
+
+    } finally {
+        REQUISICOES_TIPOS.delete(
+            nomeTipo
+        );
+    }
+}
+
 
 // =========================
 // TIPOS
@@ -31,12 +167,26 @@ import {
 export function criarTipos(
     tipos
 ) {
+    if (
+        !Array.isArray(tipos) ||
+        tipos.length === 0
+    ) {
+        return "";
+    }
+
+
     return tipos
         .map(
             (tipo) => {
-
                 const nomeTipo =
-                    tipo.type.name;
+                    obterNomeTipo(
+                        tipo
+                    );
+
+
+                if (!nomeTipo) {
+                    return "";
+                }
 
 
                 return `
@@ -46,6 +196,7 @@ export function criarTipos(
                 `;
             }
         )
+        .filter(Boolean)
         .join("");
 }
 
@@ -57,66 +208,108 @@ export function criarTipos(
 export async function calcularRelacoesDeTipo(
     pokemon
 ) {
+    const tipos =
+        Array.isArray(
+            pokemon?.types
+        )
+            ? pokemon.types
+            : [];
+
+
+    if (
+        tipos.length === 0
+    ) {
+        return {
+            fraquezas: [],
+            resistencias: []
+        };
+    }
+
+
     const relacoes = {};
 
 
-    for (
-        const tipo of pokemon.types
-    ) {
-        const resposta =
-            await fetch(
-                tipo.type.url
-            );
-
-
-        if (!resposta.ok) {
-            throw new Error(
-                `Erro ao buscar relações do tipo ${tipo.type.name}`
-            );
-        }
-
-
-        const dadosTipo =
-            await resposta.json();
-
-
-        dadosTipo.damage_relations
-            .double_damage_from
-            .forEach(
-                (item) => {
-
-                    relacoes[item.name] =
-                        (
-                            relacoes[item.name] ??
-                            1
-                        ) * 2;
+    /*
+        Tipos podem ser carregados ao mesmo
+        tempo porque são independentes.
+    */
+    const dadosTipos =
+        await Promise.all(
+            tipos.map(
+                (tipo) => {
+                    return buscarDadosTipo(
+                        tipo
+                    );
                 }
-            );
+            )
+        );
 
 
-        dadosTipo.damage_relations
-            .half_damage_from
-            .forEach(
-                (item) => {
+    dadosTipos
+        .filter(Boolean)
+        .forEach(
+            (dadosTipo) => {
 
-                    relacoes[item.name] =
-                        (
-                            relacoes[item.name] ??
-                            1
-                        ) * 0.5;
+                const damageRelations =
+                    dadosTipo.damage_relations;
+
+
+                if (!damageRelations) {
+                    return;
                 }
-            );
 
 
-        dadosTipo.damage_relations
-            .no_damage_from
-            .forEach(
-                (item) => {
+                // =========================
+                // FRAQUEZA ×2
+                // =========================
 
-                    relacoes[item.name] = 0;
-                }
-            );
-    }
+                damageRelations
+                    .double_damage_from
+                    .forEach(
+                        (item) => {
+
+                            relacoes[item.name] =
+                                (
+                                    relacoes[item.name] ??
+                                    1
+                                ) * 2;
+                        }
+                    );
+
+
+                // =========================
+                // RESISTÊNCIA ×0.5
+                // =========================
+
+                damageRelations
+                    .half_damage_from
+                    .forEach(
+                        (item) => {
+
+                            relacoes[item.name] =
+                                (
+                                    relacoes[item.name] ??
+                                    1
+                                ) * 0.5;
+                        }
+                    );
+
+
+                // =========================
+                // IMUNIDADE
+                // =========================
+
+                damageRelations
+                    .no_damage_from
+                    .forEach(
+                        (item) => {
+
+                            relacoes[item.name] =
+                                0;
+                        }
+                    );
+            }
+        );
 
 
     const fraquezas = [];
@@ -126,7 +319,12 @@ export async function calcularRelacoesDeTipo(
     Object.entries(
         relacoes
     ).forEach(
-        ([tipo, multiplicador]) => {
+        (
+            [
+                tipo,
+                multiplicador
+            ]
+        ) => {
 
             if (
                 multiplicador > 1
@@ -148,6 +346,28 @@ export async function calcularRelacoesDeTipo(
     );
 
 
+    fraquezas.sort(
+        (a, b) => {
+            return traduzirTipo(a)
+                .localeCompare(
+                    traduzirTipo(b),
+                    "pt-BR"
+                );
+        }
+    );
+
+
+    resistencias.sort(
+        (a, b) => {
+            return traduzirTipo(a)
+                .localeCompare(
+                    traduzirTipo(b),
+                    "pt-BR"
+                );
+        }
+    );
+
+
     return {
         fraquezas,
         resistencias
@@ -162,6 +382,18 @@ export async function calcularRelacoesDeTipo(
 export function criarListaRelacoes(
     tipos
 ) {
+    if (
+        !Array.isArray(tipos) ||
+        tipos.length === 0
+    ) {
+        return `
+            <span class="sem-informacoes">
+                Sem informações
+            </span>
+        `;
+    }
+
+
     return tipos
         .map(
             (tipo) => `
@@ -181,21 +413,80 @@ export function criarListaRelacoes(
 function obterCategoria(
     especie
 ) {
+    if (
+        !Array.isArray(
+            especie?.genera
+        )
+    ) {
+        return "Sem informações";
+    }
+
+
     const categoria =
         especie.genera.find(
             (genero) => {
-
                 return (
-                    genero.language.name ===
+                    genero?.language?.name ===
                     "en"
                 );
             }
         );
 
 
-    return categoria
-        ? categoria.genus
-        : "Unknown";
+    return (
+        categoria?.genus ||
+        "Sem informações"
+    );
+}
+
+
+// =========================
+// MEDIDAS
+// =========================
+
+function formatarMedida(
+    valor,
+    divisor,
+    unidade
+) {
+    if (
+        typeof valor !== "number" ||
+        !Number.isFinite(valor)
+    ) {
+        return "Sem informações";
+    }
+
+
+    return `${valor / divisor} ${unidade}`;
+}
+
+
+// =========================
+// HABILIDADES
+// =========================
+
+function obterHabilidades(
+    pokemon
+) {
+    if (
+        !Array.isArray(
+            pokemon?.abilities
+        )
+    ) {
+        return [];
+    }
+
+
+    return pokemon.abilities
+        .map(
+            (habilidade) => {
+                return (
+                    habilidade?.ability?.name ||
+                    null
+                );
+            }
+        )
+        .filter(Boolean);
 }
 
 
@@ -243,20 +534,15 @@ export function criarConteudoModal(
 
 
     const habilidades =
-        pokemon.abilities.map(
-            (habilidade) => {
-
-                return (
-                    habilidade.ability.name
-                );
-            }
+        obterHabilidades(
+            pokemon
         );
 
 
     const {
-        fraquezas,
-        resistencias
-    } = relacoesTipo;
+        fraquezas = [],
+        resistencias = []
+    } = relacoesTipo || {};
 
 
     return `
@@ -434,7 +720,11 @@ export function criarConteudoModal(
                 </span>
 
                 <strong id="altura-pokemon">
-                    ${pokemon.height / 10} m
+                    ${formatarMedida(
+                        pokemon.height,
+                        10,
+                        "m"
+                    )}
                 </strong>
 
             </div>
@@ -447,7 +737,11 @@ export function criarConteudoModal(
                 </span>
 
                 <strong id="peso-pokemon">
-                    ${pokemon.weight / 10} kg
+                    ${formatarMedida(
+                        pokemon.weight,
+                        10,
+                        "kg"
+                    )}
                 </strong>
 
             </div>
@@ -472,24 +766,32 @@ export function criarConteudoModal(
             >
 
                 ${
-                    habilidades
-                        .map(
-                            (habilidade) => `
-                                <span class="habilidade">
+                    habilidades.length > 0
 
-                                    <span
-                                        class="icone-habilidade"
-                                        aria-hidden="true"
-                                    >
-                                        ✦
+                        ? habilidades
+                            .map(
+                                (habilidade) => `
+                                    <span class="habilidade">
+
+                                        <span
+                                            class="icone-habilidade"
+                                            aria-hidden="true"
+                                        >
+                                            ✦
+                                        </span>
+
+                                        ${habilidade}
+
                                     </span>
+                                `
+                            )
+                            .join("")
 
-                                    ${habilidade}
-
-                                </span>
-                            `
-                        )
-                        .join("")
+                        : `
+                            <span class="sem-informacoes">
+                                Sem informações
+                            </span>
+                        `
                 }
 
             </div>
@@ -512,7 +814,20 @@ export function criarConteudoModal(
                 class="grafico-stats"
                 id="grafico-stats-modal"
             >
-                ${criarStats(pokemon.stats)}
+                ${
+                    Array.isArray(pokemon.stats) &&
+                    pokemon.stats.length > 0
+
+                        ? criarStats(
+                            pokemon.stats
+                        )
+
+                        : `
+                            <span class="sem-informacoes">
+                                Sem informações
+                            </span>
+                        `
+                }
             </div>
 
         </section>
@@ -572,70 +887,9 @@ export function criarConteudoModal(
 
 
             <div class="lista-golpes">
-
-                ${
-                    golpesPrincipais.length > 0
-
-                        ? golpesPrincipais
-                            .map(
-                                (golpe) => `
-                                    <div class="golpe-item">
-
-                                        <div class="golpe-cabecalho">
-
-                                            <span class="tipo ${golpe.tipo}">
-                                                ${golpe.tipoTraduzido}
-                                            </span>
-
-                                            <span class="nome-golpe">
-                                                ${golpe.nome}
-                                            </span>
-
-                                        </div>
-
-
-                                        <div class="golpe-detalhes">
-
-                                            <span>
-                                                ${
-                                                    golpe.nivel === 0
-                                                        ? "Inicial"
-                                                        : `Nv. ${golpe.nivel}`
-                                                }
-                                            </span>
-
-
-                                            <span>
-                                                Poder:
-
-                                                <strong>
-                                                    ${golpe.poder ?? "—"}
-                                                </strong>
-                                            </span>
-
-
-                                            <span>
-                                                Precisão:
-
-                                                <strong>
-                                                    ${golpe.precisao ?? "—"}
-                                                </strong>
-                                            </span>
-
-                                        </div>
-
-                                    </div>
-                                `
-                            )
-                            .join("")
-
-                        : `
-                            <p class="sem-golpes">
-                                Nenhum golpe por nível encontrado.
-                            </p>
-                        `
-                }
-
+                ${criarListaGolpes(
+                    golpesPrincipais
+                )}
             </div>
 
         </section>

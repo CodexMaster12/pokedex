@@ -1,31 +1,114 @@
+import {
+    LIMITE_POKEDEX_ATUAL
+} from "./geracoes.js";
+
+
 // =========================
 // CONFIGURAÇÃO DA POKÉAPI
 // =========================
 
-// Endereço principal da PokéAPI
+// Endereço principal da PokéAPI.
 const API_URL =
     "https://pokeapi.co/api/v2";
 
 
-// Último Pokémon disponível atualmente
-// no projeto.
+// Quantidade padrão de requisições
+// simultâneas durante o carregamento
+// em segundo plano.
+const QUANTIDADE_WORKERS_PADRAO = 30;
+
+
+// =========================
+// CACHE GERAL
+// =========================
+
+/*
+    Guarda respostas já concluídas.
+
+    Isso evita repetir consultas de:
+    - Pokémon
+    - espécies
+    - evoluções
+    - formas
+    - lista principal
+*/
+const CACHE_DADOS =
+    new Map();
+
+
+// Requisições que ainda estão acontecendo.
 //
-// Gen 1: #001 - #151
-// Gen 2: #152 - #251
-// Gen 3: #252 - #386
-// Gen 4: #387 - #493
-// Gen 5: #494 - #649
-const LIMITE_POKEDEX = 649;
+// Se dois pontos do sistema pedirem a mesma
+// URL ao mesmo tempo, ambos aguardam a mesma
+// Promise em vez de criar dois fetches.
+const REQUISICOES_EM_ANDAMENTO =
+    new Map();
 
 
 // =========================
-// CACHE
+// CACHE DE POKÉMON
 // =========================
 
-// Evita buscar novamente um Pokémon
-// que já foi carregado anteriormente.
+/*
+    Além do cache por URL, mantemos aliases
+    por ID e nome.
+
+    Exemplo:
+
+    25
+    "25"
+    "pikachu"
+
+    podem reutilizar o mesmo objeto.
+*/
 const CACHE_POKEMON =
     new Map();
+
+
+// =========================
+// UTILIDADES
+// =========================
+
+function normalizarIdentificador(
+    identificador
+) {
+    return String(
+        identificador
+    )
+        .trim()
+        .toLowerCase();
+}
+
+
+// Extrai o ID numérico de URLs como:
+//
+// https://pokeapi.co/api/v2/pokemon/25/
+function extrairIdDaUrl(
+    url
+) {
+    if (!url) {
+        return null;
+    }
+
+
+    const partes =
+        url
+            .split("/")
+            .filter(Boolean);
+
+
+    const id =
+        Number(
+            partes[
+                partes.length - 1
+            ]
+        );
+
+
+    return Number.isNaN(id)
+        ? null
+        : id;
+}
 
 
 // =========================
@@ -35,18 +118,93 @@ const CACHE_POKEMON =
 async function buscarDados(
     url
 ) {
-    const resposta =
-        await fetch(url);
+    // =========================
+    // CACHE CONCLUÍDO
+    // =========================
 
-
-    if (!resposta.ok) {
-        throw new Error(
-            `Erro na PokéAPI: ${resposta.status} ${resposta.statusText}`
+    if (
+        CACHE_DADOS.has(
+            url
+        )
+    ) {
+        return CACHE_DADOS.get(
+            url
         );
     }
 
 
-    return await resposta.json();
+    // =========================
+    // REQUISIÇÃO EM ANDAMENTO
+    // =========================
+
+    if (
+        REQUISICOES_EM_ANDAMENTO.has(
+            url
+        )
+    ) {
+        return await REQUISICOES_EM_ANDAMENTO.get(
+            url
+        );
+    }
+
+
+    // =========================
+    // NOVA REQUISIÇÃO
+    // =========================
+
+    const requisicao =
+        (async () => {
+
+            const resposta =
+                await fetch(
+                    url
+                );
+
+
+            if (!resposta.ok) {
+                throw new Error(
+                    `Erro na PokéAPI: ${resposta.status} ${resposta.statusText}`
+                );
+            }
+
+
+            return await resposta.json();
+
+        })();
+
+
+    REQUISICOES_EM_ANDAMENTO.set(
+        url,
+        requisicao
+    );
+
+
+    try {
+        const dados =
+            await requisicao;
+
+
+        CACHE_DADOS.set(
+            url,
+            dados
+        );
+
+
+        return dados;
+
+    } finally {
+
+        /*
+            Mesmo se houver erro, removemos a
+            Promise da lista de requisições.
+
+            Assim uma tentativa futura poderá
+            consultar novamente a API.
+        */
+        REQUISICOES_EM_ANDAMENTO.delete(
+            url
+        );
+    }
 }
 
 
@@ -60,19 +218,36 @@ async function buscarDados(
 // - nome
 // - URL
 //
-// Não busca os detalhes dos 649 Pokémon.
-// Isso permite montar os cards imediatamente.
+// Não busca os detalhes individuais.
+// Isso permite montar os cards rapidamente.
 export async function buscarListaPokemons() {
     const dados =
         await buscarDados(
-            `${API_URL}/pokemon?limit=${LIMITE_POKEDEX}&offset=0`
+            `${API_URL}/pokemon?limit=${LIMITE_POKEDEX_ATUAL}&offset=0`
         );
 
 
     return dados.results.map(
-        (pokemon, indice) => {
+        (
+            pokemon,
+            indice
+        ) => {
+
+            const id =
+                extrairIdDaUrl(
+                    pokemon.url
+                );
+
+
             return {
+                /*
+                    O fallback por índice existe
+                    apenas como proteção caso a
+                    PokéAPI retorne uma URL
+                    inesperada.
+                */
                 id:
+                    id ??
                     indice + 1,
 
                 name:
@@ -99,10 +274,14 @@ export async function buscarPokemonPorIdentificador(
     identificador
 ) {
     const chave =
-        String(
+        normalizarIdentificador(
             identificador
         );
 
+
+    // =========================
+    // CACHE POR ID / NOME
+    // =========================
 
     if (
         CACHE_POKEMON.has(
@@ -115,23 +294,42 @@ export async function buscarPokemonPorIdentificador(
     }
 
 
+    // =========================
+    // CONSULTA
+    // =========================
+
     const pokemon =
         await buscarDados(
-            `${API_URL}/pokemon/${identificador}`
+            `${API_URL}/pokemon/${encodeURIComponent(chave)}`
         );
 
 
-    /*
-        Guardamos tanto pelo ID quanto
-        pelo nome para reutilização futura.
-    */
+    // =========================
+    // ALIASES DO CACHE
+    // =========================
+
     CACHE_POKEMON.set(
         String(pokemon.id),
         pokemon
     );
 
+
     CACHE_POKEMON.set(
-        pokemon.name,
+        normalizarIdentificador(
+            pokemon.name
+        ),
+        pokemon
+    );
+
+
+    /*
+        Também guardamos a chave solicitada.
+
+        Isso é útil caso a PokéAPI normalize
+        algum identificador recebido.
+    */
+    CACHE_POKEMON.set(
+        chave,
         pokemon
     );
 
@@ -146,13 +344,24 @@ export async function buscarPokemonPorIdentificador(
 
 // Carrega os detalhes em segundo plano.
 //
-// Existe um número limitado de workers.
-// Cada worker pega um Pokémon de cada vez,
-// evitando 649 fetches simultâneos.
+// Um número limitado de workers busca os
+// Pokémon sem disparar centenas de fetches
+// simultaneamente.
 export async function buscarPokemonsDetalhados(
     listaPokemons,
-    quantidadeWorkers = 30
+    quantidadeWorkers =
+        QUANTIDADE_WORKERS_PADRAO
 ) {
+    if (
+        !Array.isArray(
+            listaPokemons
+        ) ||
+        listaPokemons.length === 0
+    ) {
+        return [];
+    }
+
+
     const resultados =
         new Array(
             listaPokemons.length
@@ -161,6 +370,34 @@ export async function buscarPokemonsDetalhados(
 
     let proximoIndice = 0;
 
+
+    // =========================
+    // QUANTIDADE DE WORKERS
+    // =========================
+
+    const quantidadeSolicitada =
+        Number.isFinite(
+            quantidadeWorkers
+        )
+            ? Math.floor(
+                quantidadeWorkers
+            )
+            : QUANTIDADE_WORKERS_PADRAO;
+
+
+    const totalWorkers =
+        Math.min(
+            Math.max(
+                quantidadeSolicitada,
+                1
+            ),
+            listaPokemons.length
+        );
+
+
+    // =========================
+    // WORKER
+    // =========================
 
     async function worker() {
         while (
@@ -184,6 +421,11 @@ export async function buscarPokemonsDetalhados(
                     );
 
 
+                /*
+                    Mantemos esta propriedade
+                    por compatibilidade com a
+                    estrutura atual do projeto.
+                */
                 pokemon.carregado =
                     true;
 
@@ -192,14 +434,19 @@ export async function buscarPokemonsDetalhados(
                     indice
                 ] = pokemon;
 
-
             } catch (erro) {
+
                 console.warn(
                     `Não foi possível carregar #${pokemonBase.id} ${pokemonBase.name}.`,
                     erro
                 );
 
 
+                /*
+                    Uma falha individual não
+                    impede o restante da Pokédex
+                    de terminar o carregamento.
+                */
                 resultados[
                     indice
                 ] = pokemonBase;
@@ -208,16 +455,16 @@ export async function buscarPokemonsDetalhados(
     }
 
 
+    // =========================
+    // EXECUÇÃO DOS WORKERS
+    // =========================
+
     const workers =
         Array.from(
             {
                 length:
-                    Math.min(
-                        quantidadeWorkers,
-                        listaPokemons.length
-                    )
+                    totalWorkers
             },
-
             () => worker()
         );
 
@@ -232,45 +479,20 @@ export async function buscarPokemonsDetalhados(
 
 
 // =========================
-// COMPATIBILIDADE
-// =========================
-
-// Mantemos esta função caso algum outro
-// ponto do projeto ainda utilize
-// buscarPokemons().
-export async function buscarPokemons() {
-    const lista =
-        await buscarListaPokemons();
-
-
-    return await buscarPokemonsDetalhados(
-        lista
-    );
-}
-
-
-// =========================
 // FORMA POR IDENTIFICADOR
 // =========================
 
 export async function buscarFormaPokemonPorIdentificador(
     identificador
 ) {
+    const chave =
+        normalizarIdentificador(
+            identificador
+        );
+
+
     return await buscarDados(
-        `${API_URL}/pokemon-form/${identificador}`
-    );
-}
-
-
-// =========================
-// POKÉMON POR NOME
-// =========================
-
-export async function buscarPokemonPorNome(
-    nome
-) {
-    return await buscarPokemonPorIdentificador(
-        nome
+        `${API_URL}/pokemon-form/${encodeURIComponent(chave)}`
     );
 }
 
@@ -282,8 +504,38 @@ export async function buscarPokemonPorNome(
 export async function buscarEspecie(
     pokemon
 ) {
-    return await buscarDados(
-        pokemon.species.url
+    /*
+        Pokémon completos normalmente já
+        possuem species.url.
+    */
+    if (
+        pokemon?.species?.url
+    ) {
+        return await buscarDados(
+            pokemon.species.url
+        );
+    }
+
+
+    /*
+        Proteção para objetos básicos da
+        lista rápida.
+
+        Para os Pokémon-base da Pokédex,
+        o ID nacional também identifica
+        corretamente /pokemon-species/.
+    */
+    if (
+        pokemon?.id
+    ) {
+        return await buscarDados(
+            `${API_URL}/pokemon-species/${pokemon.id}`
+        );
+    }
+
+
+    throw new Error(
+        "Não foi possível identificar a espécie do Pokémon."
     );
 }
 
@@ -299,6 +551,15 @@ export async function buscarEvolucoes(
         await buscarEspecie(
             pokemon
         );
+
+
+    if (
+        !especie?.evolution_chain?.url
+    ) {
+        throw new Error(
+            `Cadeia evolutiva indisponível para ${pokemon?.name ?? "Pokémon desconhecido"}.`
+        );
+    }
 
 
     const evolucao =

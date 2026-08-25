@@ -38,6 +38,29 @@ const PRIORIDADE_VERSOES = [
 ];
 
 
+// Quantidade máxima de golpes
+// exibidos no modal.
+const LIMITE_GOLPES =
+    8;
+
+
+// =========================
+// CACHE DOS GOLPES
+// =========================
+
+// Golpes já carregados.
+const CACHE_GOLPES =
+    new Map();
+
+
+// Requisições ainda em andamento.
+//
+// Evita dois fetches simultâneos
+// para o mesmo golpe.
+const REQUISICOES_GOLPES =
+    new Map();
+
+
 // =========================
 // BUSCA DE GOLPES
 // =========================
@@ -45,18 +68,91 @@ const PRIORIDADE_VERSOES = [
 async function buscarDetalhesGolpe(
     url
 ) {
-    const resposta =
-        await fetch(url);
-
-
-    if (!resposta.ok) {
+    if (!url) {
         throw new Error(
-            `Erro ao buscar golpe: ${resposta.status} ${resposta.statusText}`
+            "URL do golpe não informada."
         );
     }
 
 
-    return await resposta.json();
+    // =========================
+    // CACHE
+    // =========================
+
+    if (
+        CACHE_GOLPES.has(
+            url
+        )
+    ) {
+        return CACHE_GOLPES.get(
+            url
+        );
+    }
+
+
+    // =========================
+    // REQUISIÇÃO EM ANDAMENTO
+    // =========================
+
+    if (
+        REQUISICOES_GOLPES.has(
+            url
+        )
+    ) {
+        return await REQUISICOES_GOLPES.get(
+            url
+        );
+    }
+
+
+    // =========================
+    // NOVA REQUISIÇÃO
+    // =========================
+
+    const requisicao =
+        (async () => {
+            const resposta =
+                await fetch(
+                    url
+                );
+
+
+            if (!resposta.ok) {
+                throw new Error(
+                    `Erro ao buscar golpe: ${resposta.status} ${resposta.statusText}`
+                );
+            }
+
+
+            return await resposta.json();
+        })();
+
+
+    REQUISICOES_GOLPES.set(
+        url,
+        requisicao
+    );
+
+
+    try {
+        const dados =
+            await requisicao;
+
+
+        CACHE_GOLPES.set(
+            url,
+            dados
+        );
+
+
+        return dados;
+
+
+    } finally {
+        REQUISICOES_GOLPES.delete(
+            url
+        );
+    }
 }
 
 
@@ -67,13 +163,26 @@ async function buscarDetalhesGolpe(
 function obterNomeGolpe(
     golpe
 ) {
+    if (
+        !Array.isArray(
+            golpe?.names
+        )
+    ) {
+        return (
+            golpe?.name ||
+            "Golpe desconhecido"
+        );
+    }
+
+
     const nomePortugues =
         golpe.names.find(
             (nome) => {
-
                 return (
-                    nome.language.name === "pt-BR" ||
-                    nome.language.name === "pt"
+                    nome?.language?.name ===
+                        "pt-BR" ||
+                    nome?.language?.name ===
+                        "pt"
                 );
             }
         );
@@ -87,17 +196,34 @@ function obterNomeGolpe(
     const nomeIngles =
         golpe.names.find(
             (nome) => {
-
                 return (
-                    nome.language.name === "en"
+                    nome?.language?.name ===
+                    "en"
                 );
             }
         );
 
 
-    return nomeIngles
-        ? nomeIngles.name
-        : golpe.name;
+    return (
+        nomeIngles?.name ||
+        golpe.name ||
+        "Golpe desconhecido"
+    );
+}
+
+
+// =========================
+// MOVIMENTOS DO POKÉMON
+// =========================
+
+function obterMovimentosPokemon(
+    pokemon
+) {
+    return Array.isArray(
+        pokemon?.moves
+    )
+        ? pokemon.moves
+        : [];
 }
 
 
@@ -109,17 +235,32 @@ function pokemonPossuiVersao(
     pokemon,
     versao
 ) {
-    return pokemon.moves.some(
+    const movimentos =
+        obterMovimentosPokemon(
+            pokemon
+        );
+
+
+    return movimentos.some(
         (item) => {
+            const detalhes =
+                Array.isArray(
+                    item?.version_group_details
+                )
+                    ? item.version_group_details
+                    : [];
 
-            return item.version_group_details.some(
+
+            return detalhes.some(
                 (detalhe) => {
-
                     return (
-                        detalhe.version_group.name ===
+                        detalhe
+                            ?.version_group
+                            ?.name ===
                             versao &&
-
-                        detalhe.move_learn_method.name ===
+                        detalhe
+                            ?.move_learn_method
+                            ?.name ===
                             "level-up"
                     );
                 }
@@ -134,23 +275,45 @@ function pokemonPossuiVersao(
 function encontrarVersaoDisponivel(
     pokemon
 ) {
+    const movimentos =
+        obterMovimentosPokemon(
+            pokemon
+        );
+
+
     const versoesDisponiveis =
         new Set();
 
 
-    pokemon.moves.forEach(
+    movimentos.forEach(
         (item) => {
+            const detalhes =
+                Array.isArray(
+                    item?.version_group_details
+                )
+                    ? item.version_group_details
+                    : [];
 
-            item.version_group_details.forEach(
+
+            detalhes.forEach(
                 (detalhe) => {
-
                     if (
-                        detalhe.move_learn_method.name ===
+                        detalhe
+                            ?.move_learn_method
+                            ?.name ===
                         "level-up"
                     ) {
-                        versoesDisponiveis.add(
-                            detalhe.version_group.name
-                        );
+                        const versao =
+                            detalhe
+                                ?.version_group
+                                ?.name;
+
+
+                        if (versao) {
+                            versoesDisponiveis.add(
+                                versao
+                            );
+                        }
                     }
                 }
             );
@@ -161,11 +324,8 @@ function encontrarVersaoDisponivel(
     return (
         PRIORIDADE_VERSOES.find(
             (versao) => {
-
-                return (
-                    versoesDisponiveis.has(
-                        versao
-                    )
+                return versoesDisponiveis.has(
+                    versao
                 );
             }
         ) ||
@@ -205,26 +365,44 @@ function extrairGolpesPorNivel(
     pokemon,
     versaoSelecionada
 ) {
-    return pokemon.moves
+    const movimentos =
+        obterMovimentosPokemon(
+            pokemon
+        );
+
+
+    return movimentos
         .map(
             (item) => {
+                const detalhes =
+                    Array.isArray(
+                        item?.version_group_details
+                    )
+                        ? item.version_group_details
+                        : [];
+
 
                 const detalheVersao =
-                    item.version_group_details.find(
+                    detalhes.find(
                         (detalhe) => {
-
                             return (
-                                detalhe.version_group.name ===
+                                detalhe
+                                    ?.version_group
+                                    ?.name ===
                                     versaoSelecionada &&
-
-                                detalhe.move_learn_method.name ===
+                                detalhe
+                                    ?.move_learn_method
+                                    ?.name ===
                                     "level-up"
                             );
                         }
                     );
 
 
-                if (!detalheVersao) {
+                if (
+                    !detalheVersao ||
+                    !item?.move?.url
+                ) {
                     return null;
                 }
 
@@ -234,24 +412,91 @@ function extrairGolpesPorNivel(
                         item.move.url,
 
                     nivel:
-                        detalheVersao.level_learned_at
+                        Number(
+                            detalheVersao
+                                .level_learned_at
+                        ) || 0
                 };
             }
         )
-        .filter(
-            (golpe) => {
-                return golpe !== null;
-            }
-        )
+        .filter(Boolean)
         .sort(
             (a, b) => {
-                return a.nivel - b.nivel;
+                return (
+                    a.nivel -
+                    b.nivel
+                );
             }
         )
         .slice(
             0,
-            8
+            LIMITE_GOLPES
         );
+}
+
+
+// =========================
+// DETALHA UM GOLPE
+// =========================
+
+async function carregarGolpeDetalhado(
+    golpe
+) {
+    try {
+        const detalhes =
+            await buscarDetalhesGolpe(
+                golpe.url
+            );
+
+
+        const tipo =
+            detalhes?.type?.name;
+
+
+        if (!tipo) {
+            return null;
+        }
+
+
+        return {
+            nome:
+                obterNomeGolpe(
+                    detalhes
+                ),
+
+            tipo,
+
+            tipoTraduzido:
+                traduzirTipo(
+                    tipo
+                ),
+
+            nivel:
+                golpe.nivel,
+
+            poder:
+                detalhes.power,
+
+            precisao:
+                detalhes.accuracy
+        };
+
+
+    } catch (erro) {
+
+        /*
+            Uma falha isolada não deve
+            impedir os outros golpes de
+            aparecerem no modal.
+        */
+        console.warn(
+            `Não foi possível carregar o golpe ${golpe.url}.`,
+            erro
+        );
+
+
+        return null;
+    }
 }
 
 
@@ -260,13 +505,28 @@ function extrairGolpesPorNivel(
 // =========================
 
 // usarVersaoKanto:
+//
 // true  -> tenta Red/Blue primeiro
+//
 // false -> escolhe uma versão compatível
 //          com a forma do Pokémon.
 export async function buscarGolpesPrincipais(
     pokemon,
     usarVersaoKanto = true
 ) {
+    const movimentos =
+        obterMovimentosPokemon(
+            pokemon
+        );
+
+
+    if (
+        movimentos.length === 0
+    ) {
+        return [];
+    }
+
+
     const versaoSelecionada =
         obterVersaoGolpes(
             pokemon,
@@ -286,49 +546,24 @@ export async function buscarGolpesPrincipais(
         );
 
 
+    if (
+        golpesPorNivel.length === 0
+    ) {
+        return [];
+    }
+
+
     const golpesDetalhados =
         await Promise.all(
             golpesPorNivel.map(
-                async (golpe) => {
-
-                    const detalhes =
-                        await buscarDetalhesGolpe(
-                            golpe.url
-                        );
-
-
-                    const tipo =
-                        detalhes.type.name;
-
-
-                    return {
-                        nome:
-                            obterNomeGolpe(
-                                detalhes
-                            ),
-
-                        tipo,
-
-                        tipoTraduzido:
-                            traduzirTipo(
-                                tipo
-                            ),
-
-                        nivel:
-                            golpe.nivel,
-
-                        poder:
-                            detalhes.power,
-
-                        precisao:
-                            detalhes.accuracy
-                    };
-                }
+                carregarGolpeDetalhado
             )
         );
 
 
-    return golpesDetalhados;
+    return golpesDetalhados.filter(
+        Boolean
+    );
 }
 
 
@@ -342,6 +577,7 @@ export function criarListaGolpes(
     golpes
 ) {
     if (
+        !Array.isArray(golpes) ||
         golpes.length === 0
     ) {
         return `
@@ -387,6 +623,7 @@ export function criarListaGolpes(
                             <strong>
                                 ${golpe.poder ?? "—"}
                             </strong>
+
                         </span>
 
 
@@ -396,6 +633,7 @@ export function criarListaGolpes(
                             <strong>
                                 ${golpe.precisao ?? "—"}
                             </strong>
+
                         </span>
 
                     </div>

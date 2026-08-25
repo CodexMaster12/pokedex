@@ -73,7 +73,6 @@ async function carregarEvolucoesNormais(
 
 
     } catch (erro) {
-
         console.warn(
             `Não foi possível carregar a evolução normal de ${pokemon.name}.`,
             erro
@@ -112,7 +111,6 @@ async function carregarEvolucoesRegionais(
 
 
     } catch (erro) {
-
         console.warn(
             `Não foi possível carregar as evoluções regionais de ${pokemon.name}.`,
             erro
@@ -151,7 +149,6 @@ async function carregarEvolucoesEspeciaisModal(
 
 
     } catch (erro) {
-
         console.warn(
             `Não foi possível carregar as evoluções especiais de ${pokemon.name}.`,
             erro
@@ -160,6 +157,51 @@ async function carregarEvolucoesEspeciaisModal(
 
         return "";
     }
+}
+
+
+// =========================
+// MODAL ATUAL
+// =========================
+
+// Confirma que a área de evoluções ainda
+// pertence ao Pokémon atualmente exibido.
+//
+// Isso evita que um carregamento antigo
+// interfira depois que o usuário navegar
+// para outro Pokémon.
+function listaEvolucoesAindaEhAtual(
+    listaEvolucoes
+) {
+    return (
+        listaEvolucoes.isConnected &&
+        document.getElementById(
+            "lista-evolucoes"
+        ) === listaEvolucoes
+    );
+}
+
+
+// =========================
+// FORMA ATUAL
+// =========================
+
+// Retorna a forma atualmente selecionada
+// no modal.
+//
+// Se o Pokémon não possuir seletor,
+// considera a forma normal.
+function obterFormaAtualModal() {
+    const seletorForma =
+        document.getElementById(
+            "seletor-forma"
+        );
+
+
+    return (
+        seletorForma?.value ||
+        "normal"
+    );
 }
 
 
@@ -200,6 +242,27 @@ export async function carregarEvolucoesModal(
     ]);
 
 
+    // =========================
+    // VERIFICA MODAL ATUAL
+    // =========================
+
+    /*
+        O usuário pode ter navegado para
+        outro Pokémon enquanto as evoluções
+        estavam sendo carregadas.
+
+        Nesse caso, não modificamos o modal
+        que está atualmente na tela.
+    */
+    if (
+        !listaEvolucoesAindaEhAtual(
+            listaEvolucoes
+        )
+    ) {
+        return;
+    }
+
+
     const conteudo =
         `
             ${evolucoesNormais}
@@ -207,6 +270,10 @@ export async function carregarEvolucoesModal(
             ${evolucoesEspeciais}
         `.trim();
 
+
+    // =========================
+    // SEM EVOLUÇÕES
+    // =========================
 
     if (!conteudo) {
         listaEvolucoes.innerHTML = `
@@ -219,6 +286,10 @@ export async function carregarEvolucoesModal(
     }
 
 
+    // =========================
+    // RENDERIZAÇÃO
+    // =========================
+
     listaEvolucoes.innerHTML = `
         <div class="evolucoes-conteudo">
             ${conteudo}
@@ -226,8 +297,21 @@ export async function carregarEvolucoesModal(
     `;
 
 
+    // =========================
+    // DESTAQUE
+    // =========================
+
+    /*
+        Usa a forma realmente selecionada
+        pelo usuário em vez de sempre
+        voltar para "normal".
+    */
+    const formaAtual =
+        obterFormaAtualModal();
+
+
     atualizarDestaqueEvolucao(
         pokemon.id,
-        "normal"
+        formaAtual
     );
 }
