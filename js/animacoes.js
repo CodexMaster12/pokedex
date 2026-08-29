@@ -22,6 +22,12 @@
 // - Female completo
 // - Formas alternativas quase completas
 //
+// Geração 4:
+// - Forma normal completa
+// - Shiny completo
+// - Female quase completo
+// - Formas alternativas quase completas
+//
 // Aqui registramos apenas as combinações
 // que NÃO possuem animação.
 // =========================
@@ -42,10 +48,10 @@ const ANIMACOES_INDISPONIVEIS =
         "3:gigantamax:normal",
         "3:gigantamax:shiny",
 
-
         // Blastoise - Gigantamax
         "9:gigantamax:normal",
         "9:gigantamax:shiny",
+
 
         // =========================
         // PIKACHU — FORMAS ESPECIAIS
@@ -111,21 +117,17 @@ const ANIMACOES_INDISPONIVEIS =
         "26:mega-y:normal",
         "26:mega-y:shiny",
 
-
         // Clefable - Mega
         "36:mega:normal",
         "36:mega:shiny",
-
 
         // Victreebel - Mega
         "71:mega:normal",
         "71:mega:shiny",
 
-
         // Starmie - Mega
         "121:mega:normal",
         "121:mega:shiny",
-
 
         // Dragonite - Mega
         "149:mega:normal",
@@ -140,21 +142,17 @@ const ANIMACOES_INDISPONIVEIS =
         "154:mega:normal",
         "154:mega:shiny",
 
-
         // Feraligatr - Mega
         "160:mega:normal",
         "160:mega:shiny",
-
 
         // Quagsire - Female
         "195:normal:female",
         "195:normal:female-shiny",
 
-
         // Sneasel de Hisui - Female
         "215:hisui:female",
         "215:hisui:female-shiny",
-
 
         // Skarmory - Mega
         "227:mega:normal",
@@ -170,15 +168,62 @@ const ANIMACOES_INDISPONIVEIS =
         "327:normal:normal",
         "327:normal:shiny",
 
-
         // Chimecho - Mega
         "358:mega:normal",
         "358:mega:shiny",
 
-
         // Absol - Mega Z
         "359:mega-z:normal",
-        "359:mega-z:shiny"
+        "359:mega-z:shiny",
+
+
+        // =========================
+        // GERAÇÃO 4 — SINNOH
+        // =========================
+
+        // Staraptor - Mega
+        "398:mega:normal",
+        "398:mega:shiny",
+
+        // Burmy - Sandy
+        "412:sandy:normal",
+        "412:sandy:shiny",
+
+        // Buizel - Female
+        "418:normal:female",
+        "418:normal:female-shiny",
+
+        // Floatzel - Female
+        "419:normal:female",
+        "419:normal:female-shiny",
+
+        // Gabite - Female
+        "444:normal:female",
+        "444:normal:female-shiny",
+
+        // Garchomp - Mega Z
+        "445:mega-z:normal",
+        "445:mega-z:shiny",
+
+        // Lucario - Mega Z
+        "448:mega-z:normal",
+        "448:mega-z:shiny",
+
+        // Froslass - Mega
+        "478:mega:normal",
+        "478:mega:shiny",
+
+        // Heatran - Mega
+        "485:mega:normal",
+        "485:mega:shiny",
+
+        // Darkrai - Mega
+        "491:mega:normal",
+        "491:mega:shiny",
+
+        // Arceus - Unknown
+        "493:unknown:normal",
+        "493:unknown:shiny"
     ]);
 
 
@@ -187,7 +232,7 @@ const ANIMACOES_INDISPONIVEIS =
 // =========================
 
 const PRIMEIRO_POKEMON_ANIMADO = 1;
-const ULTIMO_POKEMON_ANIMADO = 386;
+const ULTIMO_POKEMON_ANIMADO = 493;
 
 
 // =========================
@@ -196,6 +241,7 @@ const ULTIMO_POKEMON_ANIMADO = 386;
 
 // Retorna a aparência usada na chave
 // de disponibilidade da animação.
+
 function obterAparenciaAnimacao(
     estadoAparencia
 ) {
@@ -207,7 +253,6 @@ function obterAparenciaAnimacao(
             ? "female-shiny"
             : "female";
     }
-
 
     return estadoAparencia.shiny
         ? "shiny"
@@ -223,10 +268,10 @@ export function possuiAnimacaoPokemon(
     pokemon,
     estadoAparencia
 ) {
-
     // Atualmente as animações estão
     // disponíveis para Kanto,
-    // Johto e Hoenn.
+    // Johto, Hoenn e Sinnoh.
+
     if (
         pokemon.id <
             PRIMEIRO_POKEMON_ANIMADO ||
@@ -236,18 +281,15 @@ export function possuiAnimacaoPokemon(
         return false;
     }
 
-
     const aparencia =
         obterAparenciaAnimacao(
             estadoAparencia
         );
 
-
     const chave =
         `${pokemon.id}:` +
         `${estadoAparencia.forma}:` +
         `${aparencia}`;
-
 
     return (
         !ANIMACOES_INDISPONIVEIS.has(
