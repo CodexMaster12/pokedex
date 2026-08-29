@@ -30,12 +30,14 @@ const NOMES_ESPECIAIS = {
     "darmanitan-standard": "Darmanitan",
 
     "frillish": "Frillish",
+    "frillish-male": "Frillish",
+
     "jellicent": "Jellicent",
+    "jellicent-male": "Jellicent",
 
     "tornadus-incarnate": "Tornadus",
     "thundurus-incarnate": "Thundurus",
     "landorus-incarnate": "Landorus",
-
     "keldeo-ordinary": "Keldeo",
     "meloetta-aria": "Meloetta"
 };

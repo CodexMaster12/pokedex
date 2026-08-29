@@ -705,6 +705,241 @@ const DADOS_FORMAS_MANUAIS = {
 
         height: 30,
         weight: 2400
+    },
+
+    // =========================
+    // EMBOAR — MEGA
+    // =========================
+
+    "500:mega": {
+        pokemonId: 500,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fire",
+                "fighting"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "mold-breaker"
+            ),
+
+        stats:
+            criarStats(
+                110,
+                148,
+                75,
+                110,
+                110,
+                75
+            ),
+
+        height: 18,
+        weight: 1803
+    },
+
+    // =========================
+    // EXCADRILL — MEGA
+    // =========================
+
+    "530:mega": {
+        pokemonId: 530,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "ground",
+                "steel"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "piercing-drill"
+            ),
+
+        stats:
+            criarStats(
+                110,
+                165,
+                100,
+                65,
+                65,
+                103
+            ),
+
+        height: 9,
+        weight: 600
+    },
+
+
+    // =========================
+    // SCOLIPEDE — MEGA
+    // =========================
+
+    "545:mega": {
+        pokemonId: 545,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "bug",
+                "poison"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "shell-armor"
+            ),
+
+        stats:
+            criarStats(
+                60,
+                140,
+                149,
+                75,
+                99,
+                62
+            ),
+
+        height: 32,
+        weight: 2305
+    },
+
+
+    // =========================
+    // SCRAFTY — MEGA
+    // =========================
+
+    "560:mega": {
+        pokemonId: 560,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "dark",
+                "fighting"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "intimidate"
+            ),
+
+        stats:
+            criarStats(
+                65,
+                130,
+                135,
+                55,
+                135,
+                68
+            ),
+
+        height: 11,
+        weight: 310
+    },
+
+
+    // =========================
+    // EELEKTROSS — MEGA
+    // =========================
+
+    "604:mega": {
+        pokemonId: 604,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "electric"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "eelevate"
+            ),
+
+        stats:
+            criarStats(
+                85,
+                145,
+                80,
+                135,
+                90,
+                80
+            ),
+
+        height: 30,
+        weight: 1800
+    },
+
+
+    // =========================
+    // CHANDELURE — MEGA
+    // =========================
+
+    "609:mega": {
+        pokemonId: 609,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "ghost",
+                "fire"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "infiltrator"
+            ),
+
+        stats:
+            criarStats(
+                60,
+                75,
+                110,
+                175,
+                110,
+                90
+            ),
+
+        height: 25,
+        weight: 696
+    },
+
+
+    // =========================
+    // GOLURK — MEGA
+    // =========================
+
+    "623:mega": {
+        pokemonId: 623,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "ground",
+                "ghost"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "unseen-fist"
+            ),
+
+        stats:
+            criarStats(
+                89,
+                159,
+                105,
+                70,
+                105,
+                55
+            ),
+
+        height: 40,
+        weight: 3300
     }
 
 };
