@@ -54,32 +54,20 @@ async function carregarEvolucoesNormais(
             );
 
 
-        const arvoresComDados =
-            await carregarDadosArvore(
-                arvore
-            );
-
-
-        return arvoresComDados
-            .map(
-                (arvoreComDados) => {
-                    return renderizarArvoreEvolucao(
-                        arvoreComDados,
-                        pokemon
-                    );
-                }
-            )
-            .join("");
+        return await carregarDadosArvore(
+            arvore
+        );
 
 
     } catch (erro) {
+
         console.warn(
             `Não foi possível carregar a evolução normal de ${pokemon.name}.`,
             erro
         );
 
 
-        return "";
+        return [];
     }
 }
 
@@ -92,32 +80,20 @@ async function carregarEvolucoesRegionais(
     pokemon
 ) {
     try {
-        const cadeiasRegionais =
-            await carregarCadeiasRegionais(
-                pokemon.id
-            );
-
-
-        return cadeiasRegionais
-            .map(
-                (cadeiaRegional) => {
-                    return renderizarCadeiaRegional(
-                        cadeiaRegional,
-                        pokemon
-                    );
-                }
-            )
-            .join("");
+        return await carregarCadeiasRegionais(
+            pokemon.id
+        );
 
 
     } catch (erro) {
+
         console.warn(
             `Não foi possível carregar as evoluções regionais de ${pokemon.name}.`,
             erro
         );
 
 
-        return "";
+        return [];
     }
 }
 
@@ -130,33 +106,231 @@ async function carregarEvolucoesEspeciaisModal(
     pokemon
 ) {
     try {
-        const cadeiasEspeciais =
-            await carregarEvolucoesEspeciais(
-                pokemon.id
-            );
-
-
-        return cadeiasEspeciais
-            .map(
-                (cadeiaEspecial) => {
-                    return renderizarCadeiaRegional(
-                        cadeiaEspecial,
-                        pokemon
-                    );
-                }
-            )
-            .join("");
+        return await carregarEvolucoesEspeciais(
+            pokemon.id
+        );
 
 
     } catch (erro) {
+
         console.warn(
             `Não foi possível carregar as evoluções especiais de ${pokemon.name}.`,
             erro
         );
 
 
-        return "";
+        return [];
     }
+}
+
+
+// =========================
+// CADEIA LINEAR → ÁRVORE
+// =========================
+//
+// Converte:
+//
+// Sliggoo Hisui
+// Goodra Hisui
+//
+// em:
+//
+// Sliggoo Hisui
+// └── Goodra Hisui
+//
+// Isso permite inserir a evolução especial
+// diretamente na árvore normal.
+
+function converterCadeiaEmArvore(
+    etapas
+) {
+    if (
+        !Array.isArray(etapas) ||
+        etapas.length === 0
+    ) {
+        return null;
+    }
+
+
+    const raiz = {
+        ...etapas[0],
+        evolucoes: []
+    };
+
+
+    let noAtual =
+        raiz;
+
+
+    for (
+        let indice = 1;
+        indice < etapas.length;
+        indice++
+    ) {
+        const proximoNo = {
+            ...etapas[indice],
+            evolucoes: []
+        };
+
+
+        noAtual.evolucoes.push(
+            proximoNo
+        );
+
+
+        noAtual =
+            proximoNo;
+    }
+
+
+    return raiz;
+}
+
+
+// =========================
+// JUNÇÃO DAS RAMIFICAÇÕES
+// =========================
+//
+// Algumas evoluções especiais compartilham
+// a mesma raiz da árvore normal.
+//
+// Exemplos:
+//
+// Goomy
+// ├── Sliggoo → Goodra
+// └── Sliggoo Hisui → Goodra Hisui
+//
+// Bergmite
+// ├── Avalugg
+// └── Avalugg Hisui
+//
+// Essas cadeias são incorporadas à árvore
+// normal antes da renderização.
+
+function integrarRamificacoesEspeciais(
+    arvoresNormais,
+    cadeiasEspeciais
+) {
+    const especiaisSeparadas = [];
+
+
+    for (
+        const cadeiaEspecial of cadeiasEspeciais
+    ) {
+        const ramificacaoSemRaiz =
+            cadeiaEspecial[0]
+                ?.ramificacaoSemRaiz ===
+            true;
+
+
+        if (!ramificacaoSemRaiz) {
+            especiaisSeparadas.push(
+                cadeiaEspecial
+            );
+
+            continue;
+        }
+
+
+        const ramoEspecial =
+            converterCadeiaEmArvore(
+                cadeiaEspecial
+            );
+
+
+        if (!ramoEspecial) {
+            continue;
+        }
+
+
+        const arvorePrincipal =
+            arvoresNormais[0];
+
+
+        if (
+            !arvorePrincipal ||
+            !Array.isArray(
+                arvorePrincipal.evolucoes
+            )
+        ) {
+            especiaisSeparadas.push(
+                cadeiaEspecial
+            );
+
+            continue;
+        }
+
+
+        // A raiz passa a possuir mais de uma
+        // possibilidade de evolução.
+        //
+        // Forçamos o mesmo comportamento visual
+        // usado nas ramificações verticais,
+        // independentemente do ID do Pokémon.
+
+        arvorePrincipal.layoutVertical =
+            true;
+
+
+        arvorePrincipal.evolucoes.push(
+            ramoEspecial
+        );
+    }
+
+
+    return especiaisSeparadas;
+}
+
+
+// =========================
+// RENDERIZAÇÃO NORMAL
+// =========================
+
+function renderizarEvolucoesNormais(
+    arvores,
+    pokemon
+) {
+    return arvores
+        .map(
+            (arvore) => {
+                return renderizarArvoreEvolucao(
+                    arvore,
+                    pokemon
+                );
+            }
+        )
+        .join("");
+}
+
+
+// =========================
+// RENDERIZAÇÃO DE CADEIAS
+// =========================
+
+function renderizarCadeias(
+    cadeias,
+    pokemon
+) {
+    return cadeias
+        .map(
+            (cadeia) => {
+
+                if (
+                    !Array.isArray(cadeia)
+                ) {
+                    return renderizarArvoreEvolucao(
+                        cadeia,
+                        pokemon
+                    );
+                }
+
+                return renderizarCadeiaRegional(
+                    cadeia,
+                    pokemon
+                );
+            }
+        )
+        .join("");
 }
 
 
@@ -170,6 +344,7 @@ async function carregarEvolucoesEspeciaisModal(
 // Isso evita que um carregamento antigo
 // interfira depois que o usuário navegar
 // para outro Pokémon.
+
 function listaEvolucoesAindaEhAtual(
     listaEvolucoes
 ) {
@@ -191,6 +366,7 @@ function listaEvolucoesAindaEhAtual(
 //
 // Se o Pokémon não possuir seletor,
 // considera a forma normal.
+
 function obterFormaAtualModal() {
     const seletorForma =
         document.getElementById(
@@ -224,9 +400,9 @@ export async function carregarEvolucoesModal(
 
 
     const [
-        evolucoesNormais,
-        evolucoesRegionais,
-        evolucoesEspeciais
+        arvoresNormais,
+        cadeiasRegionais,
+        cadeiasEspeciais
     ] = await Promise.all([
         carregarEvolucoesNormais(
             pokemon
@@ -243,17 +419,20 @@ export async function carregarEvolucoesModal(
 
 
     // =========================
+    // INTEGRA RAMIFICAÇÕES
+    // =========================
+
+    const especiaisSeparadas =
+        integrarRamificacoesEspeciais(
+            arvoresNormais,
+            cadeiasEspeciais
+        );
+
+
+    // =========================
     // VERIFICA MODAL ATUAL
     // =========================
 
-    /*
-        O usuário pode ter navegado para
-        outro Pokémon enquanto as evoluções
-        estavam sendo carregadas.
-
-        Nesse caso, não modificamos o modal
-        que está atualmente na tela.
-    */
     if (
         !listaEvolucoesAindaEhAtual(
             listaEvolucoes
@@ -261,6 +440,31 @@ export async function carregarEvolucoesModal(
     ) {
         return;
     }
+
+
+    // =========================
+    // RENDERIZA CONTEÚDO
+    // =========================
+
+    const evolucoesNormais =
+        renderizarEvolucoesNormais(
+            arvoresNormais,
+            pokemon
+        );
+
+
+    const evolucoesRegionais =
+        renderizarCadeias(
+            cadeiasRegionais,
+            pokemon
+        );
+
+
+    const evolucoesEspeciais =
+        renderizarCadeias(
+            especiaisSeparadas,
+            pokemon
+        );
 
 
     const conteudo =
@@ -301,11 +505,6 @@ export async function carregarEvolucoesModal(
     // DESTAQUE
     // =========================
 
-    /*
-        Usa a forma realmente selecionada
-        pelo usuário em vez de sempre
-        voltar para "normal".
-    */
     const formaAtual =
         obterFormaAtualModal();
 

@@ -22,6 +22,10 @@ import {
     FORMAS_GEN_5
 } from "./gen-5.js";
 
+import {
+    FORMAS_GEN_6
+} from "./gen-6.js";
+
 
 // =========================
 // REGISTRO GLOBAL
@@ -29,13 +33,15 @@ import {
 
 // Reúne as formas cadastradas
 // de todas as gerações disponíveis.
+
 const FORMAS_POKEMON =
     Object.freeze({
         ...FORMAS_GEN_1,
         ...FORMAS_GEN_2,
         ...FORMAS_GEN_3,
         ...FORMAS_GEN_4,
-        ...FORMAS_GEN_5
+        ...FORMAS_GEN_5,
+        ...FORMAS_GEN_6
     });
 
 
@@ -45,6 +51,7 @@ const FORMAS_POKEMON =
 
 // Retorna todas as formas disponíveis
 // para determinado Pokémon.
+
 export function obterFormasPokemon(
     pokemon
 ) {
@@ -56,6 +63,7 @@ export function obterFormasPokemon(
 
 
 // Retorna uma forma específica.
+
 export function obterFormaSelecionada(
     pokemon,
     formaSelecionada
@@ -64,7 +72,6 @@ export function obterFormaSelecionada(
         obterFormasPokemon(
             pokemon
         );
-
 
     return (
         formas.find(

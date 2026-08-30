@@ -15,6 +15,7 @@ const EVOLUCOES_ESPECIAIS = [
 
     // Basculin White-Striped
     // → Basculegion
+
     {
         familia: [550],
 
@@ -31,6 +32,62 @@ const EVOLUCOES_ESPECIAIS = [
                 nome: "basculegion",
                 api: "basculegion-male",
                 forma: null
+            }
+        ]
+    },
+
+
+    // =========================
+    // GERAÇÃO 6
+    // =========================
+
+    // Goomy
+    // → Sliggoo Hisui
+    // → Goodra Hisui
+    //
+    // Goomy já existe na árvore normal.
+    // Esta cadeia começa somente
+    // na ramificação alternativa.
+
+    {
+        familia: [704, 705, 706],
+
+        ramificacaoSemRaiz: true,
+
+        cadeia: [
+            {
+                numero: 705,
+                nome: "sliggoo",
+                api: "sliggoo-hisui",
+                forma: "Hisui"
+            },
+
+            {
+                numero: 706,
+                nome: "goodra",
+                api: "goodra-hisui",
+                forma: "Hisui"
+            }
+        ]
+    },
+
+
+    // Bergmite
+    // → Avalugg Hisui
+    //
+    // Bergmite já existe na árvore normal.
+
+    {
+        familia: [712, 713],
+
+        ramificacaoSemRaiz: true,
+
+        cadeia: [
+            {
+                numero: 713,
+                nome: "avalugg",
+                api: "avalugg-hisui",
+                forma: "Hisui"
             }
         ]
     }
@@ -70,6 +127,10 @@ async function carregarCadeia(
                 forma:
                     etapa.forma,
 
+                ramificacaoSemRaiz:
+                    configuracao.ramificacaoSemRaiz ===
+                    true,
+
                 evolucoes: []
             });
 
@@ -84,10 +145,16 @@ async function carregarCadeia(
 
             etapas.push({
                 pokemon: {
-                    id: etapa.numero,
-                    name: etapa.nome,
+                    id:
+                        etapa.numero,
+
+                    name:
+                        etapa.nome,
+
                     types: [],
-                    placeholder: true
+
+                    placeholder:
+                        true
                 },
 
                 numeroExibido:
@@ -98,6 +165,10 @@ async function carregarCadeia(
 
                 forma:
                     etapa.forma,
+
+                ramificacaoSemRaiz:
+                    configuracao.ramificacaoSemRaiz ===
+                    true,
 
                 evolucoes: []
             });

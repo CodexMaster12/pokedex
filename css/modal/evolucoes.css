@@ -4,39 +4,31 @@
 
 #lista-evolucoes {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     width: 100%;
 }
 
 
 .evolucao-etapa {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 15px;
 }
 
 
 .evolucao-filhos {
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     gap: 15px;
-
     flex-wrap: wrap;
 }
 
 
 .evolucao-ramo {
     display: flex;
-
     justify-content: center;
     align-items: center;
 }
@@ -48,19 +40,26 @@
 
 .evolucao-filhos-vertical {
     flex-direction: column;
-
     align-items: center;
-
     flex-wrap: nowrap;
-
     gap: 12px;
 }
+
+
+/*
+    Cadeias especiais que compartilham
+    o Pokémon inicial da árvore normal.
+
+    O espaço representa visualmente
+    o Pokémon inicial sem duplicá-lo.
+*/
 
 
 /* Eevee:
    4 evoluções na esquerda
    4 evoluções na direita
 */
+
 .evolucao-filhos-eevee {
     display: grid;
 
@@ -102,7 +101,6 @@
 
 .evolucao-imagem {
     display: flex;
-
     justify-content: center;
     align-items: center;
 
@@ -126,7 +124,6 @@
 
 .evolucao-identificacao {
     display: flex;
-
     justify-content: center;
     align-items: center;
 
@@ -163,7 +160,6 @@
 
 .evolucao-tipos {
     display: flex;
-
     justify-content: center;
 
     gap: 5px;
@@ -182,6 +178,7 @@
 
 
 /* Pokémon atualmente aberto */
+
 .evolucao-item.evolucao-atual
 .evolucao-nome {
     color: #d62828;
@@ -209,7 +206,6 @@
 .evolucoes-conteudo {
     display: flex;
     flex-direction: column;
-
     align-items: center;
 
     width: 100%;
@@ -220,9 +216,9 @@
 
 /* Pokémon de gerações
    ainda não implementadas */
+
 .evolucao-em-breve {
     display: flex;
-
     justify-content: center;
     align-items: center;
 
@@ -246,12 +242,14 @@
 
 
 /* Cadeias regionais */
+
 .evolucao-regional {
     justify-content: center;
 }
 
 
 /* Erro isolado de evolução */
+
 .sem-evolucoes {
     padding: 15px;
 

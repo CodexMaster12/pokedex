@@ -940,6 +940,377 @@ const DADOS_FORMAS_MANUAIS = {
 
         height: 40,
         weight: 3300
+    },
+
+    // =========================
+    // CHESNAUGHT — MEGA
+    // =========================
+
+    "652:mega": {
+        pokemonId: 652,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "grass",
+                "fighting"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "bulletproof"
+            ),
+
+        stats:
+            criarStats(
+                88,
+                137,
+                172,
+                74,
+                115,
+                44
+            ),
+
+        height: 16,
+        weight: 900
+    },
+
+
+    // =========================
+    // DELPHOX — MEGA
+    // =========================
+
+    "655:mega": {
+        pokemonId: 655,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fire",
+                "psychic"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "levitate"
+            ),
+
+        stats:
+            criarStats(
+                75,
+                69,
+                72,
+                159,
+                125,
+                134
+            ),
+
+        height: 15,
+        weight: 390
+    },
+
+
+    // =========================
+    // GRENINJA — MEGA
+    // =========================
+
+    "658:mega": {
+        pokemonId: 658,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "water",
+                "dark"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "protean"
+            ),
+
+        stats:
+            criarStats(
+                72,
+                125,
+                77,
+                133,
+                81,
+                142
+            ),
+
+        height: 15,
+        weight: 400
+    },
+
+
+    // =========================
+    // PYROAR — MEGA
+    // =========================
+
+    "668:mega": {
+        pokemonId: 668,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fire",
+                "normal"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "fire-mane"
+            ),
+
+        stats:
+            criarStats(
+                86,
+                88,
+                92,
+                129,
+                86,
+                126
+            ),
+
+        height: 15,
+        weight: 933
+    },
+
+
+    // =========================
+    // FLOETTE — MEGA
+    // =========================
+
+    "670:mega": {
+        pokemonId: 670,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fairy"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "fairy-aura"
+            ),
+
+        stats:
+            criarStats(
+                74,
+                85,
+                87,
+                155,
+                148,
+                102
+            ),
+
+        height: 2,
+        weight: 1008
+    },
+
+
+    // =========================
+    // MEOWSTIC — MEGA
+    // =========================
+
+    "678:mega": {
+        pokemonId: 678,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "psychic"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "trace"
+            ),
+
+        stats:
+            criarStats(
+                74,
+                48,
+                76,
+                143,
+                101,
+                124
+            ),
+
+        height: 8,
+        weight: 101
+    },
+
+
+    // =========================
+    // MALAMAR — MEGA
+    // =========================
+
+    "687:mega": {
+        pokemonId: 687,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "dark",
+                "psychic"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "contrary"
+            ),
+
+        stats:
+            criarStats(
+                86,
+                102,
+                88,
+                98,
+                120,
+                88
+            ),
+
+        height: 29,
+        weight: 698
+    },
+
+
+    // =========================
+    // BARBARACLE — MEGA
+    // =========================
+
+    "689:mega": {
+        pokemonId: 689,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "rock",
+                "fighting"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "tough-claws"
+            ),
+
+        stats:
+            criarStats(
+                72,
+                140,
+                130,
+                64,
+                106,
+                88
+            ),
+
+        height: 22,
+        weight: 1000
+    },
+
+
+    // =========================
+    // DRAGALGE — MEGA
+    // =========================
+
+    "691:mega": {
+        pokemonId: 691,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "poison",
+                "dragon"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "regenerator"
+            ),
+
+        stats:
+            criarStats(
+                65,
+                85,
+                105,
+                132,
+                163,
+                44
+            ),
+
+        height: 21,
+        weight: 1003
+    },
+
+
+    // =========================
+    // HAWLUCHA — MEGA
+    // =========================
+
+    "701:mega": {
+        pokemonId: 701,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fighting",
+                "flying"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "no-guard"
+            ),
+
+        stats:
+            criarStats(
+                78,
+                137,
+                100,
+                74,
+                93,
+                118
+            ),
+
+        height: 10,
+        weight: 250
+    },
+
+
+    // =========================
+    // ZYGARDE — MEGA
+    // =========================
+
+    "718:mega": {
+        pokemonId: 718,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "dragon",
+                "ground"
+            ),
+
+        // Nenhuma habilidade é listada
+        // para Mega Zygarde.
+        abilities:
+            criarHabilidades(),
+
+        stats:
+            criarStats(
+                216,
+                70,
+                91,
+                216,
+                85,
+                100
+            ),
+
+        height: 77,
+        weight: 6100
     }
 
 };

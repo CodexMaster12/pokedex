@@ -19,6 +19,7 @@ import {
 // compatibilidade com módulos que
 // já importam esta constante através
 // de evolucoes/configuracao.js.
+
 export {
     LIMITE_POKEDEX_ATUAL
 };
@@ -38,6 +39,7 @@ export {
 //
 // Elas são tratadas por regionais.js
 // ou especiais.js.
+
 export const POKEMONS_FUTUROS =
     new Set([
 
@@ -45,7 +47,6 @@ export const POKEMONS_FUTUROS =
         // RELACIONADOS À GEN 1
         // =========================
 
-        700, // Sylveon
         900, // Kleavor
         979, // Annihilape
 
@@ -65,6 +66,7 @@ export const POKEMONS_FUTUROS =
         // =========================
 
         983 // Kingambit
+
     ]);
 
 
@@ -74,6 +76,7 @@ export const POKEMONS_FUTUROS =
 
 // Pokémon cujas evoluções ficam melhores
 // organizadas verticalmente.
+
 export const POKEMONS_LAYOUT_VERTICAL =
     new Set([
 
@@ -82,6 +85,7 @@ export const POKEMONS_LAYOUT_VERTICAL =
         // =========================
 
         25,  // Pikachu
+        79,  // Slowpoke
         102, // Exeggcute
         104, // Cubone
         109, // Koffing
@@ -116,7 +120,14 @@ export const POKEMONS_LAYOUT_VERTICAL =
 
         502, // Dewott
         548, // Petilil
-        627  // Rufflet
+        627,  // Rufflet
+
+        // =========================
+        // GERAÇÃO 6 — KALOS
+        // =========================
+        704, // Goomy
+        712  // Bergmite
+
     ]);
 
 
@@ -126,6 +137,7 @@ export const POKEMONS_LAYOUT_VERTICAL =
 
 // Diz se o Pokémon deve aparecer
 // na árvore normal.
+
 export function pokemonDeveAparecer(
     id
 ) {
@@ -142,6 +154,7 @@ export function pokemonDeveAparecer(
 
 // Diz se já temos imagem oficial dele
 // dentro das gerações implementadas.
+
 export function pokemonPossuiImagem(
     id
 ) {

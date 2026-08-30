@@ -25,6 +25,7 @@ function criarTiposFallback(
 // Aplica tipos de fallback sem alterar
 // diretamente o objeto armazenado
 // no cache global da API.
+
 function aplicarTiposFallback(
     pokemon,
     tiposFallback = []
@@ -270,37 +271,26 @@ const CADEIAS_REGIONAIS = [
     },
 
 
-    // Slowpoke Galar → Slowbro Galar
+    // Slowpoke Galar
+    // ├── Slowbro Galar
+    // └── Slowking Galar
     {
-        familia: [79, 80],
+        familia: [79, 80, 199],
 
-        cadeia: [
-            {
-                numero: 79,
-                nome: "slowpoke",
-                api: "slowpoke-galar",
-                forma: "Galar"
-            },
+        ramificada: true,
 
+        raiz: {
+            numero: 79,
+            nome: "slowpoke",
+            api: "slowpoke-galar",
+            forma: "Galar"
+        },
+
+        ramos: [
             {
                 numero: 80,
                 nome: "slowbro",
                 api: "slowbro-galar",
-                forma: "Galar"
-            }
-        ]
-    },
-
-
-    // Slowpoke Galar → Slowking Galar
-    {
-        familia: [79, 199],
-
-        cadeia: [
-            {
-                numero: 79,
-                nome: "slowpoke",
-                api: "slowpoke-galar",
                 forma: "Galar"
             },
 
@@ -608,6 +598,68 @@ const CADEIAS_REGIONAIS = [
 
 ];
 
+async function carregarEtapaRegional(
+    etapa
+) {
+    try {
+        const pokemonCarregado =
+            await buscarPokemonPorIdentificador(
+                etapa.api
+            );
+
+        const pokemon =
+            aplicarTiposFallback(
+                pokemonCarregado,
+                etapa.tiposFallback
+            );
+
+        return {
+            pokemon,
+
+            numeroExibido:
+                etapa.numero,
+
+            nomeBase:
+                etapa.nome,
+
+            forma:
+                etapa.forma,
+
+            evolucoes: []
+        };
+
+    } catch (erro) {
+        console.warn(
+            `Não foi possível carregar ${etapa.api}.`,
+            erro
+        );
+
+        return {
+            pokemon: {
+                id: etapa.numero,
+                name: etapa.nome,
+
+                types:
+                    criarTiposFallback(
+                        etapa.tiposFallback || []
+                    ),
+
+                placeholder: true
+            },
+
+            numeroExibido:
+                etapa.numero,
+
+            nomeBase:
+                etapa.nome,
+
+            forma:
+                etapa.forma,
+
+            evolucoes: []
+        };
+    }
+}
 
 // =========================
 // CARREGAMENTO
@@ -695,6 +747,30 @@ async function carregarCadeia(
     return etapas;
 }
 
+async function carregarArvoreRegional(
+    configuracao
+) {
+    const raiz =
+        await carregarEtapaRegional(
+            configuracao.raiz
+        );
+
+    const ramos =
+        await Promise.all(
+            configuracao.ramos.map(
+                (ramo) => {
+                    return carregarEtapaRegional(
+                        ramo
+                    );
+                }
+            )
+        );
+
+    raiz.layoutVertical = true;
+    raiz.evolucoes = ramos;
+
+    return raiz;
+}
 
 // =========================
 // CONSULTA
@@ -712,10 +788,17 @@ export async function carregarCadeiasRegionais(
             }
         );
 
-
     return await Promise.all(
         configuracoes.map(
             (configuracao) => {
+                if (
+                    configuracao.ramificada === true
+                ) {
+                    return carregarArvoreRegional(
+                        configuracao
+                    );
+                }
+
                 return carregarCadeia(
                     configuracao
                 );

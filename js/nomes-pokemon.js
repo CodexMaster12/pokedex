@@ -39,7 +39,19 @@ const NOMES_ESPECIAIS = {
     "thundurus-incarnate": "Thundurus",
     "landorus-incarnate": "Landorus",
     "keldeo-ordinary": "Keldeo",
-    "meloetta-aria": "Meloetta"
+    "meloetta-aria": "Meloetta",
+
+    // =========================
+    // GERAÇÃO 6
+    // =========================
+
+    "pyroar-male": "Pyroar",
+    "flabebe": "Flabébé",
+    "meowstic-male": "Meowstic",
+    "aegislash-shield": "Aegislash",
+    "pumpkaboo-average": "Pumpkaboo",
+    "gourgeist-average": "Gourgeist",
+    "zygarde-50": "Zygarde"
 };
 
 

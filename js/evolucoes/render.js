@@ -82,9 +82,7 @@ export function criarItemEvolucao(
             data-pokemon-id="${numeroReal}"
             data-forma="${formaItem}"
         >
-
             <div class="evolucao-imagem">
-
                 ${
                     imagem
                         ? `
@@ -100,12 +98,9 @@ export function criarItemEvolucao(
                             </div>
                         `
                 }
-
             </div>
 
-
             <div class="evolucao-identificacao">
-
                 <span class="evolucao-numero">
                     #${numeroFormatado}
                 </span>
@@ -123,9 +118,7 @@ export function criarItemEvolucao(
                         `
                         : ""
                 }
-
             </div>
-
 
             ${
                 tipos.length > 0
@@ -136,7 +129,6 @@ export function criarItemEvolucao(
                     `
                     : ""
             }
-
         </div>
     `;
 }
@@ -146,10 +138,12 @@ export function criarItemEvolucao(
 // CLASSE DOS FILHOS
 // =========================
 
-function obterClasseFilhos(no) {
-
+function obterClasseFilhos(
+    no
+) {
     // Eevee possui layout próprio:
     // 2 colunas com 4 evoluções cada.
+
     if (no.pokemon.id === 133) {
         return (
             "evolucao-filhos " +
@@ -158,9 +152,13 @@ function obterClasseFilhos(no) {
     }
 
 
-    // Outros Pokémon com muitas ramificações
-    // continuam organizados verticalmente.
+    // Pokémon configurados previamente
+    // ou árvores que receberam uma
+    // ramificação especial compartilham
+    // o layout vertical.
+
     if (
+        no.layoutVertical === true ||
         POKEMONS_LAYOUT_VERTICAL.has(
             no.pokemon.id
         )
@@ -214,12 +212,10 @@ export function renderizarArvoreEvolucao(
             .map(
                 (evolucao) => `
                     <div class="evolucao-ramo">
-
                         ${renderizarArvoreEvolucao(
                             evolucao,
                             pokemonAtual
                         )}
-
                     </div>
                 `
             )
@@ -228,7 +224,6 @@ export function renderizarArvoreEvolucao(
 
     return `
         <div class="evolucao-etapa">
-
             ${itemAtual}
 
             <span
@@ -241,14 +236,13 @@ export function renderizarArvoreEvolucao(
             <div class="${classeFilhos}">
                 ${filhos}
             </div>
-
         </div>
     `;
 }
 
 
 // =========================
-// CADEIAS REGIONAIS
+// CADEIAS REGIONAIS / ESPECIAIS
 // =========================
 
 export function renderizarCadeiaRegional(
@@ -265,11 +259,9 @@ export function renderizarCadeiaRegional(
 
     return `
         <div class="evolucao-etapa evolucao-regional">
-
             ${etapas
                 .map(
                     (etapa, indice) => {
-
                         const item =
                             criarItemEvolucao(
                                 etapa,
@@ -299,7 +291,6 @@ export function renderizarCadeiaRegional(
                 )
                 .join("")
             }
-
         </div>
     `;
 }
