@@ -28,6 +28,12 @@
 // - Female quase completo
 // - Formas alternativas quase completas
 //
+// Geração 5:
+// - Forma normal completa
+// - Shiny completo
+// - Female completo
+// - Formas alternativas quase completas
+//
 // Aqui registramos apenas as combinações
 // que NÃO possuem animação.
 // =========================
@@ -223,7 +229,49 @@ const ANIMACOES_INDISPONIVEIS =
 
         // Arceus - Unknown
         "493:unknown:normal",
-        "493:unknown:shiny"
+        "493:unknown:shiny",
+
+
+        // =========================
+        // GERAÇÃO 5 — UNOVA
+        // =========================
+
+        // Emboar - Mega
+        "500:mega:normal",
+        "500:mega:shiny",
+
+        // Excadrill - Mega
+        "530:mega:normal",
+        "530:mega:shiny",
+
+        // Scolipede - Mega
+        "545:mega:normal",
+        "545:mega:shiny",
+
+        // Darmanitan - Galar
+        "555:galar:normal",
+        "555:galar:shiny",
+
+        // Scrafty - Mega
+        "560:mega:normal",
+        "560:mega:shiny",
+
+        // Eelektross - Mega
+        "604:mega:normal",
+        "604:mega:shiny",
+
+        // Chandelure - Mega
+        "609:mega:normal",
+        "609:mega:shiny",
+
+        // Golurk - Mega
+        "623:mega:normal",
+        "623:mega:shiny",
+
+        // Meloetta - Pirouette
+        // Normal possui animação,
+        // Shiny não possui.
+        "648:pirouette:shiny"
     ]);
 
 
@@ -232,7 +280,7 @@ const ANIMACOES_INDISPONIVEIS =
 // =========================
 
 const PRIMEIRO_POKEMON_ANIMADO = 1;
-const ULTIMO_POKEMON_ANIMADO = 493;
+const ULTIMO_POKEMON_ANIMADO = 649;
 
 
 // =========================
@@ -269,8 +317,8 @@ export function possuiAnimacaoPokemon(
     estadoAparencia
 ) {
     // Atualmente as animações estão
-    // disponíveis para Kanto,
-    // Johto, Hoenn e Sinnoh.
+    // disponíveis da Geração 1
+    // até a Geração 5.
 
     if (
         pokemon.id <
