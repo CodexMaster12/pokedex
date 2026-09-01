@@ -1,8 +1,87 @@
 /* =========================
+   VARIÁVEIS DO TEMA
+========================= */
+
+:root {
+    color-scheme: light;
+
+    --cor-fundo: #f2f2f2;
+    --cor-texto: #222222;
+
+    --cor-superficie: #ffffff;
+    --cor-superficie-hover: #fdfdfd;
+
+    --cor-borda: #e2e2e2;
+    --cor-borda-hover: #cccccc;
+    --cor-divisor: #eeeeee;
+
+    --cor-texto-controle: #333333;
+    --cor-texto-secundario: #777777;
+    --cor-texto-botao: #444444;
+    --cor-icone: #555555;
+    --cor-placeholder: #999999;
+
+    --cor-acento: #d62828;
+    --cor-acento-foco: #e52d2d;
+
+    --cor-hover-acento: #fff6f6;
+    --cor-hover-botao: #fffafa;
+
+    --sombra-suave:
+        0 2px 6px rgba(0, 0, 0, 0.03);
+
+    --sombra-hover:
+        0 4px 10px rgba(0, 0, 0, 0.05);
+
+    --anel-foco:
+        0 0 0 3px rgba(229, 45, 45, 0.10);
+}
+
+
+/* =========================
+   MODO ESCURO
+========================= */
+
+html[data-tema="escuro"] {
+    color-scheme: dark;
+
+    --cor-fundo: #151515;
+    --cor-texto: #eeeeee;
+
+    --cor-superficie: #202020;
+    --cor-superficie-hover: #262626;
+
+    --cor-borda: #363636;
+    --cor-borda-hover: #4a4a4a;
+    --cor-divisor: #303030;
+
+    --cor-texto-controle: #eeeeee;
+    --cor-texto-secundario: #aaaaaa;
+    --cor-texto-botao: #dddddd;
+    --cor-icone: #cccccc;
+    --cor-placeholder: #888888;
+
+    --cor-acento: #e53935;
+    --cor-acento-foco: #ef4444;
+
+    --cor-hover-acento: #2d1c1c;
+    --cor-hover-botao: #292020;
+
+    --sombra-suave:
+        0 2px 6px rgba(0, 0, 0, 0.20);
+
+    --sombra-hover:
+        0 4px 10px rgba(0, 0, 0, 0.28);
+
+    --anel-foco:
+        0 0 0 3px rgba(239, 68, 68, 0.16);
+}
+
+
+/* =========================
    ESTILOS GERAIS
 ========================= */
 
-/* Remove margens e espaçamentos padrão do navegador */
 * {
     margin: 0;
     padding: 0;
@@ -32,9 +111,15 @@ body {
 
     letter-spacing: 0.2px;
 
-    background-color: #f2f2f2;
+    background-color:
+        var(--cor-fundo);
 
-    color: #222;
+    color:
+        var(--cor-texto);
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
 
 
@@ -42,10 +127,6 @@ body {
    TIPOGRAFIA
 ========================= */
 
-/*
-    Mantém títulos com aparência mais forte,
-    mas sem exagerar no peso da fonte.
-*/
 h1,
 h2,
 h3,
@@ -63,10 +144,6 @@ h6 {
 }
 
 
-/*
-    Textos comuns mantêm o peso padrão
-    da fonte Inter.
-*/
 p,
 span,
 label {
@@ -81,7 +158,6 @@ label {
    IMAGENS
 ========================= */
 
-/* Imagens não ultrapassam seus containers */
 img {
     max-width: 100%;
 }
@@ -103,10 +179,6 @@ main {
    ELEMENTOS DE FORMULÁRIO
 ========================= */
 
-/*
-    Botões, inputs e selects usam
-    a mesma fonte do restante da página.
-*/
 button,
 input,
 select,

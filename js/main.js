@@ -24,6 +24,18 @@ import {
     definirPokemonsNavegacao
 } from "./modal.js";
 
+import {
+    aplicarTemaInicial,
+    configurarTema
+} from "./tema.js";
+
+
+// =========================
+// TEMA INICIAL
+// =========================
+
+aplicarTemaInicial();
+
 
 // =========================
 // INICIALIZAÇÃO DA POKÉDEX
@@ -37,6 +49,8 @@ async function iniciarPokedex() {
         // =========================
 
         montarInterface();
+
+        configurarTema();
 
         configurarControlesUI();
 
@@ -73,14 +87,6 @@ async function iniciarPokedex() {
         // FILTROS IMEDIATOS
         // =========================
 
-        /*
-            Pesquisa, geração, região e
-            ordenação já funcionam usando
-            somente ID e nome.
-
-            O filtro de tipos será preenchido
-            quando os detalhes terminarem.
-        */
         const controladorFiltros =
             configurarFiltros(
                 listaPokemons,
@@ -102,13 +108,6 @@ async function iniciarPokedex() {
         // ATUALIZA FILTROS
         // =========================
 
-        /*
-            Substitui a lista básica pela
-            completa e reaplica os filtros
-            que o usuário já estiver usando.
-
-            Também preenche o filtro de tipos.
-        */
         controladorFiltros
             ?.atualizarPokemons(
                 pokemonsDetalhados
@@ -116,6 +115,7 @@ async function iniciarPokedex() {
 
 
     } catch (erro) {
+
         console.error(
             "Erro ao iniciar a Pokédex:",
             erro

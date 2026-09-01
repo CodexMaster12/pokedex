@@ -20,27 +20,34 @@
 .golpe-item {
     padding: 12px;
 
-    background-color: #f8f8f8;
+    background-color:
+        var(--cor-superficie-hover);
 
-    border: 1px solid #e8e8e8;
+    border:
+        1px solid var(--cor-borda);
+
     border-radius: 11px;
 
     transition:
         transform 0.2s,
         background-color 0.2s,
+        border-color 0.2s,
         box-shadow 0.2s;
 }
 
 
 .golpe-item:hover {
-    background-color: white;
+    background-color:
+        var(--cor-superficie);
+
+    border-color:
+        var(--cor-borda-hover);
 
     transform:
         translateY(-1px);
 
     box-shadow:
-        0 4px 10px
-        rgba(0, 0, 0, 0.06);
+        var(--sombra-hover);
 }
 
 
@@ -64,7 +71,8 @@
 
 
 .nome-golpe {
-    color: #222;
+    color:
+        var(--cor-texto);
 
     font-size: 14px;
     font-weight: 700;
@@ -79,7 +87,8 @@
 
     flex-wrap: wrap;
 
-    color: #777;
+    color:
+        var(--cor-texto-secundario);
 
     font-size: 11px;
 }
@@ -89,7 +98,7 @@
     padding-right: 10px;
 
     border-right:
-        1px solid #dddddd;
+        1px solid var(--cor-borda);
 }
 
 
@@ -101,7 +110,8 @@
 
 
 .golpe-detalhes strong {
-    color: #333;
+    color:
+        var(--cor-texto-controle);
 
     font-weight: 700;
 }
@@ -112,7 +122,8 @@
 
     padding: 15px;
 
-    color: #777;
+    color:
+        var(--cor-texto-secundario);
 
     text-align: center;
 }

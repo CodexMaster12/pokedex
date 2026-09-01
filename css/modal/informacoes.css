@@ -20,12 +20,13 @@
 
     padding: 17px 14px;
 
-    background: linear-gradient(
-        135deg,
-        #b71c1c,
-        #d62828,
-        #e53935
-    );
+    background:
+        linear-gradient(
+            135deg,
+            #b71c1c,
+            #d62828,
+            #e53935
+        );
 
     border: none;
     border-radius: 12px;
@@ -94,12 +95,16 @@
 
     padding: 9px 15px;
 
-    background-color: #fff8f8;
+    background-color:
+        var(--cor-superficie-hover);
 
-    border: 1px solid #eadede;
+    border:
+        1px solid var(--cor-borda);
+
     border-radius: 20px;
 
-    color: #444;
+    color:
+        var(--cor-texto-botao);
 
     font-size: 14px;
 
@@ -109,28 +114,31 @@
         transform 0.2s,
         border-color 0.2s,
         background-color 0.2s,
+        color 0.2s,
         box-shadow 0.2s;
 }
 
 
 .icone-habilidade {
-    color: #d62828;
+    color:
+        var(--cor-acento);
 
     font-size: 13px;
 }
 
 
 .habilidade:hover {
-    background-color: white;
+    background-color:
+        var(--cor-superficie);
 
-    border-color: #d62828;
+    border-color:
+        var(--cor-acento);
 
     transform:
         translateY(-1px);
 
     box-shadow:
-        0 3px 8px
-        rgba(0, 0, 0, 0.08);
+        var(--sombra-suave);
 }
 
 
@@ -154,6 +162,9 @@
 
 
 .relacao-grupo h3 {
+    color:
+        var(--cor-texto);
+
     text-align: center;
 }
 
@@ -175,10 +186,17 @@
     font-size: 12px;
 }
 
+
 .sem-informacoes {
+    color:
+        var(--cor-texto-secundario);
+
     font-size: 0.78rem;
     font-weight: 500;
+
     text-transform: uppercase;
+
     letter-spacing: 0.08em;
+
     opacity: 0.55;
 }

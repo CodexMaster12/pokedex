@@ -7,17 +7,10 @@
     responsabilidade dentro de css/modal/.
 */
 
-
 @import url("./modal/base.css");
-
 @import url("./modal/identidade.css");
-
 @import url("./modal/informacoes.css");
-
 @import url("./modal/stats.css");
-
 @import url("./modal/golpes.css");
-
 @import url("./modal/evolucoes.css");
-
 @import url("./modal/formas.css");

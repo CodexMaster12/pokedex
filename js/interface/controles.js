@@ -44,6 +44,7 @@ export function criarControles() {
             <div class="controles-principais">
 
                 <!-- Pesquisa expansível -->
+
                 <div
                     class="pesquisa-container"
                     id="pesquisa-container"
@@ -57,7 +58,6 @@ export function criarControles() {
                         aria-expanded="false"
                         aria-controls="busca-pokemon"
                     >
-
                         <svg
                             viewBox="0 0 24 24"
                             aria-hidden="true"
@@ -75,7 +75,6 @@ export function criarControles() {
                                 y2="21"
                             ></line>
                         </svg>
-
                     </button>
 
 
@@ -91,6 +90,7 @@ export function criarControles() {
 
 
                 <!-- Configurações avançadas -->
+
                 <button
                     class="botao-configuracoes"
                     id="botao-configuracoes"
@@ -99,13 +99,11 @@ export function criarControles() {
                     aria-controls="painel-configuracoes"
                 >
 
-                    <!-- Ícone de ajustes -->
                     <svg
                         class="icone-ajustes"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                     >
-
                         <line
                             x1="4"
                             y1="6"
@@ -144,7 +142,6 @@ export function criarControles() {
                             cy="18"
                             r="2"
                         ></circle>
-
                     </svg>
 
 
@@ -180,9 +177,9 @@ export function criarControles() {
 
                 <div class="configuracoes-grid">
 
-                    <!-- Filtro por tipo -->
-                    <div class="grupo-configuracao">
+                    <!-- Tipos -->
 
+                    <div class="grupo-configuracao">
                         <label for="filtro-tipo">
                             Tipos
                         </label>
@@ -195,13 +192,12 @@ export function criarControles() {
                                 Todos os tipos
                             </option>
                         </select>
-
                     </div>
 
 
-                    <!-- Filtro por geração -->
-                    <div class="grupo-configuracao">
+                    <!-- Gerações -->
 
+                    <div class="grupo-configuracao">
                         <label for="filtro-geracao">
                             Gerações
                         </label>
@@ -210,21 +206,18 @@ export function criarControles() {
                             id="filtro-geracao"
                             aria-label="Filtrar Pokémon por geração"
                         >
-
                             <option value="todas">
                                 Todas as gerações
                             </option>
 
                             ${opcoesGeracoes}
-
                         </select>
-
                     </div>
 
 
-                    <!-- Filtro por forma regional -->
-                    <div class="grupo-configuracao">
+                    <!-- Formas regionais -->
 
+                    <div class="grupo-configuracao">
                         <label for="filtro-regional">
                             Formas regionais
                         </label>
@@ -233,7 +226,6 @@ export function criarControles() {
                             id="filtro-regional"
                             aria-label="Filtrar Pokémon por forma regional"
                         >
-
                             <option value="todas">
                                 Todas as formas
                             </option>
@@ -253,15 +245,13 @@ export function criarControles() {
                             <option value="paldea">
                                 Paldea
                             </option>
-
                         </select>
-
                     </div>
 
 
                     <!-- Ordenação -->
-                    <div class="grupo-configuracao">
 
+                    <div class="grupo-configuracao">
                         <label for="ordenacao">
                             Ordenação
                         </label>
@@ -270,7 +260,6 @@ export function criarControles() {
                             id="ordenacao"
                             aria-label="Ordenar Pokémon"
                         >
-
                             <option value="numero-asc">
                                 Número crescente
                             </option>
@@ -286,9 +275,25 @@ export function criarControles() {
                             <option value="nome-za">
                                 Nome Z-A
                             </option>
-
                         </select>
+                    </div>
 
+
+                    <!-- Tema -->
+
+                    <div class="grupo-configuracao">
+                        <label for="botao-tema">
+                            Tema
+                        </label>
+
+                        <button
+                            class="botao-tema"
+                            id="botao-tema"
+                            type="button"
+                            aria-pressed="false"
+                        >
+                            🌙 Modo escuro
+                        </button>
                     </div>
 
                 </div>

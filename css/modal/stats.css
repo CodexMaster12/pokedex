@@ -37,14 +37,19 @@
     width: 100%;
     height: 9px;
 
-    background-color: #e5e5e5;
+    background-color:
+        var(--cor-borda);
 
     border-radius: 2px;
+
+    transition:
+        background-color 0.25s;
 }
 
 
 .segmento-stat.ativo {
-    background-color: #e52d2d;
+    background-color:
+        var(--cor-acento-foco);
 
     box-shadow:
         0 1px 2px
@@ -55,6 +60,9 @@
 .valor-stat {
     margin-top: 8px;
 
+    color:
+        var(--cor-texto);
+
     font-size: 14px;
     font-weight: bold;
 }
@@ -64,6 +72,9 @@
     min-height: 36px;
 
     margin-top: 4px;
+
+    color:
+        var(--cor-texto);
 
     font-size: 13px;
     font-weight: bold;
