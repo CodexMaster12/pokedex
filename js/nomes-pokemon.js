@@ -51,7 +51,22 @@ const NOMES_ESPECIAIS = {
     "aegislash-shield": "Aegislash",
     "pumpkaboo-average": "Pumpkaboo",
     "gourgeist-average": "Gourgeist",
-    "zygarde-50": "Zygarde"
+    "zygarde-50": "Zygarde",
+
+
+    // =========================
+    // GERAÇÃO 7
+    // =========================
+
+    "oricorio-baile": "Oricorio",
+    "lycanroc-midday": "Lycanroc",
+    "wishiwashi-solo": "Wishiwashi",
+    "type-null": "Type: Null",
+    "minior-red-meteor": "Minior",
+    "mimikyu-disguised": "Mimikyu",
+    "jangmo-o": "Jangmo-o",
+    "hakamo-o": "Hakamo-o",
+    "kommo-o": "Kommo-o"
 };
 
 

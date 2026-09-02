@@ -67,7 +67,7 @@ const GERACOES = [
 // Última geração atualmente
 // disponível na Pokédex.
 
-export const ULTIMA_GERACAO_IMPLEMENTADA = 6;
+export const ULTIMA_GERACAO_IMPLEMENTADA = 7;
 
 
 const DADOS_ULTIMA_GERACAO =

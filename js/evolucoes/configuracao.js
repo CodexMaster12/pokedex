@@ -122,11 +122,20 @@ export const POKEMONS_LAYOUT_VERTICAL =
         548, // Petilil
         627,  // Rufflet
 
+
         // =========================
         // GERAÇÃO 6 — KALOS
         // =========================
+
         704, // Goomy
-        712  // Bergmite
+        712, // Bergmite
+
+
+        // =========================
+        // GERAÇÃO 7 — ALOLA
+        // =========================
+
+        723 // Dartrix
 
     ]);
 

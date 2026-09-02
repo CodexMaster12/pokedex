@@ -113,6 +113,38 @@ function criarStats(
 }
 
 
+// Cria os dados compartilhados pelas
+// formas de tipo do Silvally.
+function criarDadosSilvally(
+    tipo
+) {
+    return {
+        types:
+            criarTipos(
+                tipo
+            ),
+
+        abilities:
+            criarHabilidades(
+                "rks-system"
+            ),
+
+        stats:
+            criarStats(
+                95,
+                95,
+                95,
+                95,
+                95,
+                95
+            ),
+
+        height: 23,
+        weight: 1005
+    };
+}
+
+
 // =========================
 // REGISTRO
 // =========================
@@ -707,6 +739,7 @@ const DADOS_FORMAS_MANUAIS = {
         weight: 2400
     },
 
+
     // =========================
     // EMBOAR — MEGA
     // =========================
@@ -739,6 +772,7 @@ const DADOS_FORMAS_MANUAIS = {
         height: 18,
         weight: 1803
     },
+
 
     // =========================
     // EXCADRILL — MEGA
@@ -941,6 +975,7 @@ const DADOS_FORMAS_MANUAIS = {
         height: 40,
         weight: 3300
     },
+
 
     // =========================
     // CHESNAUGHT — MEGA
@@ -1311,6 +1346,386 @@ const DADOS_FORMAS_MANUAIS = {
 
         height: 77,
         weight: 6100
+    },
+
+
+    // =========================
+    // CRABOMINABLE — MEGA
+    // =========================
+
+    "740:mega": {
+        pokemonId: 740,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "fighting",
+                "ice"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "iron-fist"
+            ),
+
+        stats:
+            criarStats(
+                97,
+                157,
+                122,
+                62,
+                107,
+                33
+            ),
+
+        height: 26,
+        weight: 2528
+    },
+
+
+    // =========================
+    // GOLISOPOD — MEGA
+    // =========================
+
+    "768:mega": {
+        pokemonId: 768,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "bug",
+                "steel"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "emergency-exit"
+            ),
+
+        stats:
+            criarStats(
+                75,
+                150,
+                175,
+                70,
+                120,
+                40
+            ),
+
+        height: 23,
+        weight: 1480
+    },
+
+
+    // =========================
+    // SILVALLY — TIPOS
+    // =========================
+
+    "773:bug": {
+        pokemonId: 773,
+        formaId: "bug",
+
+        ...criarDadosSilvally(
+            "bug"
+        )
+    },
+
+
+    "773:dark": {
+        pokemonId: 773,
+        formaId: "dark",
+
+        ...criarDadosSilvally(
+            "dark"
+        )
+    },
+
+
+    "773:dragon": {
+        pokemonId: 773,
+        formaId: "dragon",
+
+        ...criarDadosSilvally(
+            "dragon"
+        )
+    },
+
+
+    "773:electric": {
+        pokemonId: 773,
+        formaId: "electric",
+
+        ...criarDadosSilvally(
+            "electric"
+        )
+    },
+
+
+    "773:fairy": {
+        pokemonId: 773,
+        formaId: "fairy",
+
+        ...criarDadosSilvally(
+            "fairy"
+        )
+    },
+
+
+    "773:fighting": {
+        pokemonId: 773,
+        formaId: "fighting",
+
+        ...criarDadosSilvally(
+            "fighting"
+        )
+    },
+
+
+    "773:fire": {
+        pokemonId: 773,
+        formaId: "fire",
+
+        ...criarDadosSilvally(
+            "fire"
+        )
+    },
+
+
+    "773:flying": {
+        pokemonId: 773,
+        formaId: "flying",
+
+        ...criarDadosSilvally(
+            "flying"
+        )
+    },
+
+
+    "773:ghost": {
+        pokemonId: 773,
+        formaId: "ghost",
+
+        ...criarDadosSilvally(
+            "ghost"
+        )
+    },
+
+
+    "773:grass": {
+        pokemonId: 773,
+        formaId: "grass",
+
+        ...criarDadosSilvally(
+            "grass"
+        )
+    },
+
+
+    "773:ground": {
+        pokemonId: 773,
+        formaId: "ground",
+
+        ...criarDadosSilvally(
+            "ground"
+        )
+    },
+
+
+    "773:ice": {
+        pokemonId: 773,
+        formaId: "ice",
+
+        ...criarDadosSilvally(
+            "ice"
+        )
+    },
+
+
+    "773:poison": {
+        pokemonId: 773,
+        formaId: "poison",
+
+        ...criarDadosSilvally(
+            "poison"
+        )
+    },
+
+
+    "773:psychic": {
+        pokemonId: 773,
+        formaId: "psychic",
+
+        ...criarDadosSilvally(
+            "psychic"
+        )
+    },
+
+
+    "773:rock": {
+        pokemonId: 773,
+        formaId: "rock",
+
+        ...criarDadosSilvally(
+            "rock"
+        )
+    },
+
+
+    "773:steel": {
+        pokemonId: 773,
+        formaId: "steel",
+
+        ...criarDadosSilvally(
+            "steel"
+        )
+    },
+
+
+    "773:water": {
+        pokemonId: 773,
+        formaId: "water",
+
+        ...criarDadosSilvally(
+            "water"
+        )
+    },
+
+
+    // =========================
+    // DRAMPA — MEGA
+    // =========================
+
+    "780:mega": {
+        pokemonId: 780,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "normal",
+                "dragon"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "berserk"
+            ),
+
+        stats:
+            criarStats(
+                78,
+                85,
+                110,
+                160,
+                116,
+                36
+            ),
+
+        height: 30,
+        weight: 2405
+    },
+
+
+    // =========================
+    // MAGEARNA — MEGA
+    // =========================
+
+    "801:mega": {
+        pokemonId: 801,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "steel",
+                "fairy"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "soul-heart"
+            ),
+
+        stats:
+            criarStats(
+                80,
+                125,
+                115,
+                170,
+                115,
+                95
+            ),
+
+        height: 13,
+        weight: 2481
+    },
+
+
+    // =========================
+    // MAGEARNA — MEGA ORIGINAL
+    // =========================
+    //
+    // Mesmos dados de batalha da
+    // Mega Magearna padrão.
+
+    "801:mega-original": {
+        pokemonId: 801,
+        formaId: "mega-original",
+
+        types:
+            criarTipos(
+                "steel",
+                "fairy"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "soul-heart"
+            ),
+
+        stats:
+            criarStats(
+                80,
+                125,
+                115,
+                170,
+                115,
+                95
+            ),
+
+        height: 13,
+        weight: 2481
+    },
+
+
+    // =========================
+    // ZERAORA — MEGA
+    // =========================
+
+    "807:mega": {
+        pokemonId: 807,
+        formaId: "mega",
+
+        types:
+            criarTipos(
+                "electric"
+            ),
+
+        abilities:
+            criarHabilidades(
+                "volt-absorb"
+            ),
+
+        stats:
+            criarStats(
+                88,
+                157,
+                75,
+                147,
+                80,
+                153
+            ),
+
+        height: 15,
+        weight: 445
     }
 
 };
